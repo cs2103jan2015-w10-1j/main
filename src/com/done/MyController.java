@@ -20,20 +20,23 @@ public class MyController {
 		Utils utils = new Utils();
 		
 		commandField.setOnAction((event) -> {
-			String command = utils.getFirstWord(commandField.getText());
-			String task = utils.removeFirstWord(commandField.getText());
-			
-			if(command.equals("add")){
-				mainOutput.appendText(task + "\n");
-			}else if(command.equals("clear")){
-				mainOutput.clear();
-			}
-			
-			
-			commandField.clear();
+			performCommand(utils);
 			
 		});
 		
+	}
+
+	private void performCommand(Utils utils) {
+		String command = utils.getFirstWord(commandField.getText());
+		String task = utils.removeFirstWord(commandField.getText());
+		
+		if(command.equals("add")){
+			mainOutput.appendText(task + "\n");
+		}else if(command.equals("clear")){
+			mainOutput.clear();
+		}
+		
+		commandField.clear();
 	}
 	
 	
