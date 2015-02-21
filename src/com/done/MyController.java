@@ -34,6 +34,8 @@ public class MyController {
 			mainOutput.appendText(task + "\n");
 		}else if(command.equals("clear")){
 			mainOutput.clear();
+		}else if(command.equals("exit")){
+			System.exit(0);
 		}
 		
 		commandField.clear();
