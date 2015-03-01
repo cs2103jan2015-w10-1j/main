@@ -1,32 +1,61 @@
 package com.done.storage;
 
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
-
-import org.json.simple.JSONObject;
+import java.lang.reflect.Type;
+import java.util.ArrayList;
+import java.util.List;
 
 import com.done.Done;
+import com.google.gson.Gson;
+import com.google.gson.JsonObject;
+import com.google.gson.reflect.TypeToken;
 
 public class JSONStorage implements DoneStorage{
 	
-	FileWriter outFile;
+	private List<Done> tasks;
+	private Gson gson;
+	
+	public JSONStorage(){
+		this.tasks = new ArrayList<Done>();
+		this.gson = new Gson();
+	}
 
 	@Override
-	public void load() {
+	public List<Done> load() {
+		FileReader inFileRead = null;
+		File inFile = FileHandler.openFile("tasks.json");
+		
+		try {
+			inFileRead = new FileReader("tasks.json");
+			
+		} catch (FileNotFoundException e) {
+			e.printStackTrace();
+		}
+		
+		if(inFile.length()<=0){
+			return new ArrayList<Done>();
+		}
+		
+		Type collectionType = new TypeToken<List<Done>>() {
+		}.getType();
+		List<Done> tasks = gson.fromJson(inFileRead, collectionType);
+		
+		return tasks;
 		
 	}
 
 	@Override
-	public void store(Done task) {
-		JSONObject jsonObj = new JSONObject();
-		jsonObj.put("title", task.getTitle());
+	public void store(List<Done> task) {
 		
 		try {
-			outFile = new FileWriter("tasks.json",true);
-			outFile.write(jsonObj.toJSONString());
+			FileWriter outFile = new FileWriter("tasks.json");
+			outFile.write(gson.toJson(task));
 			outFile.flush();
 			outFile.close();
-			
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
