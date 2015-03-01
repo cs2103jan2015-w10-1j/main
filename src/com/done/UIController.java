@@ -17,9 +17,11 @@ public class UIController {
 	private TextArea mainOutput;
 	
 	private CommandParser cmdParser;
+	private Logic mainLogic;
 	
 	public UIController(){
 		cmdParser = new CommandParser();
+		mainLogic = new Logic();
 	}
 
 	@FXML
@@ -43,6 +45,7 @@ public class UIController {
 		
 		switch(commandType){
 			case ADD:
+				mainLogic.add(task);
 				mainOutput.appendText(task + "\n");
 				break;
 			case CLEAR:

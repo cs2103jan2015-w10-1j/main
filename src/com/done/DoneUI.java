@@ -16,7 +16,7 @@ import javafx.scene.layout.AnchorPane;
 import javafx.stage.Stage;
 
 
-public class DoneMain extends Application {
+public class DoneUI extends Application {
 	
 	@Override
 	public void start(Stage primaryStage) {
