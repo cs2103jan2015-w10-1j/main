@@ -16,13 +16,13 @@ import javafx.scene.layout.AnchorPane;
 import javafx.stage.Stage;
 
 
-public class Main extends Application {
+public class DoneMain extends Application {
 	
 	@Override
 	public void start(Stage primaryStage) {
 		try {
 			
-			final FXMLLoader loader = new FXMLLoader(getClass().getResource("RootLayout.fxml"));
+			final FXMLLoader loader = new FXMLLoader(getClass().getResource("UILayout.fxml"));
 	        
 	        AnchorPane anchorPane = (AnchorPane) loader.load();
 	        Scene scene = new Scene(anchorPane);

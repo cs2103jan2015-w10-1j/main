@@ -1,0 +1,63 @@
+package com.done;
+
+import com.done.logic.Logic;
+import com.done.parser.CommandParser;
+import com.done.parser.CommandParser.CommandType;
+import com.done.logic.Utils;
+
+import javafx.fxml.FXML;
+import javafx.scene.control.TextArea;
+import javafx.scene.control.TextField;
+
+public class UIController {
+	@FXML 
+	private TextField commandField;
+	
+	@FXML
+	private TextArea mainOutput;
+	
+	private CommandParser cmdParser;
+	
+	public UIController(){
+		cmdParser = new CommandParser();
+	}
+
+	@FXML
+	public void initialize() {
+		
+		commandField.setOnAction((event) -> {
+			processInput();
+		});
+		
+	}
+	
+	public void processInput(){
+		String userCommand = commandField.getText();
+		executeCommand(userCommand);
+	}
+	
+	public void executeCommand(String userCommand){
+		
+		String task = Utils.removeFirstWord(userCommand);
+		CommandType commandType = cmdParser.getCommandType(userCommand);
+		
+		switch(commandType){
+			case ADD:
+				mainOutput.appendText(task + "\n");
+				break;
+			case CLEAR:
+				mainOutput.clear();
+				break;
+			case EXIT:
+				System.exit(0);
+				break;
+			default:
+				break;
+		}
+		
+		commandField.clear();
+	}
+	
+	
+
+}
