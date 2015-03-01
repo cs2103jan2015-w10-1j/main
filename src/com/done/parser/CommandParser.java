@@ -1,6 +1,5 @@
 package com.done.parser;
 
-import com.done.logic.Utils;
 
 public class CommandParser {
 	
@@ -10,7 +9,7 @@ public class CommandParser {
 	
 	public CommandType getCommandType(String userCommand){
 		
-		String command = Utils.getFirstWord(userCommand);
+		String command = CommandUtils.getFirstWord(userCommand);
 		
 		if(command.equalsIgnoreCase("add")){
 			return CommandType.ADD;

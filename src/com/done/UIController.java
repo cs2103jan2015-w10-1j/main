@@ -2,8 +2,8 @@ package com.done;
 
 import com.done.logic.Logic;
 import com.done.parser.CommandParser;
+import com.done.parser.CommandUtils;
 import com.done.parser.CommandParser.CommandType;
-import com.done.logic.Utils;
 
 import javafx.fxml.FXML;
 import javafx.scene.control.TextArea;
@@ -38,7 +38,7 @@ public class UIController {
 	
 	public void executeCommand(String userCommand){
 		
-		String task = Utils.removeFirstWord(userCommand);
+		String task = CommandUtils.removeFirstWord(userCommand);
 		CommandType commandType = cmdParser.getCommandType(userCommand);
 		
 		switch(commandType){

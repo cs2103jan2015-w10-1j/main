@@ -1,6 +1,6 @@
-package com.done.logic;
+package com.done.parser;
 
-public class Utils {
+public class CommandUtils {
 	
 	public static String removeFirstWord(String userCommand) {
         return userCommand.replace(getFirstWord(userCommand), "").trim();
