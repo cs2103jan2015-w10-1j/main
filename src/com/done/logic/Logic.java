@@ -11,6 +11,7 @@ import com.done.storage.JSONStorage;
 public class Logic {
  	
 	private static final String MESSAGE_DELETE = "Task %1$s deleted!";
+	private static final String MESSAGE_ADD = "Task \"%1$s\"added!";
 	
 	private DoneStorage doneStorage;
 	private List<Done> tasks;
@@ -27,6 +28,7 @@ public class Logic {
 		doneStorage.store(task);
 		tasks.add(task);
 		jsonStorage.store(tasks);
+		System.out.println(String.format(MESSAGE_ADD, title));
 	}
 
 	// skeletal purpose method display() 
