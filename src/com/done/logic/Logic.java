@@ -46,7 +46,7 @@ public class Logic {
 	public void delete(int deleteIndex){
 		
 		String strToDelete;
-		strToDelete = new String(tasks.elementAt(deleteIndex - 1).toString());   
+		strToDelete = new String(tasks.get(deleteIndex - 1).toString());   
 		tasks.remove(deleteIndex - 1);
 		System.out.println(String.format(MESSAGE_DELETE, strToDelete));
 		jsonStorage.store(tasks);
