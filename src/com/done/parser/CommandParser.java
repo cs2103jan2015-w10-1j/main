@@ -7,7 +7,7 @@ public class CommandParser {
 	** DISPLAY and CLEAR command especially will be replaced/removed
 	*/
 	public enum CommandType{
-		ADD, CLEAR, DISPLAY, EXIT, INVALID;
+		ADD, DELETE, CLEAR, DISPLAY, EXIT, INVALID;
 	}
 	
 	public CommandType getCommandType(String userCommand){
@@ -16,6 +16,8 @@ public class CommandParser {
 		
 		if(command.equalsIgnoreCase("add")){
 			return CommandType.ADD;
+		}else if(command.equalsIgnoreCase("delete")){
+			return CommandType.DELETE;
 		}else if(command.equalsIgnoreCase("display")){
 			return CommandType.DISPLAY;
 		}else if(command.equalsIgnoreCase("clear")){
