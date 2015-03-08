@@ -3,6 +3,8 @@ package com.done;
 import java.util.Timer;
 import java.util.TimerTask;
 
+import org.controlsfx.control.Notifications;
+
 import com.done.logic.Logic;
 import com.done.parser.CommandParser;
 import com.done.parser.CommandUtils;
@@ -59,8 +61,9 @@ public class UIController {
 			case ADD:
 				mainLogic.add(task);
 				//mainOutput.appendText(task + "\n");
-				mainOutput.setText(task + " added to list");
-				waitAndClear(2500);
+				//mainOutput.setText(task + " added to list");
+				Notifications.create().text(task + " added to list").showInformation();
+				//waitAndClear(2500);
 				break;
 			case DISPLAY:
 				String output = mainLogic.display();
