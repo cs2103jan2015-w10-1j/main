@@ -13,7 +13,7 @@
             <Font name="Consolas" size="17.0" />
          </font>
       </TextField>
-      <TableView fx:id="tableViewTasks" layoutX="136.0" layoutY="14.0" prefHeight="330.0" prefWidth="454.0">
+      <TableView fx:id="tableViewTasks" layoutX="9.0" layoutY="9.0" prefHeight="335.0" prefWidth="582.0">
         <columns>
           <TableColumn prefWidth="75.0" text="No." />
           <TableColumn prefWidth="221.0" text="Task" />

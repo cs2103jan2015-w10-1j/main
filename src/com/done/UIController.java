@@ -45,6 +45,7 @@ public class UIController {
 
 	@FXML
 	public void initialize() {
+		display();
 		
 		commandField.setOnAction((event) -> {
 			processInput();
