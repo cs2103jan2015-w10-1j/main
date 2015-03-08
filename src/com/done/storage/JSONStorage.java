@@ -11,16 +11,13 @@ import java.util.List;
 
 import com.done.Done;
 import com.google.gson.Gson;
-import com.google.gson.JsonObject;
 import com.google.gson.reflect.TypeToken;
 
 public class JSONStorage implements DoneStorage{
 	
-	private List<Done> tasks;
 	private Gson gson;
 	
 	public JSONStorage(){
-		this.tasks = new ArrayList<Done>();
 		this.gson = new Gson();
 	}
 
