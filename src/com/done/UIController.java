@@ -1,42 +1,31 @@
 package com.done;
 
 import java.util.List;
-import java.util.Timer;
-import java.util.TimerTask;
+
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
+import javafx.fxml.FXML;
+import javafx.scene.control.TableView;
+import javafx.scene.control.TextField;
+import javafx.scene.control.cell.PropertyValueFactory;
 
 import org.controlsfx.control.Notifications;
 
 import com.done.logic.Logic;
 import com.done.parser.CommandParser;
-import com.done.parser.CommandUtils;
 import com.done.parser.CommandParser.CommandType;
-
-import javafx.application.Platform;
-import javafx.collections.FXCollections;
-import javafx.collections.ObservableList;
-import javafx.fxml.FXML;
-import javafx.scene.control.TableView;
-import javafx.scene.control.TextArea;
-import javafx.scene.control.TextField;
-import javafx.scene.control.cell.PropertyValueFactory;
-
-/* Interface is basically TextBuddy style for now.
- * TODO: Update view to ListView
- * Return view from List to ListView
-*/
+import com.done.parser.CommandUtils;
 
 public class UIController {
 	@FXML 
 	private TextField commandField;
 	
 	@FXML
-	private TextArea mainOutput;
-	
-	@FXML
 	private TableView<Done> tableViewTasks;
 	
 	private CommandParser cmdParser;
 	private Logic mainLogic;
+	private final int ARRAY_DELETE_OFFSET = 1;
 	
 	public UIController(){
 		cmdParser = new CommandParser();
@@ -60,7 +49,6 @@ public class UIController {
 	
 	public void executeCommand(String userCommand){
 		
-		String task = CommandUtils.removeFirstWord(userCommand);
 		CommandType commandType = cmdParser.getCommandType(userCommand);
 		
 		/* TODO: Commands are temporary and for skeletal purpose
@@ -68,35 +56,29 @@ public class UIController {
 		*/
 		switch(commandType){
 			case ADD:
+				String task = CommandUtils.removeFirstWord(userCommand);
 				mainLogic.addFloating(task);
-				//mainOutput.appendText(task + "\n");
-				//mainOutput.setText(task + " added to list");
 				Notifications.create().text(task + " added to list").showInformation();
-				//waitAndClear(2500);
 				display();
 				break;
-			/* TODO: Enable display command to fit in parameters such that
-			 * it will be able to display <all> <floating> <timed> <deadline> 	
-			 */
 			case DISPLAY:
-				String output = mainLogic.display();
-				mainOutput.setText(output);
+				/* TODO: Enable display command to fit in parameters such that
+				 * it will be able to display <all> <floating> <timed> <deadline> 	
+				 */
 				break;
-			case CLEAR:
-				mainOutput.clear();
-				//mainOutput.setText("Output cleared");
-				//waitAndClear(2500);
+			case DELETE:
+				int deleteIndex = Integer.parseInt(CommandUtils.removeFirstWord(userCommand));
+				mainLogic.delete(deleteIndex - ARRAY_DELETE_OFFSET);
+				display();
 				break;
 			case EXIT:
 				System.exit(0);
 				break;
 			default:
+				Notifications.create().text("Invalid command").showError();
 				break;
 		}
-		
 		commandField.clear();
-		
-		
 	}
 
 	private void display() {
@@ -106,28 +88,5 @@ public class UIController {
 		tableViewTasks.getColumns().get(0).setCellValueFactory(new PropertyValueFactory<>("id"));
 		tableViewTasks.getColumns().get(1).setCellValueFactory(new PropertyValueFactory<>("title"));
 	}
-	
-	
-	// For fun experimental purpose only
-	private void waitAndClear(long millis) {
-		Timer timer = new Timer();
-		timer.schedule(new TimerTask() {
-			
-			@Override
-			public void run() {
-				Platform.runLater(new Runnable() {
-					
-					@Override
-					public void run() {
-						mainOutput.clear();
-						
-					}
-				});
-				
-			}
-		}, millis);
-	}
-	
-	
 
 }

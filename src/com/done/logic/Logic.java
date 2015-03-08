@@ -36,26 +36,16 @@ public class Logic {
 			i++;
 		}
 	}
-
-	// skeletal purpose method display() 
-	public String display() {
-		StringBuilder sb = new StringBuilder();
-		
-		Iterator<Done> listIterator = tasks.iterator(); 
-		while(listIterator.hasNext()){
-			sb.append(listIterator.next().getTitle()+"\n");
-		}
-		
-		return sb.toString();
- 	}
 	
 	public void delete(int deleteIndex){
-		
-		String strToDelete;
+		tasks.remove(deleteIndex);
+		updateTaskID();
+		jsonStorage.store(tasks);
+		/*String strToDelete;
 		strToDelete = new String(tasks.get(deleteIndex - 1).toString());   
 		tasks.remove(deleteIndex - 1);
 		System.out.println(String.format(MESSAGE_DELETE, strToDelete));
-		jsonStorage.store(tasks);
+		jsonStorage.store(tasks);*/
 	
 	}
 
