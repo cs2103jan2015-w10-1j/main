@@ -3,7 +3,7 @@ package com.done.parser;
 
 public class CommandParser {
 	
-	/** TODO: These commands are for skeletal purpose only
+	/* TODO: These commands are for skeletal purpose only
 	** DISPLAY and CLEAR command especially will be replaced/removed
 	*/
 	public enum CommandType{

@@ -52,7 +52,7 @@ public class UIController {
 		String task = CommandUtils.removeFirstWord(userCommand);
 		CommandType commandType = cmdParser.getCommandType(userCommand);
 		
-		/** TODO: Commands are temporary and for skeletal purpose
+		/* TODO: Commands are temporary and for skeletal purpose
 		* some will be removed or changed when UI has been updated
 		*/
 		switch(commandType){
