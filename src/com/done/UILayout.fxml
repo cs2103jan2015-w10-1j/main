@@ -6,19 +6,19 @@
 <?import javafx.scene.layout.*?>
 <?import javafx.scene.layout.BorderPane?>
 
-<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="600.0" 
-xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.done.UIController">
+<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.done.UIController">
    <children>
-   <TextArea editable="false" layoutX="14.0" layoutY="14.0" prefHeight="330.0" prefWidth="574.0" text="DONE!" fx:id="mainOutput">
-         <font>
-            <Font size="22.0" />
-         </font>
-      </TextArea>
-      <TextField layoutX="14.0" layoutY="353.0" prefHeight="33.0" prefWidth="574.0" promptText="Enter command" fx:id="commandField">
+      <TextField fx:id="commandField" layoutX="14.0" layoutY="353.0" prefHeight="33.0" prefWidth="574.0" promptText="Enter command">
          <font>
             <Font name="Consolas" size="17.0" />
          </font>
       </TextField>
+      <TableView fx:id="tableViewTasks" layoutX="9.0" layoutY="12.0" prefHeight="332.0" prefWidth="582.0">
+        <columns>
+          <TableColumn prefWidth="50.0" text="No." />
+          <TableColumn prefWidth="367.0" text="Task" />
+        </columns>
+      </TableView>
       
    </children>
 </AnchorPane>

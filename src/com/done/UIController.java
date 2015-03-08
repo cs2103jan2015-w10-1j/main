@@ -1,5 +1,6 @@
 package com.done;
 
+import java.util.List;
 import java.util.Timer;
 import java.util.TimerTask;
 
@@ -11,9 +12,13 @@ import com.done.parser.CommandUtils;
 import com.done.parser.CommandParser.CommandType;
 
 import javafx.application.Platform;
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
+import javafx.scene.control.TableView;
 import javafx.scene.control.TextArea;
 import javafx.scene.control.TextField;
+import javafx.scene.control.cell.PropertyValueFactory;
 
 /* Interface is basically TextBuddy style for now.
  * TODO: Update view to ListView
@@ -27,6 +32,9 @@ public class UIController {
 	@FXML
 	private TextArea mainOutput;
 	
+	@FXML
+	private TableView<Done> tableViewTasks;
+	
 	private CommandParser cmdParser;
 	private Logic mainLogic;
 	
@@ -37,6 +45,7 @@ public class UIController {
 
 	@FXML
 	public void initialize() {
+		display();
 		
 		commandField.setOnAction((event) -> {
 			processInput();
@@ -59,12 +68,16 @@ public class UIController {
 		*/
 		switch(commandType){
 			case ADD:
-				mainLogic.add(task);
+				mainLogic.addFloating(task);
 				//mainOutput.appendText(task + "\n");
 				//mainOutput.setText(task + " added to list");
 				Notifications.create().text(task + " added to list").showInformation();
 				//waitAndClear(2500);
+				display();
 				break;
+			/* TODO: Enable display command to fit in parameters such that
+			 * it will be able to display <all> <floating> <timed> <deadline> 	
+			 */
 			case DISPLAY:
 				String output = mainLogic.display();
 				mainOutput.setText(output);
@@ -86,6 +99,16 @@ public class UIController {
 		
 	}
 
+	private void display() {
+		List<Done> tasks = mainLogic.getTasks();
+		ObservableList<Done> tableTasks = FXCollections.observableArrayList(tasks);
+		tableViewTasks.setItems(tableTasks);
+		tableViewTasks.getColumns().get(0).setCellValueFactory(new PropertyValueFactory<>("id"));
+		tableViewTasks.getColumns().get(1).setCellValueFactory(new PropertyValueFactory<>("title"));
+	}
+	
+	
+	// For fun experimental purpose only
 	private void waitAndClear(long millis) {
 		Timer timer = new Timer();
 		timer.schedule(new TimerTask() {
