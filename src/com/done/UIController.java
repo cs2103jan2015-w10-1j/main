@@ -75,6 +75,9 @@ public class UIController {
 				//waitAndClear(2500);
 				display();
 				break;
+			/* TODO: Enable display command to fit in parameters such that
+			 * it will be able to display <all> <floating> <timed> <deadline> 	
+			 */
 			case DISPLAY:
 				String output = mainLogic.display();
 				mainOutput.setText(output);
