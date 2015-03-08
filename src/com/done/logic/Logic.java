@@ -10,7 +10,7 @@ import com.done.storage.JSONStorage;
 public class Logic {
  	
 	private static final String MESSAGE_DELETE = "Task %1$s deleted!";
-	private static final String MESSAGE_ADD = "Task \"%1$s\"added!";
+	private static final String MESSAGE_ADD = "Task \"%1$s\" added!";
 	
 	private List<Done> tasks;
 	private DoneStorage jsonStorage;
@@ -20,11 +20,21 @@ public class Logic {
 		this.tasks = jsonStorage.load();
 	}
  	
- 	public void add(String title){
+ 	public void addFloating(String title){
  		Done task = new Done(title);
 		tasks.add(task);
+		updateTaskID();
 		jsonStorage.store(tasks);
 		System.out.println(String.format(MESSAGE_ADD, title));
+	}
+
+	private void updateTaskID() {
+		Iterator<Done> listIterator = tasks.iterator();
+		int i=1;
+		while(listIterator.hasNext()){
+			listIterator.next().setId(i);
+			i++;
+		}
 	}
 
 	// skeletal purpose method display() 
@@ -47,6 +57,13 @@ public class Logic {
 		System.out.println(String.format(MESSAGE_DELETE, strToDelete));
 		jsonStorage.store(tasks);
 	
+	}
+
+	/**
+	 * @return the tasks
+	 */
+	public List<Done> getTasks() {
+		return tasks;
 	}
  
  }
