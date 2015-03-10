@@ -24,21 +24,21 @@ public class CommandParser {
 			return CommandType.DISPLAY;
 		} else if (command.equalsIgnoreCase("clear")) {
 			return CommandType.CLEAR;
-		} else if (command.equalsIgnoreCase("exit")) {
+		} else if (command.equalsIgnoreCase("edit")) {
 			return CommandType.EDIT;
-		} else if (command.equalsIgnoreCase("exit")) {
+		} else if (command.equalsIgnoreCase("search")) {
 			return CommandType.SEARCH;
-		} else if (command.equalsIgnoreCase("exit")) {
+		} else if (command.equalsIgnoreCase("undo")) {
 			return CommandType.UNDO;
-		} else if (command.equalsIgnoreCase("exit")) {
+		} else if (command.equalsIgnoreCase("reorder")) {
 			return CommandType.REORDER;
-		} else if (command.equalsIgnoreCase("exit")) {
+		} else if (command.equalsIgnoreCase("move")) {
 			return CommandType.MOVE;
-		} else if (command.equalsIgnoreCase("exit")) {
+		} else if (command.equalsIgnoreCase("mark")) {
 			return CommandType.MARK;
-		} else if (command.equalsIgnoreCase("exit")) {
+		} else if (command.equalsIgnoreCase("remind")) {
 			return CommandType.REMIND;
-		} else if (command.equalsIgnoreCase("exit")) {
+		} else if (command.equalsIgnoreCase("recur")) {
 			return CommandType.RECUR;
 		} else if (command.equalsIgnoreCase("exit")) {
 			return CommandType.EXIT;
