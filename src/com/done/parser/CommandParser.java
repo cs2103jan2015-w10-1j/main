@@ -1,5 +1,6 @@
 package com.done.parser;
 
+import java.util.ArrayList;
 
 public class CommandParser {
 	
@@ -27,5 +28,11 @@ public class CommandParser {
 		}else{
 			return CommandType.INVALID;
 		}
+	}
+	
+	public ArrayList<String> getCommandContent (String userCommand){
+		String currentContent = CommandUtils.removeFirstWord(userCommand);
+		ArrayList<String> commandContent = CommandUtils.processContent(currentContent);
+		return commandContent;
 	}
 }
