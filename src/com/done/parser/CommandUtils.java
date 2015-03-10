@@ -16,7 +16,7 @@ public class CommandUtils {
 	//Might modify in later versions
 	public static ArrayList<String> processContent(String content){
 		ArrayList<String> processedContent = new ArrayList<String>();
-		String[]contentPieces = content.split(" ");
+		String[]contentPieces = content.split("\\s+");
 		for(String pieceOfContent:contentPieces){
 			processedContent.add(pieceOfContent);
 		}
