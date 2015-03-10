@@ -37,6 +37,16 @@ public class Logic {
 		}
 	}
 	
+	public boolean isExistingTask(int deleteIndex){
+		Iterator<Done> listIterator = tasks.iterator();
+		int i=0;
+		while(listIterator.hasNext()){
+			i++;
+			listIterator.next().setId(i);
+		}
+		return (deleteIndex >=1) && (deleteIndex <= i);
+	}
+	
 	public void delete(int deleteIndex){
 		tasks.remove(deleteIndex);
 		updateTaskID();
