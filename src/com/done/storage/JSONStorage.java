@@ -11,6 +11,8 @@ import java.lang.reflect.Type;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Properties;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 import com.done.Done;
 import com.google.gson.Gson;
@@ -18,6 +20,8 @@ import com.google.gson.JsonIOException;
 import com.google.gson.reflect.TypeToken;
 
 public class JSONStorage implements DoneStorage{
+	
+	private static Logger logger = Logger.getLogger("JSONStorage");
 	
 	private Gson gson;
 	private Properties pref;
@@ -41,7 +45,7 @@ public class JSONStorage implements DoneStorage{
 			inFileRead = new FileReader(jsonName);
 			
 		} catch (FileNotFoundException e) {
-			e.printStackTrace();
+			logger.log(Level.WARNING, "File not found!", e);
 		}
 		
 		if(inFile.length()<=0){
@@ -52,11 +56,11 @@ public class JSONStorage implements DoneStorage{
 		Type collectionType = new TypeToken<List<Done>>() {
 		}.getType();
 		try{
+			assert tasks!=null;
 			tasks = gson.fromJson(inFileRead, collectionType);
 		}catch(JsonIOException e){
-			System.err.println("Unable to read JSON file");
+			logger.log(Level.WARNING, "Unable to read JSON file", e);
 		}
-		
 		
 		return tasks;
 		
