@@ -14,6 +14,7 @@ import java.util.Properties;
 
 import com.done.Done;
 import com.google.gson.Gson;
+import com.google.gson.JsonIOException;
 import com.google.gson.reflect.TypeToken;
 
 public class JSONStorage implements DoneStorage{
@@ -34,6 +35,7 @@ public class JSONStorage implements DoneStorage{
 	public List<Done> load() {
 		FileReader inFileRead = null;
 		File inFile = FileHandler.openFile(jsonName);
+		List<Done> tasks = null;
 		
 		try {
 			inFileRead = new FileReader(jsonName);
@@ -43,12 +45,18 @@ public class JSONStorage implements DoneStorage{
 		}
 		
 		if(inFile.length()<=0){
+			assert inFile.length() > 0;
 			return new ArrayList<Done>();
 		}
 		
 		Type collectionType = new TypeToken<List<Done>>() {
 		}.getType();
-		List<Done> tasks = gson.fromJson(inFileRead, collectionType);
+		try{
+			tasks = gson.fromJson(inFileRead, collectionType);
+		}catch(JsonIOException e){
+			System.err.println("Unable to read JSON file");
+		}
+		
 		
 		return tasks;
 		
