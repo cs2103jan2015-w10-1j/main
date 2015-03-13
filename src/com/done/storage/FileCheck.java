@@ -3,7 +3,7 @@ package com.done.storage;
 import java.io.File;
 import java.io.IOException;
 
-public class FileHandler {
+public class FileCheck {
 	
 	public static File openFile(String fileName) {
         File file = new File(fileName);

@@ -87,3 +87,4 @@ local.properties
 .texlipse
 
 testJson.json
+*.log
