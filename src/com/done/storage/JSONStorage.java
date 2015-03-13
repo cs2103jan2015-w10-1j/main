@@ -56,8 +56,8 @@ public class JSONStorage implements DoneStorage{
 		Type collectionType = new TypeToken<List<Done>>() {
 		}.getType();
 		try{
-			assert tasks!=null;
 			tasks = gson.fromJson(inFileRead, collectionType);
+			assert tasks!=null;
 		}catch(JsonIOException e){
 			logger.log(Level.WARNING, "Unable to read JSON file", e);
 		}
