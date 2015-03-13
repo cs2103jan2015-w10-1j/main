@@ -68,8 +68,14 @@ public class UIController {
 				break;
 			case DELETE:
 				int deleteIndex = Integer.parseInt(CommandUtils.removeFirstWord(userCommand));
-				mainLogic.delete(deleteIndex - ARRAY_DELETE_OFFSET);
-				display();
+				if(mainLogic.isExistingTask(deleteIndex)){
+					mainLogic.delete(deleteIndex - ARRAY_DELETE_OFFSET);
+					Notifications.create().text(deleteIndex + " deleted").showInformation();
+					display();
+				}
+				else{
+					Notifications.create().text("Invalid delete index").showError();
+				}
 				break;
 			case EXIT:
 				System.exit(0);
