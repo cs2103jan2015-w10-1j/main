@@ -1,9 +1,11 @@
 package com.done.logic;
 
+import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 
 import com.done.model.Done;
+import com.done.model.DoneFloatingTask;
 import com.done.storage.DoneStorage;
 import com.done.storage.InMemStorage;
  
@@ -22,7 +24,7 @@ public class Logic {
 	}
  	
  	public void addFloating(String title){
- 		Done task = new Done(title);
+ 		Done task = new DoneFloatingTask(title);
 		tasks.add(task);
 		updateTaskID();
 		inMemStorage.store(tasks);
@@ -67,14 +69,14 @@ public class Logic {
 		return tasks;
 	}
 	
-	public CommandType getCmdType(String usercommand){
+	/*public CommandType getCmdType(String usercommand){
 		this.getCommandType(usercommand);
-	}
+	}*/
 	
-	public Vector<String> searchItem(String searchString) {
+	public List<String> searchItem(String searchString) {
 		try {
 			int flag = 0;
-			Vector<String> searchVector=new Vector<String>(); 
+			List<String> searchVector = new ArrayList<String>(); 
 			for (int i = 0; i < tasks.size(); i++) {
 				String temp = tasks.get(i).toString().toLowerCase(); 
 				if (temp.contains(searchString.toLowerCase())) {
@@ -98,7 +100,7 @@ public class Logic {
 		
 	}
 	
-	private void addTag(tagString){
+	private void addTag(String tagString){
 		
 	}
  

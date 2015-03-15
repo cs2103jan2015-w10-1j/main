@@ -70,7 +70,7 @@ public class UIController {
 			case DELETE:
 				int deleteIndex = Integer.parseInt(CommandUtils.removeFirstWord(userCommand));
 				if(mainLogic.isExistingTask(deleteIndex)){
-					mainLogic.delete(deleteIndex - ARRAY_DELETE_OFFSET);
+					mainLogic.deleteItem(deleteIndex - ARRAY_DELETE_OFFSET);
 					Notifications.create().text(deleteIndex + " deleted").showInformation();
 					display();
 				}

@@ -17,6 +17,7 @@ import java.util.logging.Logger;
 import java.util.logging.SimpleFormatter;
 
 import com.done.model.Done;
+import com.done.model.DoneFloatingTask;
 import com.google.gson.Gson;
 import com.google.gson.JsonIOException;
 import com.google.gson.reflect.TypeToken;
@@ -61,7 +62,7 @@ public class JSONStorage implements DoneStorage{
 		}else{
 		
 			// else get from JSON object in file into ArrayList
-			Type collectionType = new TypeToken<List<Done>>() {
+			Type collectionType = new TypeToken<List<DoneFloatingTask>>() {
 			}.getType();
 			try{
 				tasks = gson.fromJson(inFileRead, collectionType);

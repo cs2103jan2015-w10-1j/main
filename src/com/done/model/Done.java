@@ -1,6 +1,6 @@
 package com.done.model;
 
-public class Done {
+public abstract class Done {
 	private int id;
 	private String title;
 	
