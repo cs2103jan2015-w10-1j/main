@@ -86,5 +86,5 @@ local.properties
 # TeXlipse plugin
 .texlipse
 
-testJson.json
+*.json
 *.log
