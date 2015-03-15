@@ -2,7 +2,7 @@ package com.done.storage;
 
 import java.util.List;
 
-import com.done.Done;
+import com.done.model.Done;
 
 public interface DoneStorage {
 	

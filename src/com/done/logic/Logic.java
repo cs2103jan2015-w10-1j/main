@@ -3,7 +3,7 @@ package com.done.logic;
 import java.util.Iterator;
 import java.util.List;
 
-import com.done.Done;
+import com.done.model.Done;
 import com.done.storage.DoneStorage;
 import com.done.storage.JSONStorage;
  

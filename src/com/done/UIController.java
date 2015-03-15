@@ -12,6 +12,7 @@ import javafx.scene.control.cell.PropertyValueFactory;
 import org.controlsfx.control.Notifications;
 
 import com.done.logic.Logic;
+import com.done.model.Done;
 import com.done.parser.CommandParser;
 import com.done.parser.CommandParser.CommandType;
 import com.done.parser.CommandUtils;

@@ -3,7 +3,7 @@ package com.done.storage;
 import java.util.ArrayList;
 import java.util.List;
 
-import com.done.Done;
+import com.done.model.Done;
 
 public class InMemStorage implements DoneStorage {
 	
