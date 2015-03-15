@@ -65,5 +65,9 @@ public class Logic {
 	public List<Done> getTasks() {
 		return tasks;
 	}
+	
+	public CommandType getCmdType(String usercommand){
+		this.getCommandType(usercommand);
+	}
  
  }
