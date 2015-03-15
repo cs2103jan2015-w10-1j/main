@@ -5,7 +5,7 @@ import java.util.List;
 
 import com.done.model.Done;
 import com.done.storage.DoneStorage;
-import com.done.storage.JSONStorage;
+import com.done.storage.InMemStorage;
  
 public class Logic {
  	
@@ -13,18 +13,18 @@ public class Logic {
 	private static final String MESSAGE_ADD = "Task \"%1$s\" added!";
 	
 	private List<Done> tasks;
-	private DoneStorage jsonStorage;
+	private DoneStorage inMemStorage;
 	
 	public Logic(){
-		this.jsonStorage = new JSONStorage();
-		this.tasks = jsonStorage.load();
+		this.inMemStorage = new InMemStorage();
+		this.tasks = inMemStorage.load();
 	}
  	
  	public void addFloating(String title){
  		Done task = new Done(title);
 		tasks.add(task);
 		updateTaskID();
-		jsonStorage.store(tasks);
+		inMemStorage.store(tasks);
 		System.out.println(String.format(MESSAGE_ADD, title));
 	}
 
@@ -50,7 +50,7 @@ public class Logic {
 	public void delete(int deleteIndex){
 		tasks.remove(deleteIndex);
 		updateTaskID();
-		jsonStorage.store(tasks);
+		inMemStorage.store(tasks);
 		/*String strToDelete;
 		strToDelete = new String(tasks.get(deleteIndex - 1).toString());   
 		tasks.remove(deleteIndex - 1);
