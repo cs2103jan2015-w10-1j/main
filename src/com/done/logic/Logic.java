@@ -93,5 +93,13 @@ public class Logic {
 		}
 		return null;
 	}
+	
+	public void undo(){
+		
+	}
+	
+	private void addTag(tagString){
+		
+	}
  
  }
