@@ -8,5 +8,10 @@ public class DoneDeadlineTask extends Done {
 		super(title);
 		this.endTime = endTime;
 	}
+	
+	public DoneDeadlineTask(String title, String tag, long endTime){
+		super(title, tag);
+		this.endTime = endTime;
+	}
 
 }
