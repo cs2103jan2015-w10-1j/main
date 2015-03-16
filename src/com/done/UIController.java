@@ -24,12 +24,10 @@ public class UIController {
 	@FXML
 	private TableView<Done> tableViewTasks;
 	
-	private CommandParser cmdParser;
 	private Logic mainLogic;
 	private final int ARRAY_DELETE_OFFSET = 1;
 	
 	public UIController(){
-		cmdParser = new CommandParser();
 		mainLogic = new Logic();
 	}
 
@@ -45,21 +43,20 @@ public class UIController {
 	
 	public void processInput(){
 		String userCommand = commandField.getText();
-		executeCommand(userCommand);
+		CommandType commandType = mainLogic.getCmdType(userCommand);
+		Done currTask = mainLogic.getTask(userCommand);
+		executeCommand(commandType, currTask);
 	}
 	
-	public void executeCommand(String userCommand){
-		
-		CommandType commandType = cmdParser.getCommandType(userCommand);
+	public void executeCommand(CommandType commandType, Done task){
 		
 		/* TODO: Commands are temporary and for skeletal purpose
 		* some will be removed or changed when UI has been updated
 		*/
 		switch(commandType){
 			case ADD:
-				String task = CommandUtils.removeFirstWord(userCommand);
-				mainLogic.addFloating(task);
-				Notifications.create().text(task + " added to list").showInformation();
+				String addedTitle = task.getTitle();
+				Notifications.create().text(addedTitle + " added to list").showInformation();
 				display();
 				break;
 			case DISPLAY:
@@ -68,14 +65,13 @@ public class UIController {
 				 */
 				break;
 			case DELETE:
-				int deleteIndex = Integer.parseInt(CommandUtils.removeFirstWord(userCommand));
-				if(mainLogic.isExistingTask(deleteIndex)){
-					mainLogic.deleteItem(deleteIndex - ARRAY_DELETE_OFFSET);
-					Notifications.create().text(deleteIndex + " deleted").showInformation();
+				if(task != null){
+					String deletedTitle = task.getTitle();
+					Notifications.create().text(deletedTitle + " deleted").showInformation();
 					display();
 				}
 				else{
-					Notifications.create().text("Invalid delete index").showError();
+					Notifications.create().text("Invalid delete").showError();
 				}
 				break;
 			case EXIT:
