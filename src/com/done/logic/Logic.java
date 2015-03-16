@@ -74,10 +74,15 @@ public class Logic {
 		this.getCommandType(usercommand);
 	}*/
 	
-	public List<String> searchTask(String searchString) {
+	public Done getTask(String usercommand){
+		int index = 0;
+		return this.searchTask(usercommand).get(index);
+	}
+	
+	public List<Done> searchTask(String searchString) {
 		try {
 			int flag = 0;
-			List<String> searchVector = new ArrayList<String>(); 
+			List<Done> searchVector = new ArrayList<Done>(); 
 			for (int i = 0; i < tasks.size(); i++) {
 				String temp = tasks.get(i).toString().toLowerCase(); 
 				if (temp.contains(searchString.toLowerCase())) {
