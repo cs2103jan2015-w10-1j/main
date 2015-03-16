@@ -46,6 +46,8 @@ public class UIController {
 		CommandType currCommandType = mainLogic.getCmdType(userCommand);
 		Done currTask = mainLogic.getTask(userCommand);
 		executeCommand(currCommandType, currTask);
+		CommandType prevCommandType = currCommandType;
+		Done prevTask = currTask;
 	}
 	
 	public void executeCommand(CommandType commandType, Done task){
@@ -55,9 +57,7 @@ public class UIController {
 		*/
 		switch(commandType){
 			case ADD:
-				String addedTitle = task.getTitle();
-				Notifications.create().text(addedTitle + " added to list").showInformation();
-				display();
+				showAdd(task);
 				break;
 			case DISPLAY:
 				/* TODO: Enable display command to fit in parameters such that
@@ -65,14 +65,7 @@ public class UIController {
 				 */
 				break;
 			case DELETE:
-				if(task != null){
-					String deletedTitle = task.getTitle();
-					Notifications.create().text(deletedTitle + " deleted").showInformation();
-					display();
-				}
-				else{
-					Notifications.create().text("Invalid delete").showError();
-				}
+				showDelete(task);
 				break;
 			case UNDO:
 				
@@ -80,10 +73,31 @@ public class UIController {
 				System.exit(0);
 				break;
 			default:
-				Notifications.create().text("Invalid command").showError();
+				showInvalidCommand();
 				break;
 		}
 		commandField.clear();
+	}
+
+	private void showInvalidCommand() {
+		Notifications.create().text("Invalid command").showError();
+	}
+
+	private void showDelete(Done task) {
+		if(task != null){
+			String deletedTitle = task.getTitle();
+			Notifications.create().text(deletedTitle + " deleted").showInformation();
+			display();
+		}
+		else{
+			Notifications.create().text("Invalid delete").showError();
+		}
+	}
+
+	private void showAdd(Done task) {
+		String addedTitle = task.getTitle();
+		Notifications.create().text(addedTitle + " added to list").showInformation();
+		display();
 	}
 
 	private void display() {
