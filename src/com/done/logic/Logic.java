@@ -23,7 +23,8 @@ public class Logic {
 		this.tasks = inMemStorage.load();
 	}
  	
- 	public void addFloating(String title){
+	//method to add floating task
+ 	public void addTask(String title){
  		Done task = new DoneFloatingTask(title);
 		tasks.add(task);
 		updateTaskID();
@@ -50,7 +51,7 @@ public class Logic {
 		return (deleteIndex >=1) && (deleteIndex <= i);
 	}
 	
-	public void deleteItem(int deleteIndex){
+	public void deleteTask(int deleteIndex){
 		tasks.remove(deleteIndex);
 		updateTaskID();
 		inMemStorage.store(tasks);
@@ -73,7 +74,7 @@ public class Logic {
 		this.getCommandType(usercommand);
 	}*/
 	
-	public List<String> searchItem(String searchString) {
+	public List<String> searchTask(String searchString) {
 		try {
 			int flag = 0;
 			List<String> searchVector = new ArrayList<String>(); 
