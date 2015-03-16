@@ -43,9 +43,9 @@ public class UIController {
 	
 	public void processInput(){
 		String userCommand = commandField.getText();
-		CommandType commandType = mainLogic.getCmdType(userCommand);
+		CommandType currCommandType = mainLogic.getCmdType(userCommand);
 		Done currTask = mainLogic.getTask(userCommand);
-		executeCommand(commandType, currTask);
+		executeCommand(currCommandType, currTask);
 	}
 	
 	public void executeCommand(CommandType commandType, Done task){
@@ -74,6 +74,8 @@ public class UIController {
 					Notifications.create().text("Invalid delete").showError();
 				}
 				break;
+			case UNDO:
+				
 			case EXIT:
 				System.exit(0);
 				break;
