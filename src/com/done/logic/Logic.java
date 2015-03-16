@@ -70,9 +70,9 @@ public class Logic {
 		return tasks;
 	}
 	
-	/*public CommandType getCmdType(String usercommand){
+	public CommandType getCmdType(String usercommand){
 		this.getCommandType(usercommand);
-	}*/
+	}
 	
 	public Done getTask(String usercommand){
 		int index = 0;
@@ -87,7 +87,7 @@ public class Logic {
 				String temp = tasks.get(i).toString().toLowerCase(); 
 				if (temp.contains(searchString.toLowerCase())) {
 					flag = 1;
-					searchVector.add((i+1)+". "+tasks.get(i)); 
+					searchVector.add(new DoneFloatingTask((i+1)+". "+tasks.get(i))); 
 				} 
 			}
 			
