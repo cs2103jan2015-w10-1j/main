@@ -116,7 +116,7 @@ public class Logic {
 	}
 	
 	//set a reminder to the task and remind the user at the date
-	public void setReminder(date){
+	public void setReminder(String date){
 		
 	}
  
