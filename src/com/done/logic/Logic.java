@@ -101,7 +101,22 @@ public class Logic {
 		
 	}
 	
+	//private service method useful to implement setReminder(), markdone() and other methods.
 	private void addTag(String tagString){
+		
+	}
+	
+	public void clearTasks(){
+		
+	}
+	
+	//to mark the task is done
+	public void markDone(){
+		
+	}
+	
+	//set a reminder to the task and remind the user at the date
+	public void setReminder(date){
 		
 	}
  
