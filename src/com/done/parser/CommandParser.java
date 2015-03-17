@@ -1,5 +1,6 @@
 package com.done.parser;
 
+import com.done.parser.CommandParser.CommandType;
 import java.util.ArrayList;
 
 public class CommandParser {
