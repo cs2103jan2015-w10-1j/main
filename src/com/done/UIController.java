@@ -25,6 +25,7 @@ public class UIController {
 	private TableView<Done> tableViewTasks;
 	
 	private Logic mainLogic;
+	private CommandType prevCommandType = null;
 	private final int ARRAY_DELETE_OFFSET = 1;
 	
 	public UIController(){
@@ -43,21 +44,20 @@ public class UIController {
 	
 	public void processInput(){
 		String userCommand = commandField.getText();
-		CommandType currCommandType = mainLogic.getCmdType(userCommand);
-		Done currTask = mainLogic.getTask(userCommand);
-		executeCommand(currCommandType, currTask);
-		CommandType prevCommandType = currCommandType;
-		Done prevTask = currTask;
+		executeCommand(userCommand);
 	}
 	
-	public void executeCommand(CommandType commandType, Done task){
+	public void executeCommand(String userCommand){
 		
 		/* TODO: Commands are temporary and for skeletal purpose
 		* some will be removed or changed when UI has been updated
 		*/
-		switch(commandType){
+		CommandType currCommandType = mainLogic.getCmdType(userCommand);
+		
+		switch(currCommandType){
 			case ADD:
-				showAdd(task);
+				Done addedTask = mainLogic.getTask(userCommand);
+				showAdd(addedTask);
 				break;
 			case DISPLAY:
 				/* TODO: Enable display command to fit in parameters such that
@@ -65,10 +65,12 @@ public class UIController {
 				 */
 				break;
 			case DELETE:
-				showDelete(task);
+				Done deletedTask = mainLogic.getTask(userCommand);
+				showDelete(deletedTask);
 				break;
 			case UNDO:
-				
+				Done undoneTask = mainLogic.getTask(userCommand);
+				showUndo(undoneTask);
 			case EXIT:
 				System.exit(0);
 				break;
@@ -76,7 +78,24 @@ public class UIController {
 				showInvalidCommand();
 				break;
 		}
+		prevCommandType = currCommandType;
 		commandField.clear();
+	}
+
+	private void showUndo(Done task) {
+		if(prevCommandType!=null){
+			if(task!=null){
+				String undoneTitle = task.getTitle();
+				Notifications.create().text("Undo " + prevCommandType + " " + undoneTitle).showInformation();
+			}
+			else{
+				Notifications.create().text("Undo " + prevCommandType).showInformation();
+			}
+			prevCommandType = null;
+		}
+		else{
+			Notifications.create().text("No recent command available").showError();
+		}
 	}
 
 	private void showInvalidCommand() {
