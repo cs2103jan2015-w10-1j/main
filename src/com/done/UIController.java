@@ -27,6 +27,7 @@ public class UIController {
 	private Logic mainLogic;
 	private CommandType prevCommandType = null;
 	private final int ARRAY_DELETE_OFFSET = 1;
+	private final String EMPTY_STRING = "";
 	
 	public UIController(){
 		mainLogic = new Logic();
@@ -44,7 +45,9 @@ public class UIController {
 	
 	public void processInput(){
 		String userCommand = commandField.getText();
-		executeCommand(userCommand);
+		if(!userCommand.equals(EMPTY_STRING)){
+			executeCommand(userCommand);	
+		}
 	}
 	
 	public void executeCommand(String userCommand){
