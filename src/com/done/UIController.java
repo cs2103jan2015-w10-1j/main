@@ -26,8 +26,16 @@ public class UIController {
 	
 	private Logic mainLogic;
 	private CommandType prevCommandType = null;
-	private final int ARRAY_DELETE_OFFSET = 1;
-	private final String EMPTY_STRING = "";
+	
+	private static final int ARRAY_DELETE_OFFSET = 1;
+	private static final String EMPTY_STRING = "";
+	private static final String SPACE = " ";
+	private static final String SHOWADD_SUCCESS_MESSAGE = "%1$s added to the list";
+	private static final String SHOWDELETE_ERROR_MESSAGE = "Error: Invalid delete";
+	private static final String SHOWDELETE_SUCCESS_MESSAGE = "%1$s deleted";
+	private static final String SHOWUNDO_ERROR_MESSAGE = "Error: No recent command available";
+	private static final String SHOWUNDO_SUCCESS_MESSAGE = "Undo %1$s %2$s";
+	private static final String SHOWINVALIDCOMMAND_ERROR_MESSAGE = "Error: Invalid command";
 	
 	public UIController(){
 		mainLogic = new Logic();
@@ -90,36 +98,36 @@ public class UIController {
 		if(prevCommandType!=null){
 			if(task!=null){
 				String undoneTitle = task.getTitle();
-				Notifications.create().text("Undo " + prevCommandType + " " + undoneTitle).showInformation();
+				Notifications.create().text(String.format(SHOWUNDO_SUCCESS_MESSAGE, prevCommandType, undoneTitle)).showInformation();
 			}
 			else{
-				Notifications.create().text("Undo " + prevCommandType).showInformation();
+				Notifications.create().text(String.format(SHOWUNDO_SUCCESS_MESSAGE, prevCommandType, EMPTY_STRING)).showInformation();
 			}
 			prevCommandType = null;
 		}
 		else{
-			Notifications.create().text("No recent command available").showError();
+			Notifications.create().text(SHOWUNDO_ERROR_MESSAGE).showError();
 		}
 	}
 
 	private void showInvalidCommand() {
-		Notifications.create().text("Invalid command").showError();
+		Notifications.create().text(SHOWINVALIDCOMMAND_ERROR_MESSAGE).showError();
 	}
 
 	private void showDelete(Done task) {
 		if(task != null){
 			String deletedTitle = task.getTitle();
-			Notifications.create().text(deletedTitle + " deleted").showInformation();
+			Notifications.create().text(String.format(SHOWDELETE_SUCCESS_MESSAGE, deletedTitle)).showInformation();
 			display();
 		}
 		else{
-			Notifications.create().text("Invalid delete").showError();
+			Notifications.create().text(SHOWDELETE_ERROR_MESSAGE).showError();
 		}
 	}
 
 	private void showAdd(Done task) {
 		String addedTitle = task.getTitle();
-		Notifications.create().text(addedTitle + " added to list").showInformation();
+		Notifications.create().text(String.format(SHOWADD_SUCCESS_MESSAGE, addedTitle)).showInformation();
 		display();
 	}
 
