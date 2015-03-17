@@ -13,7 +13,10 @@ public class Logic {
  	
 	private static final String MESSAGE_DELETE = "Task %1$s deleted!";
 	private static final String MESSAGE_ADD = "Task \"%1$s\" added!";
-	private static final String ERROR_SEARCH="Exception in search function";
+	private static final String MESSAGE_CLEAR = "all content deleted";
+	
+	private static final String ERROR_SEARCH="Exception in search method";
+	private static final String ERROR_ADD="Exception in add method";
 	
 	private List<Done> tasks;
 	private DoneStorage inMemStorage;
@@ -25,11 +28,15 @@ public class Logic {
  	
 	//method to add floating task
  	public void addTask(String title){
- 		Done task = new DoneFloatingTask(title);
-		tasks.add(task);
-		updateTaskID();
-		inMemStorage.store(tasks);
-		System.out.println(String.format(MESSAGE_ADD, title));
+	 	try{
+ 			Done task = new DoneFloatingTask(title);
+			tasks.add(task);
+			updateTaskID();
+			inMemStorage.store(tasks);
+			System.out.println(String.format(MESSAGE_ADD, title));
+	 	} catch (Exception e) {
+			System.out.println(ERROR_ADD + e.getMessage());
+		}
 	}
 
 	private void updateTaskID() {
@@ -112,6 +119,14 @@ public class Logic {
 	}
 	
 	public void clearTasks(){
+		try {
+			tasks.clear();
+			System.out.println(MESSAGE_CLEAR);
+			updateTaskID();
+			inMemStorage.store(tasks);
+		} catch (Exception e) {
+			System.out.println(ERROR_CLEAR + e.getMessage());
+		}
 		
 	}
 	
