@@ -60,6 +60,7 @@ public class UIController {
 		switch(currCommandType){
 			case ADD:
 				Done addedTask = mainLogic.getTask(userCommand);
+				assert addedTask != null;
 				showAdd(addedTask);
 				break;
 			case DISPLAY:
