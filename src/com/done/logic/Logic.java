@@ -9,6 +9,10 @@ import com.done.model.DoneFloatingTask;
 import com.done.storage.DoneStorage;
 import com.done.storage.InMemStorage;
  
+import com.done.parser.CommandParser;
+import com.done.parser.CommandParser.CommandType;
+import com.done.parser.CommandUtils;
+
 public class Logic {
  	
 	private static final String MESSAGE_DELETE = "Task %1$s deleted!";
