@@ -50,6 +50,7 @@ public class CommandParser {
 
 	public ArrayList<String> getCommandContent(String userCommand) {
 		String currentContent = CommandUtils.removeFirstWord(userCommand);
+		assert currentContent != null;
 		ArrayList<String> commandContent = CommandUtils
 				.processContent(currentContent);
 		return commandContent;
