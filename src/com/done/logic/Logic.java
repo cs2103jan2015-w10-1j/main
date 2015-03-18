@@ -21,6 +21,7 @@ public class Logic {
 	
 	private static final String ERROR_SEARCH="Exception in search method";
 	private static final String ERROR_ADD="Exception in add method";
+	private static final String ERROR_CLEAR = "Exception in clear method";
 	
 	private List<Done> tasks;
 	private DoneStorage inMemStorage;
