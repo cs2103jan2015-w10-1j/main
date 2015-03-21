@@ -13,7 +13,7 @@ import com.done.storage.InMemStorage;
 
 public class InMemStorageTest {
 	
-	InMemStorage inMem = new InMemStorage();
+	DoneStorage inMem = new InMemStorage();
 
 	@Test
 	public void testStore() {
@@ -29,8 +29,9 @@ public class InMemStorageTest {
 	
 	@Test
 	public void testStore2() {
-		List<Done> testDone = null;
-		assertNull(testDone);
+		List<Done> testDone = new ArrayList<Done>();
+		testDone.add(null);
+		assertNull(testDone.get(0));
 	}
 
 }
