@@ -115,10 +115,11 @@ public class JSONStorage implements DoneStorage{
 	}
 	
 	private void setUpLogger() {
+		SimpleFormatter sf = new SimpleFormatter();
+		
 		try {
 			fileHandler = new FileHandler("Done.log");
-			logger.addHandler(fileHandler);
-			SimpleFormatter sf = new SimpleFormatter();
+			logger.addHandler(fileHandler);	
 			fileHandler.setFormatter(sf);
 		} catch (SecurityException | IOException e) {
 			logger.log(Level.WARNING,"Unable to read file!", e);

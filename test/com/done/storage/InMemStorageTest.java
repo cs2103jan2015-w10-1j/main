@@ -9,6 +9,7 @@ import org.junit.Test;
 
 import com.done.model.Done;
 import com.done.model.DoneFloatingTask;
+import com.done.model.DoneTimedTask;
 import com.done.storage.InMemStorage;
 
 public class InMemStorageTest {
@@ -19,10 +20,11 @@ public class InMemStorageTest {
 	public void testStore() {
 		List<Done> testDone = new ArrayList<Done>();
 		testDone.add(new DoneFloatingTask("test1"));
-		testDone.add(new DoneFloatingTask("test2"));
+		testDone.add(new DoneTimedTask("test2", 676723, 98891999));
 		// This is the equivalence partition for the Done ArrayList
 		// whether is it [NULL] or [NOT NULL]
 		assertNotNull(testDone.get(0));
+		assertNotNull(testDone.get(1));
 		assertTrue(inMem.store(testDone));
 		
 	}

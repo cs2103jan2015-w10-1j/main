@@ -1,6 +1,7 @@
 package com.done.storage;
 
 import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.List;
 
 import com.done.model.Done;
@@ -23,11 +24,21 @@ public class InMemStorage implements DoneStorage {
 	@Override
 	public boolean store(List<Done> tasks) {
 		this.tasks = tasks;
+		updateTaskID();
 		if(JSONStorage.store(tasks)==true){
 			return true;
 		}
 		
 		return false;
+	}
+	
+	private void updateTaskID() {
+		Iterator<Done> listIterator = tasks.iterator();
+		int i=1;
+		while(listIterator.hasNext()){
+			listIterator.next().setId(i);
+			i++;
+		}
 	}
 
 }
