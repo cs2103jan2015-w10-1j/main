@@ -21,9 +21,13 @@ public class InMemStorage implements DoneStorage {
 	}
 
 	@Override
-	public void store(List<Done> tasks) {
+	public boolean store(List<Done> tasks) {
 		this.tasks = tasks;
-		JSONStorage.store(tasks);
+		if(JSONStorage.store(tasks)==true){
+			return true;
+		}
+		
+		return false;
 	}
 
 }

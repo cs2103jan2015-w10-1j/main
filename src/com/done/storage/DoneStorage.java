@@ -7,6 +7,6 @@ import com.done.model.Done;
 public interface DoneStorage {
 	
 	public List<Done> load();
-	public void store(List<Done> task);
+	public boolean store(List<Done> task);
 
 }
