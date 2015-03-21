@@ -8,6 +8,8 @@ import java.io.IOException;
 
 import org.junit.Test;
 
+import com.done.storage.JSONStorage;
+
 public class JSONStorageTest {
 	
 	JSONStorage test = new JSONStorage();
@@ -22,6 +24,8 @@ public class JSONStorageTest {
 	@Test
 	public void testGetJsonName(){
 		test.setJsonNameToPref("testJson.json");
+		// if input to Properties is "testJson.json"
+		// then the output after retrieving should be the same 
 		assertThat(new String(test.getJsonNameFromPref()), is("testJson.json"));
 	}
 

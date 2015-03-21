@@ -77,7 +77,7 @@ public class JSONStorage implements DoneStorage{
 	}
 
 	@Override
-	public void store(List<Done> task) {
+	public boolean store(List<Done> task) {
 		logger.log(Level.INFO, "store() method executed");
 		
 		try {
@@ -85,10 +85,11 @@ public class JSONStorage implements DoneStorage{
 			outFile.write(gson.toJson(task));
 			outFile.flush();
 			outFile.close();
+			return true;
 		} catch (IOException e) {
 			logger.log(Level.WARNING, "Unable to write file!", e);
 		}
-		
+		return false;
 	}
 	
 	public boolean setJsonNameToPref(String jsonName){
