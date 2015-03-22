@@ -58,18 +58,23 @@ public class UIController {
 		}
 	}
 	
-	public void executeCommand(String userCommand){
+	private void executeCommand(String userCommand){
 		
 		/* TODO: Commands are temporary and for skeletal purpose
 		* some will be removed or changed when UI has been updated
 		*/
 		CommandType currCommandType = mainLogic.getCmdType(userCommand);
+		String commandContents = mainLogic.getCmdContent(userCommand);
 		
 		switch(currCommandType){
 			case ADD:
-				Done addedTask = mainLogic.getTask(userCommand);
+				/*Done addedTask = mainLogic.getTask(userCommand);
 				assert addedTask != null;
-				showAdd(addedTask);
+				showAdd(addedTask);*/
+				
+				mainLogic.addTask(commandContents);
+				showAdd(commandContents);
+				
 				break;
 			case DISPLAY:
 				/* TODO: Enable display command to fit in parameters such that
@@ -77,8 +82,10 @@ public class UIController {
 				 */
 				break;
 			case DELETE:
-				Done deletedTask = mainLogic.getTask(userCommand);
-				showDelete(deletedTask);
+				/*Done deletedTask = mainLogic.getTask(userCommand);
+				showDelete(deletedTask);*/
+				String taskName = mainLogic.deleteTask(Integer.parseInt(commandContents) - ARRAY_DELETE_OFFSET);
+				showDelete(taskName);
 				break;
 			case UNDO:
 				Done undoneTask = mainLogic.getTask(userCommand);
@@ -114,10 +121,10 @@ public class UIController {
 		Notifications.create().text(SHOWINVALIDCOMMAND_ERROR_MESSAGE).showError();
 	}
 
-	private void showDelete(Done task) {
+	private void showDelete(String task) {
 		if(task != null){
-			String deletedTitle = task.getTitle();
-			Notifications.create().text(String.format(SHOWDELETE_SUCCESS_MESSAGE, deletedTitle)).showInformation();
+			//String deletedTitle = task.getTitle();
+			Notifications.create().text(String.format(SHOWDELETE_SUCCESS_MESSAGE, task)).showInformation();
 			display();
 		}
 		else{
@@ -125,9 +132,9 @@ public class UIController {
 		}
 	}
 
-	private void showAdd(Done task) {
-		String addedTitle = task.getTitle();
-		Notifications.create().text(String.format(SHOWADD_SUCCESS_MESSAGE, addedTitle)).showInformation();
+	private void showAdd(String task) {
+		//String addedTitle = task.getTitle();
+		Notifications.create().text(String.format(SHOWADD_SUCCESS_MESSAGE, task)).showInformation();
 		display();
 	}
 
@@ -137,6 +144,7 @@ public class UIController {
 		tableViewTasks.setItems(tableTasks);
 		tableViewTasks.getColumns().get(0).setCellValueFactory(new PropertyValueFactory<>("id"));
 		tableViewTasks.getColumns().get(1).setCellValueFactory(new PropertyValueFactory<>("title"));
+		tableViewTasks.getColumns().get(2).setCellValueFactory(new PropertyValueFactory<>("title"));
 	}
 
 }

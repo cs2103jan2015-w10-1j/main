@@ -67,7 +67,7 @@ public class JSONStorage implements DoneStorage {
         } else {
 
             // else get from JSON object in file into ArrayList
-            Type collectionType = new TypeToken<List<Done>>() {
+            Type collectionType = new TypeToken<Done>() {
             }.getType();
             try {
                 tasks = gson.fromJson(inFileRead, collectionType);
@@ -101,7 +101,8 @@ public class JSONStorage implements DoneStorage {
         logger.log(Level.INFO, "Setting JSON name");
         pref.setProperty("jsonName", jsonName);
         try {
-            pref.storeToXML(new FileOutputStream(prefName), "store to XML");
+        	File prefFile = FileCheck.openFile(prefName);
+            pref.storeToXML(new FileOutputStream(prefFile), "store to XML");
             return true;
         } catch (Exception e) {
             logger.log(Level.WARNING, "Unable to write file!", e);
@@ -112,9 +113,14 @@ public class JSONStorage implements DoneStorage {
     public String getJsonNameFromPref() {
         logger.log(Level.INFO, "Retrieving JSON name");
         try {
-            pref.loadFromXML(new FileInputStream(prefName));
+        	File prefFile = FileCheck.openFile(prefName);
+        	if(prefFile.length()<=0){
+        		logger.log(Level.INFO, "Preference file not found, using default name");
+        		setJsonNameToPref("tasks.json");
+        	}
+            pref.loadFromXML(new FileInputStream(prefFile));
         } catch (IOException e) {
-            logger.log(Level.WARNING, "Unable to read file!", e);
+            logger.log(Level.WARNING, "Unable to read preference file!", e);
         }
         return pref.getProperty("jsonName", "tasks.json");
     }

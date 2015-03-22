@@ -26,19 +26,22 @@ public class Logic {
 	private List<Done> tasks;
 	private DoneStorage inMemStorage;
 	
+	private CommandParser cmdParser;
+	
 	public Logic(){
 		this.inMemStorage = new InMemStorage();
 		this.tasks = inMemStorage.load();
+		cmdParser = new CommandParser();
 	}
  	
 	//method to add floating task
- 	public void addTask(String title){
+ 	public void addTask(String userCommand){
 	 	try{
- 			Done task = new DoneFloatingTask(title);
+ 			Done task = new DoneFloatingTask(userCommand);
 			tasks.add(task);
-			updateTaskID();
+			//updateTaskID();
 			inMemStorage.store(tasks);
-			System.out.println(String.format(MESSAGE_ADD, title));
+			System.out.println(String.format(MESSAGE_ADD, userCommand));
 	 	} catch (Exception e) {
 			System.out.println(ERROR_ADD + e.getMessage());
 		}
@@ -63,16 +66,10 @@ public class Logic {
 		return (deleteIndex >=1) && (deleteIndex <= i);
 	}
 	
-	public void deleteTask(int deleteIndex){
-		tasks.remove(deleteIndex);
-		updateTaskID();
+	public String deleteTask(int deleteIndex){
+		String taskName = tasks.remove(deleteIndex).getTitle();
 		inMemStorage.store(tasks);
-		/*String strToDelete;
-		strToDelete = new String(tasks.get(deleteIndex - 1).toString());   
-		tasks.remove(deleteIndex - 1);
-		System.out.println(String.format(MESSAGE_DELETE, strToDelete));
-		jsonStorage.store(tasks);*/
-	
+		return taskName;
 	}
 
 	/**
@@ -83,7 +80,12 @@ public class Logic {
 	}
 	
 	public CommandType getCmdType(String usercommand){
-		this.getCommandType(usercommand);
+		//this.getCommandType(usercommand);
+		return cmdParser.getCommandType(usercommand);
+	}
+	
+	public String getCmdContent(String usercommand){
+		return cmdParser.getCommandContentString(usercommand);
 	}
 	
 	public Done getTask(String usercommand){

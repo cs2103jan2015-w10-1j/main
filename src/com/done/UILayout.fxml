@@ -17,6 +17,7 @@
         <columns>
           <TableColumn prefWidth="50.0" text="No." />
           <TableColumn prefWidth="367.0" text="Task" />
+            <TableColumn prefWidth="87.0" text="Due Date" />
         </columns>
       </TableView>
       

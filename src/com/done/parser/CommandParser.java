@@ -55,4 +55,8 @@ public class CommandParser {
 				.processContent(currentContent);
 		return commandContent;
 	}
+	
+	public String getCommandContentString(String userCommand){
+		return CommandUtils.removeFirstWord(userCommand);
+	}
 }
