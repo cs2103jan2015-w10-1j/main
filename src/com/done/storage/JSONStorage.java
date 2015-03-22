@@ -48,6 +48,7 @@ public class JSONStorage implements DoneStorage {
         logger.log(Level.INFO, "load() method executed");
         
         String jsonName = getJsonNameFromPref();
+        
         FileReader inFileRead = null;
         File inFile = FileCheck.openFile(jsonName);
         List<Done> tasks = null;

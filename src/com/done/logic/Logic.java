@@ -31,7 +31,6 @@ public class Logic {
 	
 	public Logic(){
 		this.inMemStorage = new InMemStorage();
-		this.tasks = inMemStorage.load();
 		cmdParser = new CommandParser();
 	}
  	
