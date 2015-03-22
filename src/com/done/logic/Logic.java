@@ -30,7 +30,7 @@ public class Logic {
 	private CommandParser cmdParser;
 	
 	public Logic(){
-		this.inMemStorage = new InMemStorage();
+		this.inMemStorage = InMemStorage.getInstance();
 		cmdParser = new CommandParser();
 	}
  	
@@ -149,7 +149,7 @@ public class Logic {
 	}
 	
 	public void storeTo(String jsonName){
-		JSONStorage jsonPref = new JSONStorage();
+		JSONStorage jsonPref = JSONStorage.getInstance();
 		jsonPref.setJsonNameToPref(jsonName);
 	}
  

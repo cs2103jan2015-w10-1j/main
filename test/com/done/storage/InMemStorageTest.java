@@ -15,7 +15,7 @@ import com.done.model.DoneTimedTask;
 
 public class InMemStorageTest {
 
-	DoneStorage inMem = new InMemStorage();
+	DoneStorage inMem = InMemStorage.getInstance();
 
 	@Test
 	public void testStore() {

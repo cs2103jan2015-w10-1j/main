@@ -24,7 +24,8 @@ import com.google.gson.JsonIOException;
 import com.google.gson.reflect.TypeToken;
 
 public class JSONStorage implements DoneStorage {
-
+	
+	private static JSONStorage instance = null;
     private static final String DONE_PREFS_XML = "done_prefs.xml";
     private static Logger logger = Logger.getLogger("JSONStorage");
     private FileHandler fileHandler;
@@ -33,7 +34,7 @@ public class JSONStorage implements DoneStorage {
     private Properties pref;
     private String prefName;
 
-    public JSONStorage() {
+    private JSONStorage() {
         //setUpLogger();
         this.gson = new GsonBuilder()
         			.registerTypeAdapter(Done.class, new DoneAdapter())
@@ -41,6 +42,14 @@ public class JSONStorage implements DoneStorage {
         			.create();
         pref = new Properties();
         prefName = DONE_PREFS_XML;
+    }
+    
+    public static synchronized JSONStorage getInstance() {
+        if (instance == null) {
+            instance = new JSONStorage();
+        }
+ 
+        return instance;
     }
 
     @Override
