@@ -25,9 +25,12 @@ import com.google.gson.reflect.TypeToken;
 
 public class JSONStorage implements DoneStorage {
 	
-	private static final String TASKS_JSON = "tasks.json";
+
 	private static JSONStorage instance = null;
-    private static final String DONE_PREFS_XML = "done_prefs.xml";
+	
+	private static final String FILE_JSON_EXT = ".json";
+	private static final String FILE_TASKS_JSON = "tasks"+FILE_JSON_EXT;
+	private static final String FILE_PREFS_XML = "done_prefs.xml";
     private static Logger logger = Logger.getLogger("JSONStorage");
     private FileHandler fileHandler;
 
@@ -42,7 +45,7 @@ public class JSONStorage implements DoneStorage {
         			.setPrettyPrinting()
         			.create();
         pref = new Properties();
-        prefName = DONE_PREFS_XML;
+        prefName = FILE_PREFS_XML;
     }
     
     public static synchronized JSONStorage getInstance() {
@@ -111,7 +114,7 @@ public class JSONStorage implements DoneStorage {
 
     public boolean setJsonNameToPref(String jsonName) {
         logger.log(Level.INFO, "Setting JSON name");
-        pref.setProperty("jsonName", jsonName);
+        pref.setProperty("jsonName", jsonName+FILE_JSON_EXT);
         try {
         	File prefFile = FileCheck.openFile(prefName);
             pref.storeToXML(new FileOutputStream(prefFile), "store to XML");
@@ -128,13 +131,13 @@ public class JSONStorage implements DoneStorage {
         	File prefFile = FileCheck.openFile(prefName);
         	if(prefFile.length()<=0){
         		logger.log(Level.INFO, "Preference file not found, using default name");
-        		setJsonNameToPref(TASKS_JSON);
+        		setJsonNameToPref(FILE_TASKS_JSON);
         	}
             pref.loadFromXML(new FileInputStream(prefFile));
         } catch (IOException e) {
             logger.log(Level.WARNING, "Unable to read preference file!", e);
         }
-        return pref.getProperty("jsonName", TASKS_JSON);
+        return pref.getProperty("jsonName", FILE_TASKS_JSON);
     }
 
     private void setUpLogger() {
