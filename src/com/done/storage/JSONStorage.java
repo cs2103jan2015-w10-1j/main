@@ -25,6 +25,7 @@ import com.google.gson.reflect.TypeToken;
 
 public class JSONStorage implements DoneStorage {
 	
+	private static final String TASKS_JSON = "tasks.json";
 	private static JSONStorage instance = null;
     private static final String DONE_PREFS_XML = "done_prefs.xml";
     private static Logger logger = Logger.getLogger("JSONStorage");
@@ -127,13 +128,13 @@ public class JSONStorage implements DoneStorage {
         	File prefFile = FileCheck.openFile(prefName);
         	if(prefFile.length()<=0){
         		logger.log(Level.INFO, "Preference file not found, using default name");
-        		setJsonNameToPref("tasks.json");
+        		setJsonNameToPref(TASKS_JSON);
         	}
             pref.loadFromXML(new FileInputStream(prefFile));
         } catch (IOException e) {
             logger.log(Level.WARNING, "Unable to read preference file!", e);
         }
-        return pref.getProperty("jsonName", "tasks.json");
+        return pref.getProperty("jsonName", TASKS_JSON);
     }
 
     private void setUpLogger() {
