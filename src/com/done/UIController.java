@@ -87,6 +87,10 @@ public class UIController {
 				String taskName = mainLogic.deleteTask(Integer.parseInt(commandContents) - ARRAY_DELETE_OFFSET);
 				showDelete(taskName);
 				break;
+			case LOAD:
+				mainLogic.storeTo(commandContents);
+				display();
+				break;
 			case UNDO:
 				Done undoneTask = mainLogic.getTask(userCommand);
 				showUndo(undoneTask);

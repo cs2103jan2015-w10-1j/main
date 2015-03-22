@@ -9,6 +9,7 @@ import com.done.model.DoneFloatingTask;
 import com.done.storage.DoneStorage;
 import com.done.storage.InMemStorage;
  
+import com.done.storage.JSONStorage;
 import com.done.parser.CommandParser;
 import com.done.parser.CommandParser.CommandType;
 import com.done.parser.CommandUtils;
@@ -76,6 +77,7 @@ public class Logic {
 	 * @return the tasks
 	 */
 	public List<Done> getTasks() {
+		this.tasks = inMemStorage.load();
 		return tasks;
 	}
 	
@@ -145,6 +147,11 @@ public class Logic {
 	//set a reminder to the task and remind the user at the date
 	public void setReminder(String date){
 		
+	}
+	
+	public void storeTo(String jsonName){
+		JSONStorage jsonPref = new JSONStorage();
+		jsonPref.setJsonNameToPref(jsonName);
 	}
  
  }

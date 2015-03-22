@@ -32,22 +32,22 @@ public class JSONStorage implements DoneStorage {
     private Gson gson;
     private Properties pref;
     private String prefName;
-    private String jsonName;
 
     public JSONStorage() {
-        setUpLogger();
+        //setUpLogger();
         this.gson = new GsonBuilder()
         			.registerTypeAdapter(Done.class, new DoneAdapter())
         			.setPrettyPrinting()
         			.create();
         pref = new Properties();
         prefName = DONE_PREFS_XML;
-        jsonName = getJsonNameFromPref();
     }
 
     @Override
     public List<Done> load() {
         logger.log(Level.INFO, "load() method executed");
+        
+        String jsonName = getJsonNameFromPref();
         FileReader inFileRead = null;
         File inFile = FileCheck.openFile(jsonName);
         List<Done> tasks = null;
@@ -84,7 +84,8 @@ public class JSONStorage implements DoneStorage {
     @Override
     public boolean store(List<Done> task) {
         logger.log(Level.INFO, "store() method executed");
-
+        
+        String jsonName = getJsonNameFromPref();
         try {
             FileWriter outFile = new FileWriter(jsonName);
             outFile.write(gson.toJson(task, Done.class));
