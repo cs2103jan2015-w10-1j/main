@@ -1,6 +1,8 @@
 package com.done.storage;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertNull;
+import static org.junit.Assert.assertTrue;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -10,10 +12,9 @@ import org.junit.Test;
 import com.done.model.Done;
 import com.done.model.DoneFloatingTask;
 import com.done.model.DoneTimedTask;
-import com.done.storage.InMemStorage;
 
 public class InMemStorageTest {
-	
+
 	DoneStorage inMem = new InMemStorage();
 
 	@Test
@@ -26,9 +27,9 @@ public class InMemStorageTest {
 		assertNotNull(testDone.get(0));
 		assertNotNull(testDone.get(1));
 		assertTrue(inMem.store(testDone));
-		
+
 	}
-	
+
 	@Test
 	public void testStore2() {
 		List<Done> testDone = new ArrayList<Done>();
