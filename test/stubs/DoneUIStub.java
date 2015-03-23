@@ -1,4 +1,4 @@
-package com.done;
+package stubs;
 
 import javafx.application.Application;
 import javafx.fxml.FXMLLoader;

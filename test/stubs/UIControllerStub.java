@@ -1,4 +1,4 @@
-package com.done;
+package stubs;
 
 import java.util.List;
 
@@ -11,9 +11,9 @@ import javafx.scene.control.cell.PropertyValueFactory;
 
 import org.controlsfx.control.Notifications;
 
-import com.done.logic.LogicStub;
+import stubs.CommandParserStub.CommandTypeStub;
+
 import com.done.model.Done;
-import com.done.parser.CommandParserStub.CommandTypeStub;
 
 public class UIControllerStub  {
 	@FXML

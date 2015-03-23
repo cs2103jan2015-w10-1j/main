@@ -1,13 +1,13 @@
-package com.done.logic;
+package stubs;
 
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 
+import stubs.CommandParserStub.CommandTypeStub;
+
 import com.done.model.Done;
 import com.done.model.DoneFloatingTask;
-import com.done.parser.CommandParserStub;
-import com.done.parser.CommandParserStub.CommandTypeStub;
 import com.done.storage.DoneStorage;
 import com.done.storage.InMemStorage;
 import com.done.storage.JSONStorage;
