@@ -15,7 +15,7 @@ public class InMemStorage implements DoneStorage {
 	
 	private InMemStorage(){
 		this.tasks = new ArrayList<Done>();
-		jsonStorage = JSONStorage.getInstance();
+		jsonStorage = new JSONStorage();
 	}
 	
 	public static synchronized InMemStorage getInstance() {

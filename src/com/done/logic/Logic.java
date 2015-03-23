@@ -149,7 +149,7 @@ public class Logic {
 	}
 	
 	public void storeTo(String jsonName){
-		JSONStorage jsonPref = JSONStorage.getInstance();
+		JSONStorage jsonPref = new JSONStorage();
 		jsonPref.setJsonNameToPref(jsonName);
 	}
  

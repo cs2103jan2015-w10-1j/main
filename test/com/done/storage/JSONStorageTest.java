@@ -1,6 +1,6 @@
 package com.done.storage;
 
-import static org.hamcrest.CoreMatchers.is;
+import static org.hamcrest.CoreMatchers.*;
 import static org.junit.Assert.assertThat;
 import static org.junit.Assert.assertTrue;
 
@@ -11,7 +11,7 @@ import org.junit.Test;
 
 public class JSONStorageTest {
 
-	JSONStorage test = JSONStorage.getInstance();
+	JSONStorage test = new JSONStorage();
 
 	@Test
 	public void testJsonNameToPrefs() throws FileNotFoundException, IOException {
