@@ -166,7 +166,7 @@ public class UIControllerStub  {
 		tableViewTasks.getColumns().get(1)
 				.setCellValueFactory(new PropertyValueFactory<>("title"));
 		tableViewTasks.getColumns().get(2)
-				.setCellValueFactory(new PropertyValueFactory<>("title"));
+				.setCellValueFactory(new PropertyValueFactory<>("endTime"));
 	}
 
 }
