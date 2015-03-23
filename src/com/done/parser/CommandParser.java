@@ -10,7 +10,7 @@ public class CommandParser {
 	 * command especially will be replaced/removed
 	 */
 	public enum CommandType {
-		ADD, DELETE, CLEAR, DISPLAY, EDIT, SEARCH, UNDO, REORDER, MOVE, MARK, REMIND, RECUR, EXIT, INVALID, LOAD;
+		ADD, DELETE, CLEAR, DISPLAY, EDIT, SEARCH, UNDO, REORDER, MOVE, MARK, REMIND, RECUR, EXIT, INVALID;
 	}
 
 	public CommandType getCommandType(String userCommand) {
@@ -43,9 +43,7 @@ public class CommandParser {
 			return CommandType.RECUR;
 		} else if (command.equalsIgnoreCase("exit")) {
 			return CommandType.EXIT;
-		} else if (command.equalsIgnoreCase("load")){
-			return CommandType.LOAD;
-		}else{
+		} else {
 			return CommandType.INVALID;
 		}
 	}
@@ -56,9 +54,5 @@ public class CommandParser {
 		ArrayList<String> commandContent = CommandUtils
 				.processContent(currentContent);
 		return commandContent;
-	}
-	
-	public String getCommandContentString(String userCommand){
-		return CommandUtils.removeFirstWord(userCommand);
 	}
 }

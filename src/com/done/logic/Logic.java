@@ -9,7 +9,6 @@ import com.done.model.DoneFloatingTask;
 import com.done.storage.DoneStorage;
 import com.done.storage.InMemStorage;
  
-import com.done.storage.JSONStorage;
 import com.done.parser.CommandParser;
 import com.done.parser.CommandParser.CommandType;
 import com.done.parser.CommandUtils;
@@ -27,21 +26,19 @@ public class Logic {
 	private List<Done> tasks;
 	private DoneStorage inMemStorage;
 	
-	private CommandParser cmdParser;
-	
 	public Logic(){
-		this.inMemStorage = InMemStorage.getInstance();
-		cmdParser = new CommandParser();
+		this.inMemStorage = new InMemStorage();
+		this.tasks = inMemStorage.load();
 	}
  	
 	//method to add floating task
- 	public void addTask(String userCommand){
+ 	public void addTask(String title){
 	 	try{
- 			Done task = new DoneFloatingTask(userCommand);
+ 			Done task = new DoneFloatingTask(title);
 			tasks.add(task);
-			//updateTaskID();
+			updateTaskID();
 			inMemStorage.store(tasks);
-			System.out.println(String.format(MESSAGE_ADD, userCommand));
+			System.out.println(String.format(MESSAGE_ADD, title));
 	 	} catch (Exception e) {
 			System.out.println(ERROR_ADD + e.getMessage());
 		}
@@ -66,27 +63,27 @@ public class Logic {
 		return (deleteIndex >=1) && (deleteIndex <= i);
 	}
 	
-	public String deleteTask(int deleteIndex){
-		String taskName = tasks.remove(deleteIndex).getTitle();
+	public void deleteTask(int deleteIndex){
+		tasks.remove(deleteIndex);
+		updateTaskID();
 		inMemStorage.store(tasks);
-		return taskName;
+		/*String strToDelete;
+		strToDelete = new String(tasks.get(deleteIndex - 1).toString());   
+		tasks.remove(deleteIndex - 1);
+		System.out.println(String.format(MESSAGE_DELETE, strToDelete));
+		jsonStorage.store(tasks);*/
+	
 	}
 
 	/**
 	 * @return the tasks
 	 */
 	public List<Done> getTasks() {
-		this.tasks = inMemStorage.load();
 		return tasks;
 	}
 	
 	public CommandType getCmdType(String usercommand){
-		//this.getCommandType(usercommand);
-		return cmdParser.getCommandType(usercommand);
-	}
-	
-	public String getCmdContent(String usercommand){
-		return cmdParser.getCommandContentString(usercommand);
+		this.getCommandType(usercommand);
 	}
 	
 	public Done getTask(String usercommand){
@@ -146,11 +143,6 @@ public class Logic {
 	//set a reminder to the task and remind the user at the date
 	public void setReminder(String date){
 		
-	}
-	
-	public void storeTo(String jsonName){
-		JSONStorage jsonPref = new JSONStorage();
-		jsonPref.setJsonNameToPref(jsonName);
 	}
  
  }
