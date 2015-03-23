@@ -22,7 +22,7 @@ public class JSONStorageTest {
 
 	@Test
 	public void testGetJsonName() {
-		test.setJsonNameToPref("testJson.json");
+		test.setJsonNameToPref("testJson");
 		// if input to Properties is "testJson.json"
 		// then the output after retrieving should be the same
 		assertThat(new String(test.getJsonNameFromPref()), is("testJson.json"));
