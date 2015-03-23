@@ -158,7 +158,8 @@ public class UIController {
 		tableViewTasks.setItems(tableTasks);
 		tableViewTasks.getColumns().get(0).setCellValueFactory(new PropertyValueFactory<>("id"));
 		tableViewTasks.getColumns().get(1).setCellValueFactory(new PropertyValueFactory<>("title"));
-		tableViewTasks.getColumns().get(2).setCellValueFactory(new PropertyValueFactory<>("title"));
+		tableViewTasks.getColumns().get(2).setCellValueFactory(new PropertyValueFactory<>("startTime"));
+		tableViewTasks.getColumns().get(3).setCellValueFactory(new PropertyValueFactory<>("endTime"));
 	}
 
 }
