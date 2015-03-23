@@ -11,11 +11,10 @@ import javafx.scene.control.cell.PropertyValueFactory;
 
 import org.controlsfx.control.Notifications;
 
-import com.done.logic.Logic;
+import com.done.logic.LogicFacade;
 import com.done.model.Done;
-import com.done.parser.CommandParser;
 import com.done.parser.CommandParser.CommandType;
-import com.done.parser.CommandUtils;
+import com.done.result.ExecutionResult;
 
 public class UIController {
 	@FXML 
@@ -24,13 +23,14 @@ public class UIController {
 	@FXML
 	private TableView<Done> tableViewTasks;
 	
-	private Logic mainLogic;
+	private LogicFacade logicFacade;
 	private CommandType prevCommandType = null;
 	
 	private static final int ARRAY_DELETE_OFFSET = 1;
 	private static final String EMPTY_STRING = "";
-	private static final String SPACE = " ";
+	//private static final String SPACE = " ";
 	private static final String SHOWADD_SUCCESS_MESSAGE = "%1$s added to the list";
+	private static final String SHOWADD_ERROR_MESSAGE = "Error: Adding task not successful";
 	private static final String SHOWDELETE_ERROR_MESSAGE = "Error: Invalid delete";
 	private static final String SHOWDELETE_SUCCESS_MESSAGE = "%1$s deleted";
 	private static final String SHOWUNDO_ERROR_MESSAGE = "Error: No recent command available";
@@ -38,7 +38,7 @@ public class UIController {
 	private static final String SHOWINVALIDCOMMAND_ERROR_MESSAGE = "Error: Invalid command";
 	
 	public UIController(){
-		mainLogic = new Logic();
+		logicFacade = new LogicFacade();
 	}
 
 	@FXML
@@ -54,27 +54,30 @@ public class UIController {
 	public void processInput(){
 		String userCommand = commandField.getText();
 		if(!userCommand.equals(EMPTY_STRING)){
-			executeCommand(userCommand);	
+			processCommand(userCommand);	
 		}
 	}
 	
-	private void executeCommand(String userCommand){
+	private void processCommand(String userCommand){
 		
 		/* TODO: Commands are temporary and for skeletal purpose
 		* some will be removed or changed when UI has been updated
 		*/
-		CommandType currCommandType = mainLogic.getCmdType(userCommand);
-		String commandContents = mainLogic.getCmdContent(userCommand);
+		
+		ExecutionResult result = logicFacade.getExecutionResult(userCommand);
+		CommandType currCommandType = result.getCommandType();
+		String commandContent = result.getCommandContent();
 		
 		switch(currCommandType){
 			case ADD:
 				/*Done addedTask = mainLogic.getTask(userCommand);
 				assert addedTask != null;
-				showAdd(addedTask);*/
+				showAdd(addedTask);
 				
 				mainLogic.addTask(commandContents);
-				showAdd(commandContents);
+				showAdd(commandContents);*/
 				
+				showAdd(result.isSuccessful(), commandContent);
 				break;
 			case DISPLAY:
 				/* TODO: Enable display command to fit in parameters such that
@@ -83,17 +86,17 @@ public class UIController {
 				break;
 			case DELETE:
 				/*Done deletedTask = mainLogic.getTask(userCommand);
-				showDelete(deletedTask);*/
+				showDelete(deletedTask);
 				String taskName = mainLogic.deleteTask(Integer.parseInt(commandContents) - ARRAY_DELETE_OFFSET);
-				showDelete(taskName);
+				showDelete(taskName);*/
+				
+				showDelete(result.isSuccessful(), commandContent);
 				break;
 			case LOAD:
-				mainLogic.storeTo(commandContents);
-				display();
+				showLoad(result.isSuccessful(), commandContent);
 				break;
 			case UNDO:
-				Done undoneTask = mainLogic.getTask(userCommand);
-				showUndo(undoneTask);
+				showUndo(result.isSuccessful(), commandContent);
 			case EXIT:
 				System.exit(0);
 				break;
@@ -104,12 +107,35 @@ public class UIController {
 		prevCommandType = currCommandType;
 		commandField.clear();
 	}
+	
+	private void showAdd(boolean isSuccessful, String commandContent) {
+		if(isSuccessful){
+			Notifications.create().text(String.format(SHOWADD_SUCCESS_MESSAGE, commandContent)).showInformation();
+		}
+		else{
+			Notifications.create().text(SHOWADD_ERROR_MESSAGE).showError();
+		}
+		display();
+	}
+	
+	private void showDelete(boolean isSuccessful, String commandContent) {
+		if(isSuccessful){
+			Notifications.create().text(String.format(SHOWDELETE_SUCCESS_MESSAGE, commandContent)).showInformation();
+			display();
+		}
+		else{
+			Notifications.create().text(SHOWDELETE_ERROR_MESSAGE).showError();
+		}
+	}
+	
+	private void showLoad(boolean isSuccessful, String commandContent){
+		display();
+	}
 
-	private void showUndo(Done task) {
+	private void showUndo(boolean isSuccessful, String commandContent) {
 		if(prevCommandType!=null){
-			if(task!=null){
-				String undoneTitle = task.getTitle();
-				Notifications.create().text(String.format(SHOWUNDO_SUCCESS_MESSAGE, prevCommandType, undoneTitle)).showInformation();
+			if(commandContent!=null){
+				Notifications.create().text(String.format(SHOWUNDO_SUCCESS_MESSAGE, prevCommandType, commandContent)).showInformation();
 			}
 			else{
 				Notifications.create().text(String.format(SHOWUNDO_SUCCESS_MESSAGE, prevCommandType, EMPTY_STRING)).showInformation();
@@ -124,26 +150,10 @@ public class UIController {
 	private void showInvalidCommand() {
 		Notifications.create().text(SHOWINVALIDCOMMAND_ERROR_MESSAGE).showError();
 	}
-
-	private void showDelete(String task) {
-		if(task != null){
-			//String deletedTitle = task.getTitle();
-			Notifications.create().text(String.format(SHOWDELETE_SUCCESS_MESSAGE, task)).showInformation();
-			display();
-		}
-		else{
-			Notifications.create().text(SHOWDELETE_ERROR_MESSAGE).showError();
-		}
-	}
-
-	private void showAdd(String task) {
-		//String addedTitle = task.getTitle();
-		Notifications.create().text(String.format(SHOWADD_SUCCESS_MESSAGE, task)).showInformation();
-		display();
-	}
+	
 
 	private void display() {
-		List<Done> tasks = mainLogic.getTasks();
+		List<Done> tasks = logicFacade.getTasks();
 		ObservableList<Done> tableTasks = FXCollections.observableArrayList(tasks);
 		tableViewTasks.setItems(tableTasks);
 		tableViewTasks.getColumns().get(0).setCellValueFactory(new PropertyValueFactory<>("id"));
