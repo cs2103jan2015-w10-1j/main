@@ -1,7 +1,5 @@
 package com.done.model;
 
-import com.done.model.Done.TaskType;
-
 public class DoneTimedTask extends Done {
 
 	// Time format to use UNIX epoch style
@@ -11,14 +9,30 @@ public class DoneTimedTask extends Done {
 	public DoneTimedTask(String title, long startTime, long endTime) {
 		super(title);
 		super.setType(TaskType.TIMED);
-		this.startTime = startTime;
-		this.endTime = endTime;
+		this.setStartTime(startTime);
+		this.setEndTime(endTime);
 	}
 
 	public DoneTimedTask(String title, String tag, long startTime, long endTime) {
 		super(title, tag);
 		super.setType(TaskType.TIMED);
+		this.setStartTime(startTime);
+		this.setEndTime(endTime);
+	}
+
+	public long getStartTime() {
+		return startTime;
+	}
+
+	public void setStartTime(long startTime) {
 		this.startTime = startTime;
+	}
+
+	public long getEndTime() {
+		return endTime;
+	}
+
+	public void setEndTime(long endTime) {
 		this.endTime = endTime;
 	}
 

@@ -1,7 +1,5 @@
 package com.done.model;
 
-import com.done.model.Done.TaskType;
-
 public class DoneFloatingTask extends Done {
 
 	public DoneFloatingTask(String title) {

@@ -8,24 +8,34 @@ import com.done.model.Done;
 
 public class InMemStorage implements DoneStorage {
 	
-	private List<Done> tasks;
-	private DoneStorage JSONStorage;
+	private static InMemStorage instance = null;
 	
-	public InMemStorage(){
+	private List<Done> tasks;
+	private DoneStorage jsonStorage;
+	
+	private InMemStorage(){
 		this.tasks = new ArrayList<Done>();
-		JSONStorage = new JSONStorage();
+		jsonStorage = new JSONStorage();
 	}
+	
+	public static synchronized InMemStorage getInstance() {
+        if (instance == null) {
+            instance = new InMemStorage();
+        }
+ 
+        return instance;
+    }
 
 	@Override
 	public List<Done> load() {
-		return JSONStorage.load();
+		return jsonStorage.load();
 	}
 
 	@Override
 	public boolean store(List<Done> tasks) {
 		this.tasks = tasks;
 		updateTaskID();
-		if(JSONStorage.store(tasks)==true){
+		if(jsonStorage.store(tasks)==true){
 			return true;
 		}
 		

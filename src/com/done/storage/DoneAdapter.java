@@ -33,12 +33,18 @@ public class DoneAdapter implements JsonSerializer<List<Done>>,
 	public List<Done> deserialize(JsonElement arg0, Type arg1,
 			JsonDeserializationContext arg2) throws JsonParseException {
 		List<Done> result = new ArrayList<Done>();
-		JsonArray jsonArray = arg0.getAsJsonArray();
+		JsonArray jsonArray = null;
+		try {
+			jsonArray = arg0.getAsJsonArray();
+		} catch (IllegalStateException e) {
+			e.printStackTrace();
+			System.exit(0);
+		}
 
 		for (JsonElement out : jsonArray) {
-			JsonObject jsonObj = out.getAsJsonObject();
-			String classType = jsonObj.get("class").getAsString();
+			JsonObject jsonObj = out.getAsJsonObject();	
 			JsonElement element = jsonObj.get("task");
+			String classType = jsonObj.get("class").getAsString();
 
 			result.add(arg2.deserialize(element, map.get(classType)));
 
@@ -53,8 +59,8 @@ public class DoneAdapter implements JsonSerializer<List<Done>>,
 		JsonArray result = new JsonArray();
 		for (Done out : arg0) {
 			JsonObject obj = new JsonObject();
-			obj.addProperty("class", out.getClass().getSimpleName());
 			JsonElement element = arg2.serialize(out);
+			obj.addProperty("class", out.getClass().getSimpleName());
 			obj.add("task", element);
 			result.add(obj);
 		}
