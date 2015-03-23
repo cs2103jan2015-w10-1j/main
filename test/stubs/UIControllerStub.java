@@ -15,7 +15,7 @@ import stubs.CommandParserStub.CommandTypeStub;
 
 import com.done.model.Done;
 
-public class UIControllerStub  {
+public class UIControllerStub {
 	@FXML
 	private TextField commandField;
 
@@ -166,6 +166,8 @@ public class UIControllerStub  {
 		tableViewTasks.getColumns().get(1)
 				.setCellValueFactory(new PropertyValueFactory<>("title"));
 		tableViewTasks.getColumns().get(2)
+				.setCellValueFactory(new PropertyValueFactory<>("startTime"));
+		tableViewTasks.getColumns().get(3)
 				.setCellValueFactory(new PropertyValueFactory<>("endTime"));
 	}
 
