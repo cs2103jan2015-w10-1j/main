@@ -4,7 +4,7 @@ import java.util.List;
 
 public abstract class Command {
 	private int id;
-	private List content;
+	//private List content;
 	private CommandType type;
 
 	public enum CommandType {
@@ -19,7 +19,7 @@ public abstract class Command {
 		return this.type;
 	}
 	
-	private void setCommandType(CommandType type){
+	/*private void setCommandType(CommandType type){
 		this.type = type;
 	}
 	
@@ -29,7 +29,7 @@ public abstract class Command {
 	
 	public void setContent(List content){
 		this.content = content;
-	}
+	}*/
 	
 	public int getId(){
 		return this.id;
