@@ -11,7 +11,7 @@ import com.done.storage.InMemStorage;
  
 import com.done.parser.CommandParser;
 import com.done.parser.CommandParser.CommandType;
-import com.done.parser.CommandUtils;
+import com.done.parser.ParserUtils;
 
 public class Logic {
  	

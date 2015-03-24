@@ -3,7 +3,7 @@ package com.done.parser;
 import java.util.ArrayList;
 
 import com.done.logic.Logic;
-import com.done.parser.CommandUtils;
+import com.done.parser.ParserUtils;
 
 public class CommandAdd extends Command {
 	
@@ -11,7 +11,7 @@ public class CommandAdd extends Command {
 
 	public CommandAdd(String content){
 		super(CommandType.ADD);
-		this.content = CommandUtils.processContent(content);
+		this.content = ParserUtils.processContent(content);
 	}
 	
 	public ArrayList<String> getContent(){
@@ -19,7 +19,7 @@ public class CommandAdd extends Command {
 	}
 	
 	public void setContent(String content){
-		this.content = CommandUtils.processContent(content);
+		this.content = ParserUtils.processContent(content);
 	}
 	@Override
 	public void execute() {
