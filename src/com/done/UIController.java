@@ -148,7 +148,8 @@ public class UIController {
 	}*/
 
 	private void showUndo(boolean isSuccessful, String commandContent) {
-		if(prevCommandType!=null){
+		if(isSuccessful){
+			assert prevCommandType!=null;
 			if(commandContent!=null){
 				Notifications.create().text(String.format(SHOWUNDO_SUCCESS_MESSAGE, prevCommandType, commandContent)).showInformation();
 			}
