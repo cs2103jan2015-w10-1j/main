@@ -4,7 +4,7 @@ import java.util.List;
 
 public abstract class Command {
 	private int id;
-	//protected List content;
+	private List content;
 	private CommandType type;
 
 	public enum CommandType {
@@ -23,13 +23,13 @@ public abstract class Command {
 		this.type = type;
 	}
 	
-	/*public List getContent(){
+	public List getContent(){
 		return this.content;
 	}
 	
 	public void setContent(List content){
 		this.content = content;
-	}*/
+	}
 	
 	public int getId(){
 		return this.id;
