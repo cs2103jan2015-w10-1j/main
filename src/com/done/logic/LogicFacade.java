@@ -18,7 +18,11 @@ public class LogicFacade {
 		private String commandContent = logic.getCmdContent(userCommand);
 		private boolean isSuccessful = logic.isSuccessful();
 		
-		ExecutionResult tempExecutionResult = new ExecutionResult(commandType, isSuccessful, commandContent);
+		if (isSuccessful){
+			ExecutionResult tempExecutionResult = new ExecutionResult(commandType, isSuccessful, commandContent);
+		} else {
+			ExecutionResult tempExecutionResult = new ExecutionResult(commandType, isSuccessful);
+		}
 		return tempExecutionResult;	
 	}
 	
