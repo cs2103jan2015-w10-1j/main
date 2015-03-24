@@ -34,8 +34,8 @@ public class Logic {
 	}
  	
 	public void executeCommand(String userCommand){
-		private CommandType command = this.getCommandType(userCommand);
-		private String content = this.getCommandContent(userCommand).get(0);
+		CommandType command = this.getCommandType(userCommand);
+		String content = this.getCommandContent(userCommand).get(0);
 		try{
 			processCommand(command, content);
 		}
@@ -56,7 +56,7 @@ public class Logic {
 					break;
 				
 	 		case ADD:
-					addTask(content)
+					addTask(content);
 					break;	
 				
 	 		case DELETE:
@@ -72,7 +72,7 @@ public class Logic {
 					//need to discuss
 					break;
 			case SEARCH:
-			 		searchTask(content)
+			 		searchTask(content);
 					break;
 
 			 case SORT:
@@ -88,12 +88,12 @@ public class Logic {
 	
 	
 	public CommandType getCmdType(String userCommand){
-		private CommandType command = this.getCommandType(userCommand);
+		CommandType command = this.getCommandType(userCommand);
 		return command;
 	}
 	
 	public String getCmdContent(String userCommand){
-		private String content = this.getCommandContent(userCommand).get(0);
+		String content = this.getCommandContent(userCommand).get(0);
 		return content;
 	}
 	
