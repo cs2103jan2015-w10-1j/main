@@ -19,6 +19,7 @@ public class ExecutionResult {
 		assert (!isSuccessful);
 		this.commandType = commandType;
 		this.isSuccessful = isSuccessful;
+		this.commandContent = null;
 	}
 
 	public CommandType getCommandType() {
@@ -35,6 +36,9 @@ public class ExecutionResult {
 
 	public void setSuccessful(boolean isSuccessful) {
 		this.isSuccessful = isSuccessful;
+		if(!isSuccessful){
+			commandContent = null;
+		}
 	}
 
 	public String getCommandContent() {
