@@ -2,7 +2,7 @@ package stubs;
 
 import java.util.ArrayList;
 
-import com.done.parser.CommandUtils;
+import com.done.parser.ParserUtils;
 
 public class CommandParserStub {
 
@@ -16,7 +16,7 @@ public class CommandParserStub {
 
 	public CommandTypeStub getCommandType(String userCommand) {
 
-		String command = CommandUtils.getFirstWord(userCommand);
+		String command = ParserUtils.getFirstWord(userCommand);
 
 		if (command.equalsIgnoreCase("add")) {
 			return CommandTypeStub.ADD;
@@ -52,14 +52,14 @@ public class CommandParserStub {
 	}
 
 	public ArrayList<String> getCommandContent(String userCommand) {
-		String currentContent = CommandUtils.removeFirstWord(userCommand);
+		String currentContent = ParserUtils.removeFirstWord(userCommand);
 		assert currentContent != null;
-		ArrayList<String> commandContent = CommandUtils
+		ArrayList<String> commandContent = ParserUtils
 				.processContent(currentContent);
 		return commandContent;
 	}
 
 	public String getCommandContentString(String userCommand) {
-		return CommandUtils.removeFirstWord(userCommand);
+		return ParserUtils.removeFirstWord(userCommand);
 	}
 }
