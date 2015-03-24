@@ -14,9 +14,13 @@ public abstract class Command {
 	public Command(CommandType type){
 		this.type = type;
 	}
-	
+
 	public CommandType getCommandType(){
 		return this.type;
+	}
+	
+	private void setCommandType(CommandType type){
+		this.type = type;
 	}
 	
 	public List getContent(){
