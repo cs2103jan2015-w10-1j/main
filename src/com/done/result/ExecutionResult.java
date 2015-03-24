@@ -42,6 +42,7 @@ public class ExecutionResult {
 	}
 
 	public void setCommandContent(String commandContent) {
+		assert isSuccessful;
 		this.commandContent = commandContent;
 	}
 }
