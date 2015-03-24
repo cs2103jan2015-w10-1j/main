@@ -2,7 +2,9 @@ package com.done.parser;
 
 import java.util.ArrayList;
 
-public class CommandUtils {
+import com.done.parser.Command.CommandType;
+
+public class ParserUtils {
 	
 	public static String removeFirstWord(String userCommand) {
         return userCommand.replace(getFirstWord(userCommand), "").trim();
@@ -21,5 +23,20 @@ public class CommandUtils {
 			processedContent.add(pieceOfContent);
 		}
 		return processedContent;
+	}
+	
+	public static Command makeCommand(String commandWord, String commandContent){
+		//Command command;
+		if (commandWord.equalsIgnoreCase("add")) {
+			return new CommandAdd(commandContent);
+		} else if (commandWord.equalsIgnoreCase("delete")) {
+			return new CommandDelete(Integer.parseInt(commandContent));
+		} else if (commandWord.equalsIgnoreCase("clear")) {
+			return new CommandClear();
+		} else if (commandWord.equalsIgnoreCase("search")) {
+			return new CommandSearch(commandContent);
+		} else{
+			return new CommandInvalid();
+		}
 	}
 }
