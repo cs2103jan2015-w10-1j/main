@@ -1,6 +1,5 @@
 package com.done.parser;
 
-import com.done.parser.CommandParser.CommandType;
 import java.util.ArrayList;
 
 public class CommandParser {
@@ -12,10 +11,18 @@ public class CommandParser {
 	public enum CommandType {
 		ADD, DELETE, CLEAR, DISPLAY, EDIT, SEARCH, UNDO, REORDER, MOVE, MARK, REMIND, RECUR, EXIT, INVALID;
 	}
+	
+	public Command getCommand(String userCommand){
+		
+		String commandWord = ParserUtils.getFirstWord(userCommand);
+		String commandContent = ParserUtils.removeFirstWord(userCommand);
+		return ParserUtils.makeCommand(commandWord, commandContent);
+		
+	}
 
 	public CommandType getCommandType(String userCommand) {
 
-		String command = CommandUtils.getFirstWord(userCommand);
+		String command = ParserUtils.getFirstWord(userCommand);
 
 		if (command.equalsIgnoreCase("add")) {
 			return CommandType.ADD;
@@ -49,9 +56,9 @@ public class CommandParser {
 	}
 
 	public ArrayList<String> getCommandContent(String userCommand) {
-		String currentContent = CommandUtils.removeFirstWord(userCommand);
+		String currentContent = ParserUtils.removeFirstWord(userCommand);
 		assert currentContent != null;
-		ArrayList<String> commandContent = CommandUtils
+		ArrayList<String> commandContent = ParserUtils
 				.processContent(currentContent);
 		return commandContent;
 	}
