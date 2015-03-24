@@ -34,4 +34,7 @@ public abstract class Command {
 	public void setId(int id){
 		this.id = id;
 	}
+	
+	public abstract void execute();
+	public abstract void undo();
 }
