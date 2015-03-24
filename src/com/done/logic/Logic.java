@@ -205,9 +205,15 @@ public class Logic {
 		
 	}
 	
+	public void editTask(int index, String editString){
+		deleteTask(index-1);
+		addTask(editString);
+	}
+	
 	//to mark the task is done
-	public void markDone(){
-		
+	public void markDone(int index){
+		String done = "You have done this task!";
+		this.editTask(index, done);
 	}
 	
 	//set a reminder to the task and remind the user at the date
