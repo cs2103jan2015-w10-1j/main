@@ -9,9 +9,16 @@ public class ExecutionResult {
 	
 	public ExecutionResult(CommandType commandType, boolean isSuccessful,
 			String commandContent) {
+		assert isSuccessful;
 		this.commandType = commandType;
 		this.isSuccessful = isSuccessful;
 		this.commandContent = commandContent;
+	}
+	
+	public ExecutionResult(CommandType commandType, boolean isSuccessful){
+		assert (!isSuccessful);
+		this.commandType = commandType;
+		this.isSuccessful = isSuccessful;
 	}
 
 	public CommandType getCommandType() {
