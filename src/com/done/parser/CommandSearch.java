@@ -2,19 +2,19 @@ package com.done.parser;
 
 public class CommandSearch extends Command {
 	
-	private String searchstring;
+	private String searchString;
 
-	public CommandSearch(String searchstring){
+	public CommandSearch(String searchString){
 		super(CommandType.SEARCH);
-		this.searchstring = searchstring;
+		this.searchString = searchString;
 	}
 	
 	public String getSearchString(){
-		return this.searchstring;
+		return this.searchString;
 	}
 	
 	public void setSearchString(String searchstring){
-		this.searchstring = searchstring;
+		this.searchString = searchstring;
 	}
 	
 	@Override
