@@ -1,4 +1,4 @@
-package com.done.parser;
+package com.done.command;
 
 public class CommandInvalid extends Command {
 	

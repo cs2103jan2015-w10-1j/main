@@ -1,10 +1,10 @@
-package com.done.parser;
+package com.done.command;
 
 import static org.junit.Assert.*;
 
 import org.junit.Test;
 
-import com.done.parser.Command.CommandType;
+import com.done.command.Command.CommandType;
 
 public class TestCommand {
 

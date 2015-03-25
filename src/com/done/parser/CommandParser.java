@@ -2,7 +2,8 @@ package com.done.parser;
 
 import java.util.ArrayList;
 
-import com.done.parser.Command.CommandType;
+import com.done.command.Command;
+import com.done.command.Command.CommandType;
 
 public class CommandParser {
 

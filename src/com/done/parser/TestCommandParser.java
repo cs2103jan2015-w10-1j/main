@@ -4,7 +4,8 @@ import static org.junit.Assert.*;
 
 import org.junit.Test;
 
-import com.done.parser.Command.CommandType;
+import com.done.command.Command;
+import com.done.command.Command.CommandType;
 
 public class TestCommandParser {
 	
