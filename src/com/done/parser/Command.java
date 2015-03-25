@@ -1,10 +1,10 @@
 package com.done.parser;
 
-import java.util.List;
+import java.util.Stack;
 
 public abstract class Command {
 	private int id;
-	//private List content;
+	protected static Stack<Command> allCommands;
 	private CommandType type;
 
 	public enum CommandType {
