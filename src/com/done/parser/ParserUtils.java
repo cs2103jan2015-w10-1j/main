@@ -29,7 +29,11 @@ public class ParserUtils {
 		if (commandWord.equalsIgnoreCase("add")) {
 			return new CommandAdd(commandContent);
 		} else if (commandWord.equalsIgnoreCase("delete")) {
-			return new CommandDelete(Integer.parseInt(commandContent));
+			if(isContentValid(commandWord, commandContent)){
+				return new CommandDelete(Integer.parseInt(commandContent));
+			}else{
+				return new CommandInvalid();
+			}
 		} else if (commandWord.equalsIgnoreCase("clear")) {
 			return new CommandClear();
 		} else if (commandWord.equalsIgnoreCase("search")) {
