@@ -3,6 +3,7 @@ package com.done.parser;
 import java.util.ArrayList;
 
 import com.done.logic.Logic;
+import com.done.parser.CommandParser.CommandType;
 import com.done.parser.ParserUtils;
 
 public class CommandAdd extends Command {
