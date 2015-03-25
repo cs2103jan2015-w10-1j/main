@@ -5,6 +5,7 @@ public abstract class Done {
 	private String title;
 	private String tag;
 	private TaskType type;
+	private boolean completed;
 
 	public static enum TaskType {
 		FLOATING, TIMED, DEADLINE;
@@ -13,12 +14,14 @@ public abstract class Done {
 	// Task without tag constructor
 	public Done(String title) {
 		this.title = title;
+		this.setCompleted(false);
 	}
 
 	// Task with tag constructor
 	public Done(String title, String tag) {
 		this.title = title;
 		this.setTag(tag);
+		this.setCompleted(false);
 	}
 
 	public String getTitle() {
@@ -51,6 +54,14 @@ public abstract class Done {
 
 	public void setType(TaskType type) {
 		this.type = type;
+	}
+
+	public boolean isCompleted() {
+		return completed;
+	}
+
+	public void setCompleted(boolean completed) {
+		this.completed = completed;
 	}
 
 }

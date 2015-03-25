@@ -24,18 +24,20 @@ public class Logic {
 	private static final String ERROR_CLEAR = "Exception in clear method";
 	private static final String ERROR_PROCESS_COMMAND ="Error executing the command";
 	
+	private CommandParser cmdParser;
 	private List<Done> tasks;
 	private DoneStorage inMemStorage;
 	private boolean isSuccessful;
 	
 	public Logic(){
-		this.inMemStorage = new InMemStorage.getInstance();
+		this.inMemStorage = InMemStorage.getInstance();
 		this.tasks = inMemStorage.load();
+		this.cmdParser = new CommandParser();
 	}
  	
 	public void executeCommand(String userCommand){
-		CommandType command = this.getCommandType(userCommand);
-		String content = this.getCommandContent(userCommand).get(0);
+		CommandType command = cmdParser.getCommandType(userCommand);
+		String content = cmdParser.getCommandContent(userCommand).get(0);
 		try{
 			processCommand(command, content);
 		}
@@ -46,38 +48,35 @@ public class Logic {
 		
 	}
 	
-	private static void processCommand(CommandType command, String content){
+	private void processCommand(CommandType command, String content){
 		
  		try{	
  			
 	 		switch(command){
 		
 	 		case EXIT:
-					break;
+	 			System.exit(0);
+				break;
 				
 	 		case ADD:
-					addTask(content);
-					break;	
+				addTask(content);
+				break;	
 				
 	 		case DELETE:
-					int index= Integer.parseInt(content); 
-					deleteTask(index);
-					break;
+				int index= Integer.parseInt(content); 
+				deleteTask(index);
+				break;
 				
 	 		case CLEAR:
-					clearTasks();
-					break;
+				clearTasks();
+				break;
 				
 	 		case DISPLAY:
-					//need to discuss
-					break;
+				//need to discuss
+				break;
 			case SEARCH:
-			 		searchTask(content);
-					break;
-
-			 case SORT:
-		 			//not needed for now 
-					break;		
+			 	searchTask(content);
+				break;		
 	 		}
  		}
 	
@@ -88,12 +87,12 @@ public class Logic {
 	
 	
 	public CommandType getCmdType(String userCommand){
-		CommandType command = this.getCommandType(userCommand);
+		CommandType command = cmdParser.getCommandType(userCommand);
 		return command;
 	}
 	
 	public String getCmdContent(String userCommand){
-		String content = this.getCommandContent(userCommand).get(0);
+		String content = cmdParser.getCommandContent(userCommand).get(0);
 		return content;
 	}
 	
@@ -105,21 +104,11 @@ public class Logic {
 	 	try{
  			Done task = new DoneFloatingTask(title);
 			tasks.add(task);
-			updateTaskID();
 			inMemStorage.store(tasks);
 			isSuccessful = true;
 			System.out.println(String.format(MESSAGE_ADD, title));
 	 	} catch (Exception e) {
 			System.out.println(ERROR_ADD + e.getMessage());
-		}
-	}
-
-	private void updateTaskID() {
-		Iterator<Done> listIterator = tasks.iterator();
-		int i=1;
-		while(listIterator.hasNext()){
-			listIterator.next().setId(i);
-			i++;
 		}
 	}
 	
@@ -135,7 +124,6 @@ public class Logic {
 	
 	public void deleteTask(int deleteIndex){
 		tasks.remove(deleteIndex);
-		updateTaskID();
 		inMemStorage.store(tasks);
 		isSuccessful = true;
 		/*String strToDelete;
@@ -196,7 +184,6 @@ public class Logic {
 		try {
 			tasks.clear();
 			System.out.println(MESSAGE_CLEAR);
-			updateTaskID();
 			inMemStorage.store(tasks);
 			isSuccessful = true;
 		} catch (Exception e) {
