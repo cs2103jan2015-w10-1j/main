@@ -44,10 +44,10 @@ public class DoneTest {
 	public void testDoneLong() {
 		DoneDeadlineTask done = new DoneDeadlineTask("test", 7823718);
 		// Equivalence Partition of:
-		// long data type [MIN_VALUE] and [MAX_VALUE]
-		// not less than [MIN_VALUE] and not more than [MAX_VALUE]
+		// not less than 0 and not more than [MAX_VALUE]
+		// for UNIX timestamp
 		long endTime = done.getEndTime();
-		assertTrue(endTime >= Long.MIN_VALUE && endTime <= Long.MAX_VALUE);
+		assertTrue(endTime > 0 && endTime <= Long.MAX_VALUE);
 	}
 
 }
