@@ -6,7 +6,7 @@ import java.util.List;
 import com.done.result.ExecutionResult;
 import com.done.parser.CommandParser.CommandType;
 import com.done.model.Done;
-import com.done.logic;
+import com.done.logic.Logic;
 
 public class LogicFacade {
 	
@@ -14,20 +14,21 @@ public class LogicFacade {
 	
 	public ExecutionResult getExecutionResult(String userCommand){
 
-		private CommandType commandType = logic.getCmdType(userCommand);
-		private String commandContent = logic.getCmdContent(userCommand);
-		private boolean isSuccessful = logic.isSuccessful();
+		CommandType commandType = logic.getCmdType(userCommand);
+		String commandContent = logic.getCmdContent(userCommand);
+		boolean isSuccessful = logic.isSuccessful();
+		ExecutionResult tempExecutionResult;
 		
 		if (isSuccessful){
-			ExecutionResult tempExecutionResult = new ExecutionResult(commandType, isSuccessful, commandContent);
+			tempExecutionResult = new ExecutionResult(commandType, isSuccessful, commandContent);
 		} else {
-			ExecutionResult tempExecutionResult = new ExecutionResult(commandType, isSuccessful);
+			tempExecutionResult = new ExecutionResult(commandType, isSuccessful);
 		}
 		return tempExecutionResult;	
 	}
 	
 	public List<Done> getTasks(){
 		logic = new Logic();
-		this.logic.getTasksForUI();
+		return this.logic.getTasksForUI();
 	}
 }
