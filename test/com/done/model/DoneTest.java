@@ -11,18 +11,24 @@ public class DoneTest {
 
 	@Test
 	public void testFloatingTask() {
+		// assert that if is a new instance of DoneFloatingTask, then the
+		// type is Floating Task
 		Done done = new DoneFloatingTask("title1", "tag1");
 		assertThat(done.getType(), is(TaskType.FLOATING));
 	}
 
 	@Test
 	public void testTimedTask() {
+		// assert that if is a new instance of DoneTimedTask, then the
+		// type is Timed Task
 		Done done = new DoneTimedTask("title1", 6711253, 6711253);
 		assertThat(done.getType(), is(TaskType.TIMED));
 	}
 
 	@Test
 	public void testDeadlineTask() {
+		// assert that if is a new instance of DoneDeadlineTask, then the
+		// type is Deadline Task
 		Done done = new DoneDeadlineTask("title1", 676721);
 		assertThat(done.getType(), is(TaskType.DEADLINE));
 	}
