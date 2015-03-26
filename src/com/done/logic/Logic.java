@@ -10,7 +10,9 @@ import com.done.storage.DoneStorage;
 import com.done.storage.InMemStorage;
  
 import com.done.parser.CommandParser;
+import com.done.command.Command;
 import com.done.command.Command.CommandType;
+import com.done.command.CommandAdd;
 import com.done.parser.ParserUtils;
 
 public class Logic {
@@ -56,7 +58,10 @@ public class Logic {
 				break;
 				
 	 		case ADD:
-				addTask(content);
+	 			// JERRY: I HAVE MODIFIED THIS PART OF THE CODE
+				//addTask(content);
+				Command add = new CommandAdd(content);
+				add.execute();
 				break;	
 				
 	 		case DELETE:

@@ -24,6 +24,12 @@ public class CommandAdd extends Command {
 	@Override
 	public void execute() {
 		// TODO Auto-generated method stub
+		// JERRY: I HAVE MODIFIED THIS PART OF THE CODE
+		for (int i = 0; i < content.size(); i++) {
+			if(content.get(i).equals("e")){
+				
+			}
+		}
 
 	}
 

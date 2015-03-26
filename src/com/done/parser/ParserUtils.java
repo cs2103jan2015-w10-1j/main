@@ -23,6 +23,8 @@ public class ParserUtils {
 	// At current Stage, only slice the content into parts separated by spaces
 	// Might modify in later versions
 	public static ArrayList<String> processContent(String content) {
+		// JERRY: Ruoming, the ArrayList is actually redundant, returning just the
+		// String[] array would be good enough.
 		ArrayList<String> processedContent = new ArrayList<String>();
 		String[] contentPieces = content.split("\\s+");
 		for (String pieceOfContent : contentPieces) {
