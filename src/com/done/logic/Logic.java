@@ -15,6 +15,7 @@ import com.done.parser.ParserUtils;
 
 public class Logic {
  	
+	private static final int ARRAY_DELETE_OFFSET = 1;
 	private static final String MESSAGE_DELETE = "Task %1$s deleted!";
 	private static final String MESSAGE_ADD = "Task \"%1$s\" added!";
 	private static final String MESSAGE_CLEAR = "all content deleted";
@@ -35,21 +36,17 @@ public class Logic {
 		this.cmdParser = new CommandParser();
 	}
  	
-	public void executeCommand(String userCommand){
-		CommandType command = cmdParser.getCommandType(userCommand);
-		String content = cmdParser.getCommandContent(userCommand).get(0);
+	public void executeCommand(CommandType commandType, String userCommand){
 		try{
-			processCommand(command, content);
+			processCommand(commandType, userCommand);
 		}
 		catch(Exception e){
 			isSuccessful = false;
 		}
 		
-		
 	}
 	
 	private void processCommand(CommandType command, String content){
-		
  		try{	
  			
 	 		switch(command){
@@ -64,7 +61,7 @@ public class Logic {
 				
 	 		case DELETE:
 				int index= Integer.parseInt(content); 
-				deleteTask(index);
+				deleteTask(index-ARRAY_DELETE_OFFSET);
 				break;
 				
 	 		case CLEAR:
@@ -76,6 +73,8 @@ public class Logic {
 				break;
 			case SEARCH:
 			 	searchTask(content);
+				break;
+			default:
 				break;		
 	 		}
  		}

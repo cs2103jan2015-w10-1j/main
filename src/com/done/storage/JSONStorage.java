@@ -17,7 +17,6 @@ import java.util.logging.Logger;
 import java.util.logging.SimpleFormatter;
 
 import com.done.model.Done;
-import com.done.model.DoneFloatingTask;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.google.gson.JsonIOException;
@@ -33,7 +32,6 @@ public class JSONStorage implements DoneStorage {
 
 	private Gson gson;
 	private Properties pref;
-	private String prefName;
 
 	public JSONStorage() {
 		// setUpLogger();
@@ -41,7 +39,6 @@ public class JSONStorage implements DoneStorage {
 				.registerTypeAdapter(Done.class, new DoneAdapter())
 				.setPrettyPrinting().create();
 		pref = new Properties();
-		prefName = FILE_PREFS_XML;
 	}
 
 	@Override
@@ -105,7 +102,7 @@ public class JSONStorage implements DoneStorage {
 		logger.log(Level.INFO, "Setting JSON name");
 		pref.setProperty("jsonName", jsonName + FILE_JSON_EXT);
 		try {
-			File prefFile = FileCheck.openFile(prefName);
+			File prefFile = FileCheck.openFile(FILE_PREFS_XML);
 			pref.storeToXML(new FileOutputStream(prefFile), "store to XML");
 			return true;
 		} catch (Exception e) {
@@ -117,7 +114,7 @@ public class JSONStorage implements DoneStorage {
 	public String getJsonNameFromPref() {
 		logger.log(Level.INFO, "Retrieving JSON name");
 		try {
-			File prefFile = FileCheck.openFile(prefName);
+			File prefFile = FileCheck.openFile(FILE_PREFS_XML);
 			if (prefFile.length() <= 0) {
 				logger.log(Level.INFO,
 						"Preference file not found, using default name");

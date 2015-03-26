@@ -16,6 +16,7 @@ public class LogicFacade {
 
 		CommandType commandType = logic.getCmdType(userCommand);
 		String commandContent = logic.getCmdContent(userCommand);
+		logic.executeCommand(commandType, commandContent);
 		boolean isSuccessful = logic.isSuccessful();
 		ExecutionResult tempExecutionResult;
 		

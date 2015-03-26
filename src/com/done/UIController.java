@@ -26,7 +26,6 @@ public class UIController {
 	private LogicFacade logicFacade;
 	private CommandType prevCommandType = null;
 	
-	private static final int ARRAY_DELETE_OFFSET = 1;
 	private static final String EMPTY_STRING = "";
 	//private static final String SPACE = " ";
 	private static final String SHOWADD_SUCCESS_MESSAGE = "%1$s added to the list";
