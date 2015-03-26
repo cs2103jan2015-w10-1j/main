@@ -23,7 +23,7 @@ public class LogicStub {
 	private static final String ERROR_CLEAR = "Exception in clear method";
 
 	private List<Done> tasks;
-	private DoneStorage inMemStorage;
+	private InMemStorage inMemStorage;
 
 	private CommandParserStub cmdParser;
 
@@ -148,8 +148,9 @@ public class LogicStub {
 	}
 
 	public void storeTo(String jsonName) {
-		JSONStorage jsonPref = new JSONStorage();
+		JSONStorage jsonPref = JSONStorage.getInstance();
 		jsonPref.setJsonNameToPref(jsonName);
+		inMemStorage.loadNew();
 	}
 
 }

@@ -11,7 +11,7 @@ import org.junit.Test;
 
 public class JSONStorageTest {
 
-	JSONStorage test = new JSONStorage();
+	JSONStorage test = JSONStorage.getInstance();
 
 	@Test
 	public void testJsonNameToPrefs() throws FileNotFoundException, IOException {

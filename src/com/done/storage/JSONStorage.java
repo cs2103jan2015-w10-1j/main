@@ -23,29 +23,46 @@ import com.google.gson.JsonIOException;
 import com.google.gson.reflect.TypeToken;
 
 public class JSONStorage implements DoneStorage {
+	
+	private static JSONStorage instance = null;
 
 	private static final String FILE_JSON_EXT = ".json";
 	private static final String FILE_TASKS_JSON = "tasks";
 	private static final String FILE_PREFS_XML = "done_prefs.xml";
 	private static Logger logger = Logger.getLogger("JSONStorage");
-	private FileHandler fileHandler;
 
 	private Gson gson;
 	private Properties pref;
+	private String jsonName;
+	private boolean isNewJson;
+	
+	//private FileHandler fileHandler;
 
-	public JSONStorage() {
+	private JSONStorage() {
 		// setUpLogger();
 		this.gson = new GsonBuilder()
 				.registerTypeAdapter(Done.class, new DoneAdapter())
 				.setPrettyPrinting().create();
 		pref = new Properties();
+		jsonName = getJsonNameFromPref();
+		isNewJson = false;
+	}
+	
+	public static synchronized JSONStorage getInstance() {
+		if (instance == null) {
+			instance = new JSONStorage();
+		}
+
+		return instance;
 	}
 
 	@Override
 	public List<Done> load() {
 		logger.log(Level.INFO, "load() method executed");
-
-		String jsonName = getJsonNameFromPref();
+		
+		if(isNewJson){
+			jsonName = getJsonNameFromPref();
+		}
 
 		FileReader inFileRead = null;
 		File inFile = FileCheck.openFile(jsonName);
@@ -85,7 +102,7 @@ public class JSONStorage implements DoneStorage {
 	public boolean store(List<Done> task) {
 		logger.log(Level.INFO, "store() method executed");
 
-		String jsonName = getJsonNameFromPref();
+		//String jsonName = getJsonNameFromPref();
 		try {
 			FileWriter outFile = new FileWriter(jsonName);
 			outFile.write(gson.toJson(task, Done.class));
@@ -127,7 +144,15 @@ public class JSONStorage implements DoneStorage {
 		return pref.getProperty("jsonName", FILE_TASKS_JSON);
 	}
 
-	private void setUpLogger() {
+	public boolean isNewJson() {
+		return isNewJson;
+	}
+
+	public void setNewJson(boolean isNewJson) {
+		this.isNewJson = isNewJson;
+	}
+
+	/*private void setUpLogger() {
 		SimpleFormatter sf = new SimpleFormatter();
 
 		try {
@@ -137,6 +162,6 @@ public class JSONStorage implements DoneStorage {
 		} catch (SecurityException | IOException e) {
 			logger.log(Level.WARNING, "Unable to read file!", e);
 		}
-	}
+	}*/
 
 }

@@ -1,6 +1,5 @@
 package com.done.storage;
 
-import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 
@@ -11,11 +10,11 @@ public class InMemStorage implements DoneStorage {
 	private static InMemStorage instance = null;
 
 	private List<Done> tasks;
-	private DoneStorage jsonStorage;
+	private JSONStorage jsonStorage;
 
 	private InMemStorage() {
-		this.tasks = new ArrayList<Done>();
-		jsonStorage = new JSONStorage();
+		jsonStorage = JSONStorage.getInstance();
+		this.tasks = jsonStorage.load();
 	}
 
 	public static synchronized InMemStorage getInstance() {
@@ -26,9 +25,15 @@ public class InMemStorage implements DoneStorage {
 		return instance;
 	}
 
+	public void loadNew() {
+		jsonStorage.setNewJson(true);
+		this.tasks = jsonStorage.load();
+		jsonStorage.setNewJson(false);
+	}
+
 	@Override
 	public List<Done> load() {
-		return jsonStorage.load();
+		return tasks;
 	}
 
 	@Override
