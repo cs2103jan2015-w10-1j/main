@@ -5,7 +5,7 @@ import static org.junit.Assert.*;
 import org.junit.Test;
 
 import com.done.result.ExecutionResult;
-import com.done.parser.CommandParser.CommandType;
+import com.done.command.Command.CommandType;
 
 public class TestExecutionResult {
 

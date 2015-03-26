@@ -1,6 +1,6 @@
 package com.done.result;
 
-import com.done.parser.CommandParser.CommandType;
+import com.done.command.Command.CommandType;
 
 public class ExecutionResult {
 	private CommandType commandType;

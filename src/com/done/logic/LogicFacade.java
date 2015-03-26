@@ -4,7 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import com.done.result.ExecutionResult;
-import com.done.parser.CommandParser.CommandType;
+import com.done.command.Command.CommandType;
 import com.done.model.Done;
 import com.done.logic.Logic;
 

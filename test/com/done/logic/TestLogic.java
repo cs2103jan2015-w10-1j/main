@@ -3,7 +3,6 @@ package com.done.logic;
 import static org.junit.Assert.*;
 
 import org.junit.Test;
-import com.done.logic;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
@@ -14,7 +13,7 @@ import com.done.storage.DoneStorage;
 import com.done.storage.InMemStorage;
  
 import com.done.parser.CommandParser;
-import com.done.parser.CommandParser.CommandType;
+import com.done.command.Command.CommandType;
 import com.done.parser.ParserUtils;
 
 public class TestLogic{
@@ -35,18 +34,18 @@ public class TestLogic{
 	public void testDeleteTask(){
 		
 		testLogic.deleteTask(ZERO);
-		assertEquals(testLogic.getTasksForUI().length, ZERO);
+		assertEquals(testLogic.getTasksForUI().get(0), ZERO);
 	}
 	
 	@Test
 	public void testExecuteCommand(){
 		String testString1 = "add Batman";
 		String testString2 = "add Ironman is the best";
-		String testString3 = "delete Batman"
+		String testString3 = "delete Batman";
 		testLogic.executeCommand(testString1);
 		testLogic.executeCommand(testString2);
 		testLogic.executeCommand(testString3);
-		assertEquals(estLogic.getTasksForUI().get(ZERO), testString2);
+		assertEquals(testLogic.getTasksForUI().get(ZERO), testString2);
 		
 	}
 }

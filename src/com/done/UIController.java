@@ -13,7 +13,7 @@ import org.controlsfx.control.Notifications;
 
 import com.done.logic.LogicFacade;
 import com.done.model.Done;
-import com.done.parser.CommandParser.CommandType;
+import com.done.command.Command.CommandType;
 import com.done.result.ExecutionResult;
 
 public class UIController {

@@ -8,7 +8,7 @@ public abstract class Command {
 	private CommandType type;
 
 	public enum CommandType {
-		ADD, DELETE, CLEAR, DISPLAY, EDIT, SEARCH, UNDO, REORDER, MOVE, MARK, REMIND, RECUR, EXIT, INVALID;
+		ADD, DELETE, LOAD, CLEAR, DISPLAY, EDIT, SEARCH, UNDO, REORDER, MOVE, MARK, REMIND, RECUR, EXIT, INVALID;
 	}
 	
 	public Command(CommandType type){
