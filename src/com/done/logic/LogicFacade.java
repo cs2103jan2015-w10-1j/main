@@ -41,6 +41,12 @@ public class LogicFacade {
 		return this.logic.getTasksForUI();
 	}
 	
+	public List<Done> getSearchResult(){
+		logic = new Logic();
+		return this.logic.getSearchedTasksForUI();
+	}
+	
+	
 	public String getJsonName(){
 		JSONStorage jsonStorage = JSONStorage.getInstance();
 		String jsonName = jsonStorage.getJsonNameFromPref();

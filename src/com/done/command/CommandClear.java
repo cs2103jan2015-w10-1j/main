@@ -10,14 +10,13 @@ public class CommandClear extends Command {
 
 	@Override
 	public void execute() {
-		// TODO Auto-generated method stub
-		InMemStorage.getInstance().delete(0, true);
+		InMemStorage.getInstance().delete(null, true);
 
 	}
 
 	@Override
 	public void undo() {
-		// TODO Auto-generated method stub
+		// UNUSED
 
 	}
 

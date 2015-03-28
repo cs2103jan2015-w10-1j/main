@@ -64,7 +64,7 @@ public class JSONStorage  {
 		}
 
 		FileReader inFileRead = null;
-		File inFile = FileCheck.openFile(jsonName);
+		File inFile = openFile(jsonName);
 		List<Done> tasks = null;
 
 		// read the actual JSON file
@@ -117,7 +117,7 @@ public class JSONStorage  {
 		logger.log(Level.INFO, "Setting JSON name");
 		pref.setProperty("jsonName", jsonName + FILE_JSON_EXT);
 		try {
-			File prefFile = FileCheck.openFile(FILE_PREFS_XML);
+			File prefFile = openFile(FILE_PREFS_XML);
 			pref.storeToXML(new FileOutputStream(prefFile), "store to XML");
 			return true;
 		} catch (Exception e) {
@@ -129,7 +129,7 @@ public class JSONStorage  {
 	public String getJsonNameFromPref() {
 		logger.log(Level.INFO, "Retrieving JSON name");
 		try {
-			File prefFile = FileCheck.openFile(FILE_PREFS_XML);
+			File prefFile = openFile(FILE_PREFS_XML);
 			if (prefFile.length() <= 0) {
 				logger.log(Level.INFO,
 						"Preference file not found, using default name");
@@ -149,6 +149,19 @@ public class JSONStorage  {
 	public void setNewJson(boolean isNewJson) {
 		this.isNewJson = isNewJson;
 	}
+	
+	private static File openFile(String fileName) {
+        File file = new File(fileName);
+
+        if(!file.exists()){
+            try {
+                file.createNewFile();
+            } catch (IOException e) {
+                System.exit(0);
+            }
+        }
+        return file;
+    }
 
 	/*private void setUpLogger() {
 		SimpleFormatter sf = new SimpleFormatter();

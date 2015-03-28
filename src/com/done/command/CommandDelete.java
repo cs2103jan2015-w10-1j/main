@@ -1,33 +1,37 @@
 package com.done.command;
 
+import com.done.model.Done;
 import com.done.storage.InMemStorage;
 
 public class CommandDelete extends Command {
-	
-	private int deleteindex;
-	
-	public CommandDelete(int deleteindex){
+
+	private Done task;
+
+	public CommandDelete(int deleteIndex) {
 		super(CommandType.DELETE, true);
-		this.deleteindex = deleteindex;
+		this.task = InMemStorage.getInstance().getTask(deleteIndex);
 	}
-	
-	public int getDeleteIndex(){
-		return this.deleteindex;
-	}
-	
-	public void setDeleteIndex(int newindex){
-		this.deleteindex = newindex;
+
+	public CommandDelete(Done task) {
+		super(CommandType.DELETE, true);
+		this.task = task;
 	}
 
 	@Override
 	public void execute() {
 		InMemStorage inMemStorage = InMemStorage.getInstance();
-		inMemStorage.delete(deleteindex, false);
+		inMemStorage.delete(task, false);
 	}
 
 	@Override
 	public void undo() {
-		// TODO Auto-generated method stub
+		CommandAdd command = new CommandAdd(task);
+
+		try {
+			command.execute();
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
 
 	}
 

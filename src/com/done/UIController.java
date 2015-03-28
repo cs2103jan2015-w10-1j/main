@@ -63,9 +63,11 @@ public class UIController {
 	
 	private void processCommand(String userCommand){
 		
+		
 		ExecutionResult result = logicFacade.getExecutionResult(userCommand);
 		CommandType currCommandType = result.getCommandType();
 		String commandContent = result.getCommandContent();
+		
 		
 		switch(currCommandType){
 			case ADD:				
@@ -87,6 +89,9 @@ public class UIController {
 				break;
 			case CLEAR:
 				showClear(result.isSuccessful());
+				break;
+			case SEARCH:
+				displaySearches();
 				break;
 			case UNDO:
 				showUndo(result.isSuccessful(), commandContent);
@@ -178,6 +183,16 @@ public class UIController {
 
 	private void display() {
 		List<Done> tasks = logicFacade.getTasks();
+		ObservableList<Done> tableTasks = FXCollections.observableArrayList(tasks);
+		tableViewTasks.setItems(tableTasks);
+		tableViewTasks.getColumns().get(0).setCellValueFactory(new PropertyValueFactory<>("id"));
+		tableViewTasks.getColumns().get(1).setCellValueFactory(new PropertyValueFactory<>("title"));
+		tableViewTasks.getColumns().get(2).setCellValueFactory(new PropertyValueFactory<>("startTime"));
+		tableViewTasks.getColumns().get(3).setCellValueFactory(new PropertyValueFactory<>("endTime"));
+	}
+	
+	private void displaySearches() {
+		List<Done> tasks = logicFacade.getSearchResult();
 		ObservableList<Done> tableTasks = FXCollections.observableArrayList(tasks);
 		tableViewTasks.setItems(tableTasks);
 		tableViewTasks.getColumns().get(0).setCellValueFactory(new PropertyValueFactory<>("id"));

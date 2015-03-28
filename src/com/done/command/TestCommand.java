@@ -5,13 +5,14 @@ import static org.junit.Assert.*;
 import org.junit.Test;
 
 import com.done.command.Command.CommandType;
+import com.done.model.DoneFloatingTask;
 
 public class TestCommand {
 
 
 	@Test
 	public void testCommandAdd() {
-		Command command = new CommandAdd("aaa");
+		Command command = new CommandAdd(new DoneFloatingTask("aaa"));
 		assertEquals(command.getCommandType(), CommandType.ADD);
 	}
 

@@ -22,6 +22,7 @@ import com.done.model.Done;
 import com.done.model.DoneDeadlineTask;
 import com.done.model.DoneFloatingTask;
 import com.done.model.DoneTimedTask;
+import com.done.storage.InMemStorage;
 
 public class CommandParser {
 
@@ -82,7 +83,11 @@ public class CommandParser {
 	}
 
 	public String removeFirstWord(String userCommand) {
-		return userCommand.replace(getFirstWord(userCommand), "").trim();
+		// trim first then u use substring!
+		String returnStr = getFirstWord(userCommand).trim();
+		returnStr =userCommand.substring(returnStr.length());
+	//	returnStr =userCommand.substring(returnStr.length()+1, userCommand.length());
+		return returnStr.trim();
 	}
 
 	public String getFirstWord(String userCommand) {
@@ -115,6 +120,8 @@ public class CommandParser {
 			return new CommandAdd(tempTask);
 		} else if (commandWord.equalsIgnoreCase("delete")) {
 			if (isContentValid(commandWord, commandContent)) {
+				// get Done object by index
+				
 				return new CommandDelete(Integer.parseInt(commandContent));
 			} else {
 				return new CommandInvalid();

@@ -6,7 +6,6 @@ import java.util.List;
 
 import com.done.model.Done;
 import com.done.model.DoneFloatingTask;
-import com.done.storage.DoneStorage;
 import com.done.storage.InMemStorage;
  
 import com.done.parser.CommandParser;
@@ -43,61 +42,11 @@ public class Logic {
 			if(command.isUndoable()){
 				inMemStorage.pushToUndoStack(command);
 			}
-
-			
-			//processCommand(commandType, commandContent);
 		}
 		catch(Exception e){
 			isSuccessful = false;
 		}
 		
-	}
-	
-	
-	// There is no need to get the commandType anymore since you have already created command in parser
-	// in order to processCommand, we need to have command first !
-	private void processCommand(CommandType commandType, String commandContent){
-
-		
- /*		try{	
- 			
-	 		switch(command){
-		
-	 		case EXIT:
-	 			System.exit(0);
-				break;
-				
-	 		case ADD:
-	 			// JERRY: I HAVE MODIFIED THIS PART OF THE CODE
-				//addTask(content);
-				Command add = new CommandAdd(content);
-				add.execute();
-				isSuccessful = true;
-				break;	
-				
-	 		case DELETE:
-				int index= Integer.parseInt(content); 
-				deleteTask(index-ARRAY_DELETE_OFFSET);
-				break;
-				
-	 		case CLEAR:
-				clearTasks();
-				break;
-				
-	 		case DISPLAY:
-				//need to discuss
-				break;
-			case SEARCH:
-			 	searchTask(content);
-				break;
-			default:
-				break;		
-	 		}
- 		}
-	
- 		catch(Exception e){
- 			System.out.println(ERROR_PROCESS_COMMAND + e.getMessage());
- 		}*/
 	}
 	
 	
@@ -153,6 +102,14 @@ public class Logic {
 	 */
 	public List<Done> getTasksForUI() {
 		return inMemStorage.load();
+	}
+	
+	public List<Done> getSearchResultForUI(){
+		return inMemStorage.loadSearchResult();
+	}
+	
+	public List<Done> getSearchedTasksForUI() {
+		return inMemStorage.getWorkingTasks();
 	}
 	
 	

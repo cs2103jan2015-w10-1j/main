@@ -41,7 +41,7 @@ public abstract class Command {
 		this.id = id;
 	}
 	
-	public abstract void execute();
+	public abstract void execute() throws Exception;
 	public abstract void undo();
 
 	public boolean isUndoable() {
