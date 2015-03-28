@@ -17,9 +17,7 @@ public class CommandLoad extends Command {
 		JSONStorage jsonPref = JSONStorage.getInstance();
 		InMemStorage inMemStorage = InMemStorage.getInstance();
 		
-		jsonPref.setNewJson(true);
 		jsonPref.setJsonNameToPref(jsonName);
-		jsonPref.setNewJson(false);
 		inMemStorage.loadNew();
 		
 	}

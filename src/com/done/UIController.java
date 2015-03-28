@@ -53,7 +53,7 @@ public class UIController {
 		});
 	}
 	
-	public void processInput(){
+	private void processInput(){
 		String userCommand = commandField.getText();
 		if(!userCommand.equals(EMPTY_STRING)){
 			processCommand(userCommand);	
