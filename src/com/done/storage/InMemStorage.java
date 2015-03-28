@@ -5,7 +5,7 @@ import java.util.List;
 
 import com.done.model.Done;
 
-public class InMemStorage implements DoneStorage {
+public class InMemStorage {
 
 	private static InMemStorage instance = null;
 
@@ -31,14 +31,12 @@ public class InMemStorage implements DoneStorage {
 		jsonStorage.setNewJson(false);
 	}
 
-	@Override
 	public List<Done> load() {
 		return tasks;
 	}
 
-	@Override
-	public boolean store(List<Done> tasks) {
-		this.tasks = tasks;
+	public boolean store(Done task) {
+		tasks.add(task);
 		updateTaskID();
 		if (jsonStorage.store(tasks) == true) {
 			return true;

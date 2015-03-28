@@ -18,20 +18,20 @@ public class LogicFacade {
 
 		// sorry to comment this but parsing the command should be done in the parser component
 		//CommandType commandType = logic.getCmdType(userCommand);
-		// String commandContent = logic.getCmdContent(userCommand);
+		String commandContent = logic.getCmdContent(userCommand);
 		CommandParser parser = new CommandParser();
 		Command command = parser.parseInstructionToMakeCommand(userCommand);
 		
 		logic.executeCommand(command);
-		ExecutionResult tempExecutionResult = new ExecutionResult(command.getCommandType(), true);
-/*		boolean isSuccessful = logic.isSuccessful();
+		//ExecutionResult tempExecutionResult = new ExecutionResult(command.getCommandType(), true);
+		boolean isSuccessful = logic.isSuccessful();
 		ExecutionResult tempExecutionResult;
 		
 		if (isSuccessful){
-			tempExecutionResult = new ExecutionResult(commandType, isSuccessful, commandContent);
+			tempExecutionResult = new ExecutionResult(command.getCommandType(), isSuccessful, commandContent);
 		} else {
-			tempExecutionResult = new ExecutionResult(commandType, isSuccessful);
-		}*/
+			tempExecutionResult = new ExecutionResult(command.getCommandType(), isSuccessful);
+		}
 		return tempExecutionResult;	
 	}
 	

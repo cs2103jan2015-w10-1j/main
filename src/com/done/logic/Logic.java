@@ -29,7 +29,7 @@ public class Logic {
 	
 	private CommandParser cmdParser;
 	private List<Done> tasks;
-	private DoneStorage inMemStorage;
+	private InMemStorage inMemStorage;
 	private boolean isSuccessful;
 	
 	public Logic(){
@@ -117,7 +117,7 @@ public class Logic {
 		return isSuccessful;
 	}
 	//method to add floating task
- 	public void addTask(String title){
+ 	/*public void addTask(String title){
 	 	try{
  			Done task = new DoneFloatingTask(title);
 			tasks.add(task);
@@ -127,7 +127,7 @@ public class Logic {
 	 	} catch (Exception e) {
 			System.out.println(ERROR_ADD + e.getMessage());
 		}
-	}
+	}*/
 	
 	public boolean isExistingTask(int deleteIndex){
 		Iterator<Done> listIterator = tasks.iterator();
@@ -139,17 +139,17 @@ public class Logic {
 		return (deleteIndex >=1) && (deleteIndex <= i);
 	}
 	
-	public void deleteTask(int deleteIndex){
+	/*public void deleteTask(int deleteIndex){
 		tasks.remove(deleteIndex);
 		inMemStorage.store(tasks);
 		isSuccessful = true;
-		/*String strToDelete;
+		String strToDelete;
 		strToDelete = new String(tasks.get(deleteIndex - 1).toString());   
 		tasks.remove(deleteIndex - 1);
 		System.out.println(String.format(MESSAGE_DELETE, strToDelete));
-		jsonStorage.store(tasks);*/
+		jsonStorage.store(tasks);
 	
-	}
+	}*/
 
 	/**
 	 * @return the tasks
@@ -197,7 +197,7 @@ public class Logic {
 		
 	}
 	
-	public void clearTasks(){
+	/*public void clearTasks(){
 		try {
 			tasks.clear();
 			System.out.println(MESSAGE_CLEAR);
@@ -207,18 +207,18 @@ public class Logic {
 			System.out.println(ERROR_CLEAR + e.getMessage());
 		}
 		
-	}
+	}*/
 	
-	public void editTask(int index, String editString){
+	/*public void editTask(int index, String editString){
 		deleteTask(index-1);
 		addTask(editString);
-	}
+	}*/
 	
 	//to mark the task is done
-	public void markDone(int index){
+	/*public void markDone(int index){
 		String done = "You have done this task!";
 		this.editTask(index, done);
-	}
+	}*/
 	
 	//set a reminder to the task and remind the user at the date
 	public void setReminder(String date){

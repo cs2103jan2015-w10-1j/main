@@ -11,10 +11,8 @@ import java.lang.reflect.Type;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Properties;
-import java.util.logging.FileHandler;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-import java.util.logging.SimpleFormatter;
 
 import com.done.model.Done;
 import com.google.gson.Gson;
@@ -22,7 +20,7 @@ import com.google.gson.GsonBuilder;
 import com.google.gson.JsonIOException;
 import com.google.gson.reflect.TypeToken;
 
-public class JSONStorage implements DoneStorage {
+public class JSONStorage  {
 	
 	private static JSONStorage instance = null;
 
@@ -56,7 +54,6 @@ public class JSONStorage implements DoneStorage {
 		return instance;
 	}
 
-	@Override
 	public List<Done> load() {
 		logger.log(Level.INFO, "load() method executed");
 		
@@ -98,7 +95,6 @@ public class JSONStorage implements DoneStorage {
 
 	}
 
-	@Override
 	public boolean store(List<Done> task) {
 		logger.log(Level.INFO, "store() method executed");
 
