@@ -5,7 +5,7 @@ public class CommandSearch extends Command {
 	private String searchString;
 
 	public CommandSearch(String searchString){
-		super(CommandType.SEARCH);
+		super(CommandType.SEARCH, false);
 		this.searchString = searchString;
 	}
 	

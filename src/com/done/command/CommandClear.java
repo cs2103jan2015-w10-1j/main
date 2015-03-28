@@ -5,7 +5,7 @@ import com.done.storage.InMemStorage;
 public class CommandClear extends Command {
 	
 	public CommandClear(){
-		super(CommandType.CLEAR);
+		super(CommandType.CLEAR, false);
 	}
 
 	@Override

@@ -152,7 +152,7 @@ public class UIController {
 		display();
 	}
 
-	private void showUndo(boolean isSuccessful, String commandContent) {
+	private void showUndo(boolean isSuccessful, String commandContent)  {
 		if(isSuccessful){
 			assert prevCommandType!=null;
 			if(commandContent!=null){
@@ -166,6 +166,9 @@ public class UIController {
 		else{
 			Notifications.create().text(SHOWUNDO_ERROR_MESSAGE).showError();
 		}
+		
+		display();
+		
 	}
 
 	private void showInvalidCommand() {

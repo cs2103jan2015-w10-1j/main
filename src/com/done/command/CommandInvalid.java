@@ -3,7 +3,7 @@ package com.done.command;
 public class CommandInvalid extends Command {
 	
 	public CommandInvalid(){
-		super(CommandType.INVALID);
+		super(CommandType.INVALID, false);
 	}
 
 	@Override

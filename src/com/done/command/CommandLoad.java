@@ -8,7 +8,7 @@ public class CommandLoad extends Command {
 	private String jsonName;
 
 	public CommandLoad(String jsonName) {
-		super(CommandType.LOAD);
+		super(CommandType.LOAD, false);
 		this.jsonName = jsonName;
 	}
 

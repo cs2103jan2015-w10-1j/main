@@ -7,7 +7,7 @@ public class CommandDelete extends Command {
 	private int deleteindex;
 	
 	public CommandDelete(int deleteindex){
-		super(CommandType.DELETE);
+		super(CommandType.DELETE, true);
 		this.deleteindex = deleteindex;
 	}
 	

@@ -21,7 +21,7 @@ public class CommandAdd extends Command {
 	
 	public CommandAdd(Done task){
 		//what does this super does from the parent class?
-		super(CommandType.ADD);
+		super(CommandType.ADD, true);
 		this.task = task;
 	}
 	
@@ -42,7 +42,9 @@ public class CommandAdd extends Command {
 	@Override
 	public void undo() {
 		// TODO Auto-generated method stub
-
+		InMemStorage inMemStorage = InMemStorage.getInstance();
+		// yes just delete it !
+		inMemStorage.delete(task.getId(), false);
 	}
 
 }

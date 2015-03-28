@@ -17,6 +17,7 @@ import com.done.command.CommandDelete;
 import com.done.command.CommandInvalid;
 import com.done.command.CommandLoad;
 import com.done.command.CommandSearch;
+import com.done.command.CommandUndo;
 import com.done.model.Done;
 import com.done.model.DoneDeadlineTask;
 import com.done.model.DoneFloatingTask;
@@ -124,6 +125,8 @@ public class CommandParser {
 			return new CommandClear();
 		} else if (commandWord.equalsIgnoreCase("search")) {
 			return new CommandSearch(commandContent);
+		} else if (commandWord.equalsIgnoreCase("undo")) {
+			return new CommandUndo();
 		} else {
 			return new CommandInvalid();
 		}

@@ -4,15 +4,17 @@ import java.util.Stack;
 
 public abstract class Command {
 	private int id;
-	protected static Stack<Command> allCommands;
+	//protected static Stack<Command> allCommands;
 	private CommandType type;
+	private boolean undoable;
 
 	public enum CommandType {
 		ADD, DELETE, LOAD, CLEAR, DISPLAY, EDIT, SEARCH, UNDO, REORDER, MOVE, MARK, REMIND, RECUR, EXIT, INVALID;
 	}
 	
-	public Command(CommandType type){
+	public Command(CommandType type, boolean undoable){
 		this.type = type;
+		this.undoable = undoable;
 	}
 
 	public CommandType getCommandType(){
@@ -41,4 +43,12 @@ public abstract class Command {
 	
 	public abstract void execute();
 	public abstract void undo();
+
+	public boolean isUndoable() {
+		return undoable;
+	}
+
+	public void setUndoable(boolean undoable) {
+		this.undoable = undoable;
+	}
 }

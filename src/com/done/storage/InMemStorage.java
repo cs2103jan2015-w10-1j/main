@@ -2,7 +2,9 @@ package com.done.storage;
 
 import java.util.Iterator;
 import java.util.List;
+import java.util.Stack;
 
+import com.done.command.Command;
 import com.done.model.Done;
 
 public class InMemStorage {
@@ -13,10 +15,12 @@ public class InMemStorage {
 
 	private List<Done> tasks;
 	private JSONStorage jsonStorage;
-
+	private Stack<Command> undoStack;
+	
 	private InMemStorage() {
 		jsonStorage = JSONStorage.getInstance();
 		this.tasks = jsonStorage.load();
+		this.undoStack = new Stack<Command>();
 	}
 
 	public static synchronized InMemStorage getInstance() {
@@ -59,6 +63,14 @@ public class InMemStorage {
 		}
 
 		return false;
+	}
+	
+	public void pushToUndoStack(Command command){
+		this.undoStack.push(command);
+	}
+	public Command popFromUndoStack(){
+		return this.undoStack.pop();
+		// empty stack exception might occur here, please handle it at the right place
 	}
 
 	private void updateTaskID() {

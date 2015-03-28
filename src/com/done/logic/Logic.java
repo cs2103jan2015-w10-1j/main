@@ -40,9 +40,10 @@ public class Logic {
 			// done..
 			command.execute();
 			isSuccessful = true;
-			// ok wait
-			// step 2. add command into undo Stack
-			// step 3. done..
+			if(command.isUndoable()){
+				inMemStorage.pushToUndoStack(command);
+			}
+
 			
 			//processCommand(commandType, commandContent);
 		}
