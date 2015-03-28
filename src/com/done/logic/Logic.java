@@ -28,13 +28,11 @@ public class Logic {
 	private static final String ERROR_PROCESS_COMMAND ="Error executing the command";
 	
 	private CommandParser cmdParser;
-	private List<Done> tasks;
 	private InMemStorage inMemStorage;
 	private boolean isSuccessful;
 	
 	public Logic(){
 		this.inMemStorage = InMemStorage.getInstance();
-		this.tasks = inMemStorage.load();
 		this.cmdParser = new CommandParser();
 	}
  	
@@ -129,7 +127,7 @@ public class Logic {
 		}
 	}*/
 	
-	public boolean isExistingTask(int deleteIndex){
+	/*public boolean isExistingTask(int deleteIndex){
 		Iterator<Done> listIterator = tasks.iterator();
 		int i=0;
 		while(listIterator.hasNext()){
@@ -137,7 +135,7 @@ public class Logic {
 			listIterator.next().setId(i);
 		}
 		return (deleteIndex >=1) && (deleteIndex <= i);
-	}
+	}*/
 	
 	/*public void deleteTask(int deleteIndex){
 		tasks.remove(deleteIndex);
@@ -155,16 +153,16 @@ public class Logic {
 	 * @return the tasks
 	 */
 	public List<Done> getTasksForUI() {
-		return tasks;
+		return inMemStorage.load();
 	}
 	
 	
-	public Done getTask(String usercommand){
+	/*public Done getTask(String usercommand){
 		int index = 0;
 		return this.searchTask(usercommand).get(index);
-	}
+	}*/
 	
-	public List<Done> searchTask(String searchString) {
+	/*public List<Done> searchTask(String searchString) {
 		try {
 			int flag = 0;
 			List<Done> searchVector = new ArrayList<Done>(); 
@@ -186,7 +184,7 @@ public class Logic {
 			System.out.println(ERROR_SEARCH + e.getMessage());
 		}
 		return null;
-	}
+	}*/
 	
 	public void undo(){
 		
