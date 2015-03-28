@@ -29,15 +29,15 @@ public class CommandParser {
 	
 	public Command parseInstructionToMakeCommand(String userInput){
 		
-		String commandWord = ParserUtils.getFirstWord(userInput);
-		String commandContent = ParserUtils.removeFirstWord(userInput);
+		String commandWord = getFirstWord(userInput);
+		String commandContent = removeFirstWord(userInput);
 		return makeCommand(commandWord, commandContent);
 		
 	}
 
 	public CommandType getCommandType(String commandWord) {
 
-		String command = ParserUtils.getFirstWord(commandWord);
+		String command = getFirstWord(commandWord);
 
 		if (command.equalsIgnoreCase("add")) {
 			return CommandType.ADD;
@@ -71,18 +71,17 @@ public class CommandParser {
 	}
 
 	public ArrayList<String> getCommandContent(String userCommand) {
-		String currentContent = ParserUtils.removeFirstWord(userCommand);
+		String currentContent = removeFirstWord(userCommand);
 		assert currentContent != null;
-		ArrayList<String> commandContent = ParserUtils
-				.processContent(currentContent);
+		ArrayList<String> commandContent = processContent(currentContent);
 		return commandContent;
 	}
 	
-	private String removeFirstWord(String userCommand) {
+	public String removeFirstWord(String userCommand) {
 		return userCommand.replace(getFirstWord(userCommand), "").trim();
 	}
 
-	private String getFirstWord(String userCommand) {
+	public String getFirstWord(String userCommand) {
 		return userCommand.trim().split("\\s+")[0];
 	}
 

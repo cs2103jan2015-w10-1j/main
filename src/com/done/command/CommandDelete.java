@@ -1,5 +1,7 @@
 package com.done.command;
 
+import com.done.storage.InMemStorage;
+
 public class CommandDelete extends Command {
 	
 	private int deleteindex;
@@ -19,8 +21,8 @@ public class CommandDelete extends Command {
 
 	@Override
 	public void execute() {
-		// TODO Auto-generated method stub
-
+		InMemStorage inMemStorage = InMemStorage.getInstance();
+		inMemStorage.delete(deleteindex);
 	}
 
 	@Override

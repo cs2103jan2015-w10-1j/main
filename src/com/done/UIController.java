@@ -70,14 +70,7 @@ public class UIController {
 		String commandContent = result.getCommandContent();
 		
 		switch(currCommandType){
-			case ADD:
-				/*Done addedTask = mainLogic.getTask(userCommand);
-				assert addedTask != null;
-				showAdd(addedTask);
-				
-				mainLogic.addTask(commandContents);
-				showAdd(commandContents);*/
-				
+			case ADD:				
 				showAdd(result.isSuccessful(), commandContent);
 				break;
 			case DISPLAY:
@@ -85,12 +78,7 @@ public class UIController {
 				 * it will be able to display <all> <floating> <timed> <deadline> 	
 				 */
 				break;
-			case DELETE:
-				/*Done deletedTask = mainLogic.getTask(userCommand);
-				showDelete(deletedTask);
-				String taskName = mainLogic.deleteTask(Integer.parseInt(commandContents) - ARRAY_DELETE_OFFSET);
-				showDelete(taskName);*/
-				
+			case DELETE:				
 				showDelete(result.isSuccessful(), commandContent);
 				break;
 			case EDIT:

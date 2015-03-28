@@ -1,4 +1,4 @@
-package com.done.parser;
+package stubs;
 
 import java.util.ArrayList;
 

@@ -8,6 +8,8 @@ import com.done.model.Done;
 public class InMemStorage {
 
 	private static InMemStorage instance = null;
+	
+	private static final int ARRAY_DELETE_OFFSET = 1;
 
 	private List<Done> tasks;
 	private JSONStorage jsonStorage;
@@ -37,6 +39,16 @@ public class InMemStorage {
 
 	public boolean store(Done task) {
 		tasks.add(task);
+		updateTaskID();
+		if (jsonStorage.store(tasks) == true) {
+			return true;
+		}
+
+		return false;
+	}
+	
+	public boolean delete(int index){
+		tasks.remove(index - ARRAY_DELETE_OFFSET);
 		updateTaskID();
 		if (jsonStorage.store(tasks) == true) {
 			return true;

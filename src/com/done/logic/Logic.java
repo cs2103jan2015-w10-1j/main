@@ -4,6 +4,8 @@ import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 
+import stubs.ParserUtils;
+
 import com.done.model.Done;
 import com.done.model.DoneFloatingTask;
 import com.done.storage.DoneStorage;
@@ -13,11 +15,9 @@ import com.done.parser.CommandParser;
 import com.done.command.Command;
 import com.done.command.Command.CommandType;
 import com.done.command.CommandAdd;
-import com.done.parser.ParserUtils;
 
 public class Logic {
  	
-	private static final int ARRAY_DELETE_OFFSET = 1;
 	private static final String MESSAGE_DELETE = "Task %1$s deleted!";
 	private static final String MESSAGE_ADD = "Task \"%1$s\" added!";
 	private static final String MESSAGE_CLEAR = "all content deleted";
@@ -108,7 +108,7 @@ public class Logic {
 	}
 	
 	public String getCmdContent(String userCommand){
-		return ParserUtils.removeFirstWord(userCommand);
+		return cmdParser.removeFirstWord(userCommand);
 	}
 	
 	public boolean isSuccessful(){

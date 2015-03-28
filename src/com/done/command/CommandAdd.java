@@ -2,9 +2,11 @@ package com.done.command;
 
 import java.util.ArrayList;
 
+import stubs.ParserUtils;
+
 import com.done.logic.Logic;
 import com.done.model.Done;
-import com.done.parser.ParserUtils;
+import com.done.parser.CommandParser;
 import com.done.storage.InMemStorage;
 
 public class CommandAdd extends Command {
@@ -30,7 +32,8 @@ public class CommandAdd extends Command {
 	}
 	
 	public void setContent(String content){
-		this.content = ParserUtils.processContent(content);
+		CommandParser cmdParser = new CommandParser();
+		this.content = cmdParser.getCommandContent(content);
 	}
 	@Override
 	public void execute() {

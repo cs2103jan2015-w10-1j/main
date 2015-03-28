@@ -3,6 +3,9 @@ package com.done.logic;
 import static org.junit.Assert.*;
 
 import org.junit.Test;
+
+import stubs.ParserUtils;
+
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
@@ -14,7 +17,6 @@ import com.done.storage.InMemStorage;
  
 import com.done.parser.CommandParser;
 import com.done.command.Command.CommandType;
-import com.done.parser.ParserUtils;
 
 public class TestLogic{
 	

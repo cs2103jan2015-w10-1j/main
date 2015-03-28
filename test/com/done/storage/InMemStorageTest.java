@@ -15,18 +15,18 @@ import com.done.model.DoneTimedTask;
 
 public class InMemStorageTest {
 
-	DoneStorage inMem = InMemStorage.getInstance();
+	InMemStorage inMem = InMemStorage.getInstance();
 
 	@Test
 	public void testStore() {
-		List<Done> testDone = new ArrayList<Done>();
-		testDone.add(new DoneFloatingTask("test1"));
-		testDone.add(new DoneTimedTask("test2", 676723, 98891999));
+		Done doneFT = new DoneFloatingTask("test1");
+		Done doneTT = new DoneTimedTask("test2", 676723, 98891999);
 		// This is the equivalence partition for the Done ArrayList
 		// whether is it [NULL] or [NOT NULL]
-		assertNotNull(testDone.get(0));
-		assertNotNull(testDone.get(1));
-		assertTrue(inMem.store(testDone));
+		assertNotNull(doneFT);
+		assertNotNull(doneTT);
+		assertTrue(inMem.store(doneFT));
+		assertTrue(inMem.store(doneTT));
 
 	}
 
