@@ -47,9 +47,13 @@ public class InMemStorage {
 		return false;
 	}
 	
-	public boolean delete(int index){
-		tasks.remove(index - ARRAY_DELETE_OFFSET);
-		updateTaskID();
+	public boolean delete(int index, boolean isDeleteAll){
+		if(isDeleteAll){
+			tasks.clear();
+		}else{
+			tasks.remove(index - ARRAY_DELETE_OFFSET);
+			updateTaskID();
+		}
 		if (jsonStorage.store(tasks) == true) {
 			return true;
 		}

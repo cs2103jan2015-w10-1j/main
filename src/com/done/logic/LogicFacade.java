@@ -5,6 +5,7 @@ import java.util.List;
 
 import com.done.parser.CommandParser;
 import com.done.result.ExecutionResult;
+import com.done.storage.JSONStorage;
 import com.done.command.Command;
 import com.done.command.Command.CommandType;
 import com.done.model.Done;
@@ -38,5 +39,11 @@ public class LogicFacade {
 	public List<Done> getTasks(){
 		logic = new Logic();
 		return this.logic.getTasksForUI();
+	}
+	
+	public String getJsonName(){
+		JSONStorage jsonStorage = JSONStorage.getInstance();
+		String jsonName = jsonStorage.getJsonNameFromPref();
+		return jsonName;
 	}
 }

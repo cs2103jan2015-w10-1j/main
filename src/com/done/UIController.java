@@ -27,13 +27,14 @@ public class UIController {
 	private CommandType prevCommandType = null;
 	
 	private static final String EMPTY_STRING = "";
-	//private static final String SPACE = " ";
 	private static final String SHOWADD_SUCCESS_MESSAGE = "%1$s added to the list";
 	private static final String SHOWADD_ERROR_MESSAGE = "Error: Adding task not successful";
 	private static final String SHOWDELETE_ERROR_MESSAGE = "Error: Invalid delete";
 	private static final String SHOWDELETE_SUCCESS_MESSAGE = "%1$s deleted";
 	private static final String SHOWEDIT_SUCCESS_MESSAGE = "Task edited to %1$s";
 	private static final String SHOWEDIT_ERROR_MESSAGE = "Error: Editing task not successful";
+	private static final String SHOWCLEAR_SUCCESS_MESSAGE = "All tasks cleared";
+	private static final String SHOWCLEAR_ERROR_MESSAGE = "Error: Clearing tasks not successful";
 	private static final String SHOWLOAD_SUCCESS_MESSAGE = "%1$s loaded";
 	private static final String SHOWLOAD_ERROR_MESSAGE = "Error: File load not successful";
 	private static final String SHOWUNDO_ERROR_MESSAGE = "Error: No recent command available";
@@ -47,11 +48,9 @@ public class UIController {
 	@FXML
 	public void initialize() {
 		display();
-		
 		commandField.setOnAction((event) -> {
 			processInput();
 		});
-		
 	}
 	
 	public void processInput(){
@@ -59,13 +58,10 @@ public class UIController {
 		if(!userCommand.equals(EMPTY_STRING)){
 			processCommand(userCommand);	
 		}
+		
 	}
 	
 	private void processCommand(String userCommand){
-		
-		/* TODO: Commands are temporary and for skeletal purpose
-		* some will be removed or changed when UI has been updated
-		*/
 		
 		ExecutionResult result = logicFacade.getExecutionResult(userCommand);
 		CommandType currCommandType = result.getCommandType();
@@ -89,8 +85,12 @@ public class UIController {
 			case LOAD:
 				showLoad(result.isSuccessful(), commandContent);
 				break;
+			case CLEAR:
+				showClear(result.isSuccessful());
+				break;
 			case UNDO:
 				showUndo(result.isSuccessful(), commandContent);
+				break;
 			case EXIT:
 				System.exit(0);
 				break;
@@ -101,7 +101,7 @@ public class UIController {
 		prevCommandType = currCommandType;
 		commandField.clear();
 	}
-	
+
 	private void showAdd(boolean isSuccessful, String commandContent) {
 		if(isSuccessful){
 			Notifications.create().text(String.format(SHOWADD_SUCCESS_MESSAGE, commandContent)).showInformation();
@@ -134,10 +134,20 @@ public class UIController {
 	
 	private void showLoad(boolean isSuccessful, String commandContent){
 		if(isSuccessful){
-			Notifications.create().text(String.format(SHOWLOAD_SUCCESS_MESSAGE, commandContent)).showInformation();
+			Notifications.create().text(String.format(SHOWLOAD_SUCCESS_MESSAGE, commandContent+".json")).showInformation();
 		}
 		else{
 			Notifications.create().text(SHOWLOAD_ERROR_MESSAGE).showError();
+		}
+		display();
+	}
+	
+	private void showClear(boolean isSuccessful) {
+		if(isSuccessful){
+			Notifications.create().text(String.format(SHOWCLEAR_SUCCESS_MESSAGE)).showInformation();
+		}
+		else{
+			Notifications.create().text(SHOWCLEAR_ERROR_MESSAGE).showError();
 		}
 		display();
 	}

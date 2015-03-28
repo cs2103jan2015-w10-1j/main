@@ -1,5 +1,7 @@
 package com.done.command;
 
+import com.done.storage.InMemStorage;
+
 public class CommandClear extends Command {
 	
 	public CommandClear(){
@@ -9,6 +11,7 @@ public class CommandClear extends Command {
 	@Override
 	public void execute() {
 		// TODO Auto-generated method stub
+		InMemStorage.getInstance().delete(0, true);
 
 	}
 

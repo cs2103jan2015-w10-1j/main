@@ -1,5 +1,9 @@
 package com.done;
 
+import org.controlsfx.control.Notifications;
+
+import com.done.logic.LogicFacade;
+
 import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
@@ -8,6 +12,8 @@ import javafx.stage.Stage;
 
 
 public class DoneUI extends Application {
+	
+	LogicFacade logicFacade = new LogicFacade();
 	
 	@Override
 	public void start(Stage primaryStage) {
@@ -22,6 +28,8 @@ public class DoneUI extends Application {
 	        primaryStage.setScene(scene);
 	        primaryStage.setResizable(false);
 	        primaryStage.show();
+	        
+	        Notifications.create().text(logicFacade.getJsonName() + " loaded").showInformation();
 	        
 		} catch(Exception e) {
 			e.printStackTrace();

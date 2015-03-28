@@ -22,7 +22,7 @@ public class CommandDelete extends Command {
 	@Override
 	public void execute() {
 		InMemStorage inMemStorage = InMemStorage.getInstance();
-		inMemStorage.delete(deleteindex);
+		inMemStorage.delete(deleteindex, false);
 	}
 
 	@Override
