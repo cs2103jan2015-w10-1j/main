@@ -143,7 +143,7 @@ public class CommandParser {
 			}
 		}
 		
-		if (false){
+		if (isTimed){
 			// if content contains start time
 			// we generate (new) timeTask
 			//return timedTask

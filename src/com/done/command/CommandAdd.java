@@ -37,12 +37,8 @@ public class CommandAdd extends Command {
 	}
 	@Override
 	public void execute() {
-		// get the instance of ur storage
 		InMemStorage inMemStorage = InMemStorage.getInstance();
-		// store task into ur storage
 		inMemStorage.store(task);
-		// gao ding
-
 	}
 
 	@Override
