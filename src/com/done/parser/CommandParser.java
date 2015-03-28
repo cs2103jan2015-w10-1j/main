@@ -7,27 +7,19 @@ import com.done.command.CommandAdd;
 import com.done.command.CommandClear;
 import com.done.command.CommandDelete;
 import com.done.command.CommandInvalid;
+import com.done.command.CommandLoad;
 import com.done.command.CommandSearch;
 import com.done.command.Command.CommandType;
 import com.done.model.Done;
 import com.done.model.DoneFloatingTask;
 
 public class CommandParser {
-
-	/*
-	 * TODO: These commands are for skeletal purpose only* DISPLAY and CLEAR
-	 * command especially will be replaced/removed
-	 */
-	/*public enum CommandType {
-		ADD, DELETE, CLEAR, DISPLAY, EDIT, SEARCH, UNDO, REORDER, MOVE, MARK, REMIND, RECUR, EXIT, INVALID;
-	}*/
 	
 	public CommandParser(){
 		
 	}
 	
-	
-	public Command parseInstructionToMakeCommand(String userInput){
+	public Command parseInputToMakeCommand(String userInput){
 		
 		String commandWord = getFirstWord(userInput);
 		String commandContent = removeFirstWord(userInput);
@@ -49,6 +41,8 @@ public class CommandParser {
 			return CommandType.CLEAR;
 		} else if (command.equalsIgnoreCase("edit")) {
 			return CommandType.EDIT;
+		} else if (command.equalsIgnoreCase("load")) {
+			return CommandType.LOAD;
 		} else if (command.equalsIgnoreCase("search")) {
 			return CommandType.SEARCH;
 		} else if (command.equalsIgnoreCase("undo")) {
@@ -109,16 +103,6 @@ public class CommandParser {
 			 */
 			Done tempTask = defineTask(commandContent); 
 			
-			
-			/*String[] split = commandContent.split("\\s+");
-			for(int i = 0; i < split.length; i++){
-				if(split[i].equals("s")){
-					// timedtask
-				}else if(split[i].equals("e")){
-					// deadline task
-				}
-			}*/
-			
 			return new CommandAdd(tempTask);
 		} else if (commandWord.equalsIgnoreCase("delete")) {
 			if(isContentValid(commandWord, commandContent)){
@@ -126,6 +110,8 @@ public class CommandParser {
 			}else{
 				return new CommandInvalid();
 			}
+		} else if (commandWord.equalsIgnoreCase("load")){
+			return new CommandLoad(commandContent);
 		} else if (commandWord.equalsIgnoreCase("clear")) {
 			return new CommandClear();
 		} else if (commandWord.equalsIgnoreCase("search")) {
@@ -158,20 +144,13 @@ public class CommandParser {
 			// we generate new deadlinedTask
 			//return deadlinedTask
 			
-		}if (commandContent != null && commandContent != ""){
+		}if (!commandContent.equals(null) && !commandContent.equals("")){
 			// if content isn't null or ""
 			// we generate new floatingTask
 			// we return floatingTask
 			task = new DoneFloatingTask(commandContent);
 			return task;
 		}
-		
-
-		
-
-		
-
-		
 		// else return null or throw exception
 		return null;
 		

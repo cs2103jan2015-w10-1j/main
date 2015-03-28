@@ -20,7 +20,7 @@ public class LogicFacade {
 		//CommandType commandType = logic.getCmdType(userCommand);
 		String commandContent = logic.getCmdContent(userCommand);
 		CommandParser parser = new CommandParser();
-		Command command = parser.parseInstructionToMakeCommand(userCommand);
+		Command command = parser.parseInputToMakeCommand(userCommand);
 		
 		logic.executeCommand(command);
 		//ExecutionResult tempExecutionResult = new ExecutionResult(command.getCommandType(), true);

@@ -34,6 +34,8 @@ public class UIController {
 	private static final String SHOWDELETE_SUCCESS_MESSAGE = "%1$s deleted";
 	private static final String SHOWEDIT_SUCCESS_MESSAGE = "Task edited to %1$s";
 	private static final String SHOWEDIT_ERROR_MESSAGE = "Error: Editing task not successful";
+	private static final String SHOWLOAD_SUCCESS_MESSAGE = "%1$s loaded";
+	private static final String SHOWLOAD_ERROR_MESSAGE = "Error: File load not successful";
 	private static final String SHOWUNDO_ERROR_MESSAGE = "Error: No recent command available";
 	private static final String SHOWUNDO_SUCCESS_MESSAGE = "Undo %1$s %2$s";
 	private static final String SHOWINVALIDCOMMAND_ERROR_MESSAGE = "Error: Invalid command";
@@ -84,9 +86,9 @@ public class UIController {
 			case EDIT:
 				showEdit(result.isSuccessful(), commandContent);
 				break;
-			/*case LOAD:
+			case LOAD:
 				showLoad(result.isSuccessful(), commandContent);
-				break;*/
+				break;
 			case UNDO:
 				showUndo(result.isSuccessful(), commandContent);
 			case EXIT:
@@ -130,9 +132,15 @@ public class UIController {
 		display();
 	}
 	
-	/*private void showLoad(boolean isSuccessful, String commandContent){
+	private void showLoad(boolean isSuccessful, String commandContent){
+		if(isSuccessful){
+			Notifications.create().text(String.format(SHOWLOAD_SUCCESS_MESSAGE, commandContent)).showInformation();
+		}
+		else{
+			Notifications.create().text(SHOWLOAD_ERROR_MESSAGE).showError();
+		}
 		display();
-	}*/
+	}
 
 	private void showUndo(boolean isSuccessful, String commandContent) {
 		if(isSuccessful){

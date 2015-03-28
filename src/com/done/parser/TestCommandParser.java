@@ -14,14 +14,14 @@ public class TestCommandParser {
 	@Test
 	//Equivalence partition: String content that is positive integer
 	public void testGetCommandDeleteValid() {
-		Command validCommandDelete = testedParser.parseInstructionToMakeCommand("delete 1");
+		Command validCommandDelete = testedParser.parseInputToMakeCommand("delete 1");
 		assertEquals(validCommandDelete.getCommandType(),CommandType.DELETE);
 	}
 	
 	@Test
 	//Equivalence partition: String content that is not a number
 	public void testGetCommandDeleteInvalid(){
-		Command invalidCommandDelete = testedParser.parseInstructionToMakeCommand("delete aaa");
+		Command invalidCommandDelete = testedParser.parseInputToMakeCommand("delete aaa");
 		assertEquals(invalidCommandDelete.getCommandType(), CommandType.INVALID);
 	}
 
