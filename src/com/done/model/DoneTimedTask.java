@@ -1,10 +1,14 @@
 package com.done.model;
 
+import java.text.SimpleDateFormat;
+
 public class DoneTimedTask extends Done {
 
 	// Time format to use UNIX epoch style
 	private long startTime;
 	private long endTime;
+	
+	
 
 	public DoneTimedTask(String title, long startTime, long endTime) {
 		super(title);
@@ -20,16 +24,18 @@ public class DoneTimedTask extends Done {
 		this.setEndTime(endTime);
 	}
 
-	public long getStartTime() {
-		return startTime;
+	public String getStartTime() {
+		SimpleDateFormat sdf = new SimpleDateFormat("d MMM yyyy HH:mm");
+		return sdf.format(startTime);
 	}
 
 	public void setStartTime(long startTime) {
 		this.startTime = startTime;
 	}
 
-	public long getEndTime() {
-		return endTime;
+	public String getEndTime() {
+		SimpleDateFormat sdf = new SimpleDateFormat("d MMM yyyy HH:mm");
+		return sdf.format(endTime);
 	}
 
 	public void setEndTime(long endTime) {

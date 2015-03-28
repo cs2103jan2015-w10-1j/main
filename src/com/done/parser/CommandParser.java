@@ -1,37 +1,38 @@
 package com.done.parser;
 
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.Date;
 
 import org.joda.time.DateTime;
 import org.joda.time.LocalDate;
+import org.joda.time.LocalTime;
+import org.joda.time.format.DateTimeFormat;
+import org.joda.time.format.DateTimeFormatter;
 
 import com.done.command.Command;
+import com.done.command.Command.CommandType;
 import com.done.command.CommandAdd;
 import com.done.command.CommandClear;
 import com.done.command.CommandDelete;
 import com.done.command.CommandInvalid;
 import com.done.command.CommandLoad;
 import com.done.command.CommandSearch;
-import com.done.command.Command.CommandType;
 import com.done.model.Done;
 import com.done.model.DoneDeadlineTask;
 import com.done.model.DoneFloatingTask;
+import com.done.model.DoneTimedTask;
 
 public class CommandParser {
-	
-	public CommandParser(){
-		
+
+	public CommandParser() {
+
 	}
-	
-	public Command parseInputToMakeCommand(String userInput){
-		
+
+	public Command parseInputToMakeCommand(String userInput) {
+
 		String commandWord = getFirstWord(userInput);
 		String commandContent = removeFirstWord(userInput);
 		return makeCommand(commandWord, commandContent);
-		
+
 	}
 
 	public CommandType getCommandType(String commandWord) {
@@ -77,7 +78,7 @@ public class CommandParser {
 		ArrayList<String> commandContent = processContent(currentContent);
 		return commandContent;
 	}
-	
+
 	public String removeFirstWord(String userCommand) {
 		return userCommand.replace(getFirstWord(userCommand), "").trim();
 	}
@@ -89,7 +90,8 @@ public class CommandParser {
 	// At current Stage, only slice the content into parts separated by spaces
 	// Might modify in later versions
 	private ArrayList<String> processContent(String content) {
-		// JERRY: Ruoming, the ArrayList is actually redundant, returning just the
+		// JERRY: Ruoming, the ArrayList is actually redundant, returning just
+		// the
 		// String[] array would be good enough.
 		ArrayList<String> processedContent = new ArrayList<String>();
 		String[] contentPieces = content.split("\\s+");
@@ -99,25 +101,24 @@ public class CommandParser {
 		return processedContent;
 	}
 
-	
 	private Command makeCommand(String commandWord, String commandContent) {
 		// Command command;
 		if (commandWord.equalsIgnoreCase("add")) {
-			/* after we know that this is a "add" command
-			 * we should implement a definer to differentiate the type of tasks
-			 * so you should use commandContent as the parameter of a new method
-			 * 
+			/*
+			 * after we know that this is a "add" command we should implement a
+			 * definer to differentiate the type of tasks so you should use
+			 * commandContent as the parameter of a new method
 			 */
-			Done tempTask = defineTask(commandContent); 
-			
+			Done tempTask = defineTask(commandContent);
+
 			return new CommandAdd(tempTask);
 		} else if (commandWord.equalsIgnoreCase("delete")) {
-			if(isContentValid(commandWord, commandContent)){
+			if (isContentValid(commandWord, commandContent)) {
 				return new CommandDelete(Integer.parseInt(commandContent));
-			}else{
+			} else {
 				return new CommandInvalid();
 			}
-		} else if (commandWord.equalsIgnoreCase("load")){
+		} else if (commandWord.equalsIgnoreCase("load")) {
 			return new CommandLoad(commandContent);
 		} else if (commandWord.equalsIgnoreCase("clear")) {
 			return new CommandClear();
@@ -134,13 +135,16 @@ public class CommandParser {
 		boolean isDeadline = false;
 		int dateIndex = 0;
 		int timeIndex = 0;
-	
+
 		// now u breakdown commandContent
 		String[] split = commandContent.split("\\s+");
-		for(int i = 0; i < split.length; i++){
-			if(split[i].equals("..s")){
+		for (int i = 0; i < split.length; i++) {
+			if (split[i].equals("..s") || split[i].equals("..e")) {
 				// timedtask
-			}else if(split[i].equals("..d")){
+				isTimed = true;
+				timeIndex = i + 1;
+				break;
+			} else if (split[i].equals("..d")) {
 				// deadline task
 				isDeadline = true;
 				timeIndex = i + 2;
@@ -148,34 +152,23 @@ public class CommandParser {
 				break;
 			}
 		}
-		
-		if (isTimed){
+
+		if (isTimed) {
 			// if content contains start time
 			// we generate (new) timeTask
-			//return timedTask
-		}
-		else if (isDeadline){
+			// return timedTask
+			task = addTimed(split, timeIndex);
+			return task;
+
+		} else if (isDeadline) {
 			// if content has deadline (time) at
 			// we generate new deadlinedTask
-			//return deadlinedTask
-			StringBuilder sb = new StringBuilder();
-			for(int i=0;i<dateIndex-1;i++){
-				sb.append(split[i]+ " ");
-			}
-			commandContent = sb.toString();
-			SimpleDateFormat sdf = new SimpleDateFormat("ddMMyyyy kk:mm");
-			Date date = null;
-			try {
-				date = sdf.parse(split[dateIndex]+" "+split[timeIndex]);
-			} catch (ParseException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			}
-			task = new DoneDeadlineTask(commandContent, date.getTime());
+			// return deadlinedTask
+			task = addDeadline(split, timeIndex, dateIndex);
 			return task;
 		}
-		
-		if (!commandContent.equals(null) && !commandContent.equals("")){
+
+		if (!commandContent.equals(null) && !commandContent.equals("")) {
 			// if content isn't null or ""
 			// we generate new floatingTask
 			// we return floatingTask
@@ -184,11 +177,10 @@ public class CommandParser {
 		}
 		// else return null or throw exception
 		return null;
-		
+
 	}
 
-	private boolean isContentValid(String commandWord,
-			String commandContent) {
+	private boolean isContentValid(String commandWord, String commandContent) {
 		if (commandWord.equalsIgnoreCase("add")) {
 			return true;
 		} else if (commandWord.equalsIgnoreCase("delete")
@@ -207,5 +199,64 @@ public class CommandParser {
 			return false;
 		}
 	}
-	
+
+	private Done addTimed(String[] content, int timeIndex) {
+		Done task = null;
+
+		StringBuilder sb = new StringBuilder();
+		for (int i = 0; i < timeIndex - 1; i++) {
+			if (i == timeIndex - 2) {
+				sb.append(content[i]);
+			} else {
+				sb.append(content[i] + " ");
+			}
+		}
+		String taskTitle = sb.toString();
+		String startTime = "";
+		String endTime = "";
+		if (content[timeIndex - 1].equalsIgnoreCase("..s")) {
+			startTime = content[timeIndex];
+			try {
+				if (content[timeIndex + 1].equalsIgnoreCase("..e")) {
+					endTime = content[timeIndex + 2];
+				}
+			} catch (NullPointerException e) {
+				System.out.println("Missing time information");
+			}
+		}
+		DateTimeFormatter dtf = DateTimeFormat.forPattern("HH:mm");
+		LocalDate localStartDate = LocalDate.now();
+		LocalDate localEndDate = LocalDate.now();
+		LocalTime localStartTime = dtf.parseLocalTime(startTime);
+		LocalTime localEndTime = dtf.parseLocalTime(endTime);
+
+		long startTimeValue = localStartDate.toDate().getTime()
+				+ localStartTime.getMillisOfDay();
+		long endTimeValue = localEndDate.toDate().getTime()
+				+ localEndTime.getMillisOfDay();
+
+		task = new DoneTimedTask(taskTitle, startTimeValue, endTimeValue);
+		return task;
+	}
+
+	private Done addDeadline(String[] content, int timeIndex, int dateIndex) {
+		Done task = null;
+		StringBuilder sb = new StringBuilder();
+		for (int i = 0; i < dateIndex - 1; i++) {
+			if (i == dateIndex - 2) {
+				sb.append(content[i]);
+			} else {
+				sb.append(content[i] + " ");
+			}
+
+		}
+		String taskTitle = sb.toString();
+		DateTimeFormatter dtf = DateTimeFormat.forPattern("ddMMyyyy HH:mm");
+		DateTime date = null;
+		date = dtf.parseDateTime(content[dateIndex] + " " + content[timeIndex]);
+		task = new DoneDeadlineTask(taskTitle, date.getMillis());
+		return task;
+
+	}
+
 }
