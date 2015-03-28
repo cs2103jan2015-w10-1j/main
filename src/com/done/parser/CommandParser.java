@@ -1,6 +1,12 @@
 package com.done.parser;
 
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
+
+import org.joda.time.DateTime;
+import org.joda.time.LocalDate;
 
 import com.done.command.Command;
 import com.done.command.CommandAdd;
@@ -154,10 +160,18 @@ public class CommandParser {
 			//return deadlinedTask
 			StringBuilder sb = new StringBuilder();
 			for(int i=0;i<dateIndex-1;i++){
-				sb.append(split[i]);
+				sb.append(split[i]+ " ");
 			}
 			commandContent = sb.toString();
-			task = new DoneDeadlineTask(commandContent, Long.parseLong(split[dateIndex]));
+			SimpleDateFormat sdf = new SimpleDateFormat("ddMMyyyy kk:mm");
+			Date date = null;
+			try {
+				date = sdf.parse(split[dateIndex]+" "+split[timeIndex]);
+			} catch (ParseException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+			task = new DoneDeadlineTask(commandContent, date.getTime());
 			return task;
 		}
 		

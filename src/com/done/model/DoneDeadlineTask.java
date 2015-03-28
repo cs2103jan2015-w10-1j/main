@@ -1,5 +1,7 @@
 package com.done.model;
 
+import java.text.SimpleDateFormat;
+
 public class DoneDeadlineTask extends Done {
 	// Time format to use UNIX epoch style
 	private long endTime;
@@ -16,12 +18,13 @@ public class DoneDeadlineTask extends Done {
 		this.setEndTime(endTime);
 	}
 
-	public long getEndTime() {
-		return endTime;
-	}
-
 	public void setEndTime(long endTime) {
 		this.endTime = endTime;
+	}
+	
+	public String getEndTime(){
+		SimpleDateFormat sdf = new SimpleDateFormat("d MMM yyyy HH:mm");
+		return sdf.format(endTime);
 	}
 
 }

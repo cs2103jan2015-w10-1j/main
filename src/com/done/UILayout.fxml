@@ -16,9 +16,9 @@
       <TableView fx:id="tableViewTasks" layoutX="9.0" layoutY="12.0" prefHeight="332.0" prefWidth="590.0">
         <columns>
         	<TableColumn prefWidth="50.0" text="No." />
-        	<TableColumn prefWidth="350.0" text="Task" />
+        	<TableColumn prefWidth="280.0" text="Task" />
         	<TableColumn prefWidth="90.0" text="Start Time" />
-          	<TableColumn prefWidth="90.0" text="Due Date" />
+          	<TableColumn prefWidth="130.0" text="Due Date" />
         </columns>
       </TableView>
       
