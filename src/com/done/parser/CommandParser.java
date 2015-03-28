@@ -1,5 +1,6 @@
 package com.done.parser;
 
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 
 import org.joda.time.DateTime;
@@ -110,7 +111,6 @@ public class CommandParser {
 			 * commandContent as the parameter of a new method
 			 */
 			Done tempTask = defineTask(commandContent);
-
 			return new CommandAdd(tempTask);
 		} else if (commandWord.equalsIgnoreCase("delete")) {
 			if (isContentValid(commandWord, commandContent)) {
@@ -137,6 +137,7 @@ public class CommandParser {
 		int timeIndex = 0;
 
 		// now u breakdown commandContent
+		// search for the type and set corresponding boolean
 		String[] split = commandContent.split("\\s+");
 		for (int i = 0; i < split.length; i++) {
 			if (split[i].equals("..s") || split[i].equals("..e")) {
@@ -202,6 +203,11 @@ public class CommandParser {
 
 	private Done addTimed(String[] content, int timeIndex) {
 		Done task = null;
+		DateTimeFormatter dtf = DateTimeFormat.forPattern("HH:mm");
+		long startTimeValue = 0;
+		long endTimeValue = 0;
+		LocalDate localStartDate = LocalDate.now();
+		LocalDate localEndDate = LocalDate.now();
 
 		StringBuilder sb = new StringBuilder();
 		for (int i = 0; i < timeIndex - 1; i++) {
@@ -222,18 +228,25 @@ public class CommandParser {
 				}
 			} catch (NullPointerException e) {
 				System.out.println("Missing time information");
-			}
-		}
-		DateTimeFormatter dtf = DateTimeFormat.forPattern("HH:mm");
-		LocalDate localStartDate = LocalDate.now();
-		LocalDate localEndDate = LocalDate.now();
-		LocalTime localStartTime = dtf.parseLocalTime(startTime);
-		LocalTime localEndTime = dtf.parseLocalTime(endTime);
+			}			
+			LocalTime localStartTime = dtf.parseLocalTime(startTime);
+			LocalTime localEndTime = dtf.parseLocalTime(endTime);
 
-		long startTimeValue = localStartDate.toDate().getTime()
-				+ localStartTime.getMillisOfDay();
-		long endTimeValue = localEndDate.toDate().getTime()
-				+ localEndTime.getMillisOfDay();
+			startTimeValue = localStartDate.toDate().getTime()
+					+ localStartTime.getMillisOfDay();
+			endTimeValue = localEndDate.toDate().getTime()
+					+ localEndTime.getMillisOfDay();
+			
+		}else if(content[timeIndex - 1].equalsIgnoreCase("..e")){
+			endTime = content[timeIndex];
+			
+			DateTime localStartDateTime = DateTime.now();
+			LocalTime localEndTime = dtf.parseLocalTime(endTime);
+			
+			startTimeValue = localStartDateTime.getMillis();
+			endTimeValue = localEndDate.toDate().getTime()
+					+ localEndTime.getMillisOfDay();
+		}
 
 		task = new DoneTimedTask(taskTitle, startTimeValue, endTimeValue);
 		return task;
