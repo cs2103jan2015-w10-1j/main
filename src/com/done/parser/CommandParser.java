@@ -11,6 +11,7 @@ import com.done.command.CommandLoad;
 import com.done.command.CommandSearch;
 import com.done.command.Command.CommandType;
 import com.done.model.Done;
+import com.done.model.DoneDeadlineTask;
 import com.done.model.DoneFloatingTask;
 
 public class CommandParser {
@@ -123,14 +124,22 @@ public class CommandParser {
 
 	private Done defineTask(String commandContent) {
 		Done task;
+		boolean isTimed = false;
+		boolean isDeadline = false;
+		int dateIndex = 0;
+		int timeIndex = 0;
 	
 		// now u breakdown commandContent
 		String[] split = commandContent.split("\\s+");
 		for(int i = 0; i < split.length; i++){
-			if(split[i].equals("s")){
+			if(split[i].equals("..s")){
 				// timedtask
-			}else if(split[i].equals("e")){
+			}else if(split[i].equals("..d")){
 				// deadline task
+				isDeadline = true;
+				timeIndex = i + 2;
+				dateIndex = i + 1;
+				break;
 			}
 		}
 		
@@ -139,12 +148,20 @@ public class CommandParser {
 			// we generate (new) timeTask
 			//return timedTask
 		}
-		else if (false){
+		else if (isDeadline){
 			// if content has deadline (time) at
 			// we generate new deadlinedTask
 			//return deadlinedTask
-			
-		}if (!commandContent.equals(null) && !commandContent.equals("")){
+			StringBuilder sb = new StringBuilder();
+			for(int i=0;i<dateIndex-1;i++){
+				sb.append(split[i]);
+			}
+			commandContent = sb.toString();
+			task = new DoneDeadlineTask(commandContent, Long.parseLong(split[dateIndex]));
+			return task;
+		}
+		
+		if (!commandContent.equals(null) && !commandContent.equals("")){
 			// if content isn't null or ""
 			// we generate new floatingTask
 			// we return floatingTask

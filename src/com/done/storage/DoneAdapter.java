@@ -24,7 +24,7 @@ public class DoneAdapter implements JsonSerializer<List<Done>>,
 
 	private static Map<String, Class> map = new TreeMap<String, Class>();
 	static {
-		map.put("DoneDeadLineTask", DoneDeadlineTask.class);
+		map.put("DoneDeadlineTask", DoneDeadlineTask.class);
 		map.put("DoneFloatingTask", DoneFloatingTask.class);
 		map.put("DoneTimedTask", DoneTimedTask.class);
 	}

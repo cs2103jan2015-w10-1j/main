@@ -40,7 +40,9 @@ public class JSONStorage  {
 		// setUpLogger();
 		this.gson = new GsonBuilder()
 				.registerTypeAdapter(Done.class, new DoneAdapter())
-				.setPrettyPrinting().create();
+				.setPrettyPrinting()
+				.serializeNulls()
+				.create();
 		pref = new Properties();
 		jsonName = getJsonNameFromPref();
 		isNewJson = false;
