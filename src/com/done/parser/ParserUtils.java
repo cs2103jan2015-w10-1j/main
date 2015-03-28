@@ -8,6 +8,7 @@ import com.done.command.CommandClear;
 import com.done.command.CommandDelete;
 import com.done.command.CommandInvalid;
 import com.done.command.CommandSearch;
+import com.done.model.Done;
 
 
 public class ParserUtils {
@@ -33,10 +34,28 @@ public class ParserUtils {
 		return processedContent;
 	}
 
+	
 	public static Command makeCommand(String commandWord, String commandContent) {
 		// Command command;
 		if (commandWord.equalsIgnoreCase("add")) {
-			return new CommandAdd(commandContent);
+			/* after we know that this is a "add" command
+			 * we should implement a definer to differentiate the type of tasks
+			 * so you should use commandContent as the parameter of a new method
+			 * 
+			 */
+			Done tempTask = defineTask(commandContent); 
+			
+			
+			/*String[] split = commandContent.split("\\s+");
+			for(int i = 0; i < split.length; i++){
+				if(split[i].equals("s")){
+					// timedtask
+				}else if(split[i].equals("e")){
+					// deadline task
+				}
+			}*/
+			
+			return new CommandAdd(tempTask);
 		} else if (commandWord.equalsIgnoreCase("delete")) {
 			if(isContentValid(commandWord, commandContent)){
 				return new CommandDelete(Integer.parseInt(commandContent));
@@ -50,6 +69,28 @@ public class ParserUtils {
 		} else {
 			return new CommandInvalid();
 		}
+	}
+
+	private static Done defineTask(String commandContent) {
+		// now u breakdown commandContent
+		
+		// if content contains start time
+		// we generate (new) timeTask
+		//return timedTask
+		
+		// if content has deadline (time)
+		// we generate new deadlinedTask
+		//return deadlinedTask
+		
+		// if content isn't null or ""
+		// we generate new floatingTask
+		// we return floatingTask
+		
+		// else return null or throw exception
+		
+		
+		return null;
+		
 	}
 
 	public static boolean isContentValid(String commandWord,

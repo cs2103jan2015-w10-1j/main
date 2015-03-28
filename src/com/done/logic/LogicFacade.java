@@ -3,7 +3,9 @@ package com.done.logic;
 import java.util.ArrayList;
 import java.util.List;
 
+import com.done.parser.CommandParser;
 import com.done.result.ExecutionResult;
+import com.done.command.Command;
 import com.done.command.Command.CommandType;
 import com.done.model.Done;
 import com.done.logic.Logic;
@@ -14,17 +16,22 @@ public class LogicFacade {
 	
 	public ExecutionResult getExecutionResult(String userCommand){
 
-		CommandType commandType = logic.getCmdType(userCommand);
-		String commandContent = logic.getCmdContent(userCommand);
-		logic.executeCommand(commandType, commandContent);
-		boolean isSuccessful = logic.isSuccessful();
+		// sorry to comment this but parsing the command should be done in the parser component
+		//CommandType commandType = logic.getCmdType(userCommand);
+		// String commandContent = logic.getCmdContent(userCommand);
+		CommandParser parser = new CommandParser();
+		Command command = parser.parseInstructionToMakeCommand(userCommand);
+		
+		logic.executeCommand(command);
+		ExecutionResult tempExecutionResult = new ExecutionResult(command.getCommandType(), true);
+/*		boolean isSuccessful = logic.isSuccessful();
 		ExecutionResult tempExecutionResult;
 		
 		if (isSuccessful){
 			tempExecutionResult = new ExecutionResult(commandType, isSuccessful, commandContent);
 		} else {
 			tempExecutionResult = new ExecutionResult(commandType, isSuccessful);
-		}
+		}*/
 		return tempExecutionResult;	
 	}
 	

@@ -38,9 +38,17 @@ public class Logic {
 		this.cmdParser = new CommandParser();
 	}
  	
-	public void executeCommand(CommandType commandType, String userCommand){
+	public void executeCommand(Command command){
 		try{
-			processCommand(commandType, userCommand);
+			
+			// done..
+			command.execute();
+			isSuccessful = true;
+			// ok wait
+			// step 2. add command into undo Stack
+			// step 3. done..
+			
+			//processCommand(commandType, commandContent);
 		}
 		catch(Exception e){
 			isSuccessful = false;
@@ -48,8 +56,13 @@ public class Logic {
 		
 	}
 	
-	private void processCommand(CommandType command, String content){
- 		try{	
+	
+	// There is no need to get the commandType anymore since you have already created command in parser
+	// in order to processCommand, we need to have command first !
+	private void processCommand(CommandType commandType, String commandContent){
+
+		
+ /*		try{	
  			
 	 		switch(command){
 		
@@ -62,6 +75,7 @@ public class Logic {
 				//addTask(content);
 				Command add = new CommandAdd(content);
 				add.execute();
+				isSuccessful = true;
 				break;	
 				
 	 		case DELETE:
@@ -86,7 +100,7 @@ public class Logic {
 	
  		catch(Exception e){
  			System.out.println(ERROR_PROCESS_COMMAND + e.getMessage());
- 		}
+ 		}*/
 	}
 	
 	
@@ -96,8 +110,7 @@ public class Logic {
 	}
 	
 	public String getCmdContent(String userCommand){
-		String content = cmdParser.getCommandContent(userCommand).get(0);
-		return content;
+		return ParserUtils.removeFirstWord(userCommand);
 	}
 	
 	public boolean isSuccessful(){
