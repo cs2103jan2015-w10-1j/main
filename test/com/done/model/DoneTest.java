@@ -40,14 +40,4 @@ public class DoneTest {
 		assertThat(done.getTitle().length(), not(0));
 	}
 
-	@Test
-	public void testDoneLong() {
-		DoneDeadlineTask done = new DoneDeadlineTask("test", 7823718);
-		// Equivalence Partition of:
-		// not less than 0 and not more than [MAX_VALUE]
-		// for UNIX timestamp
-		long endTime = done.getEndTime();
-		assertTrue(endTime > 0 && endTime <= Long.MAX_VALUE);
-	}
-
 }
