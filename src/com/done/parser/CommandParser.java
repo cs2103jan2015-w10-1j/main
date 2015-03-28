@@ -83,10 +83,8 @@ public class CommandParser {
 	}
 
 	public String removeFirstWord(String userCommand) {
-		// trim first then u use substring!
 		String returnStr = getFirstWord(userCommand).trim();
-		returnStr =userCommand.substring(returnStr.length());
-	//	returnStr =userCommand.substring(returnStr.length()+1, userCommand.length());
+		returnStr = userCommand.substring(returnStr.length());
 		return returnStr.trim();
 	}
 
@@ -97,9 +95,6 @@ public class CommandParser {
 	// At current Stage, only slice the content into parts separated by spaces
 	// Might modify in later versions
 	private ArrayList<String> processContent(String content) {
-		// JERRY: Ruoming, the ArrayList is actually redundant, returning just
-		// the
-		// String[] array would be good enough.
 		ArrayList<String> processedContent = new ArrayList<String>();
 		String[] contentPieces = content.split("\\s+");
 		for (String pieceOfContent : contentPieces) {
