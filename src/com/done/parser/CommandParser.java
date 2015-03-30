@@ -55,8 +55,6 @@ public class CommandParser {
 			return CommandType.ADD;
 		} else if (command.equalsIgnoreCase("delete")) {
 			return CommandType.DELETE;
-		} else if (command.equalsIgnoreCase("display")) {
-			return CommandType.DISPLAY;
 		} else if (command.equalsIgnoreCase("clear")) {
 			return CommandType.CLEAR;
 		} else if (command.equalsIgnoreCase("edit")) {
@@ -113,7 +111,6 @@ public class CommandParser {
 	}
 
 	private Command makeCommand(String commandWord, String commandContent) {
-		// Command command;
 		if (commandWord.equalsIgnoreCase("add")) {
 			/*
 			 * after we know that this is a "add" command we should implement a
@@ -125,7 +122,6 @@ public class CommandParser {
 		} else if (commandWord.equalsIgnoreCase("delete")) {
 			if (isContentValid(commandWord, commandContent)) {
 				// get Done object by index
-
 				return new CommandDelete(Integer.parseInt(commandContent));
 			} else {
 				return new CommandInvalid();
@@ -223,15 +219,15 @@ public class CommandParser {
 		LocalDate localStartDate = LocalDate.now();
 		LocalDate localEndDate = LocalDate.now();
 
-		StringBuilder sb = new StringBuilder();
+		StringBuilder taskTitleBuilder = new StringBuilder();
 		for (int i = 0; i < timeIndex - 1; i++) {
 			if (i == timeIndex - 2) {
-				sb.append(content[i]);
+				taskTitleBuilder.append(content[i]);
 			} else {
-				sb.append(content[i] + " ");
+				taskTitleBuilder.append(content[i] + " ");
 			}
 		}
-		String taskTitle = sb.toString();
+		String taskTitle = taskTitleBuilder.toString();
 		String startTime = "";
 		String endTime = "";
 		if (content[timeIndex - 1].equalsIgnoreCase("..s")) {

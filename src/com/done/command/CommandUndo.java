@@ -17,7 +17,7 @@ public class CommandUndo extends Command{
 	@Override
 	public void undo() {
 		// UNUSED
-		
+		//System.out.printf(MESSAGE_ERROR,"undo",this.getCommandType());
 	}
 
 }

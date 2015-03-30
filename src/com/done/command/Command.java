@@ -1,47 +1,39 @@
 package com.done.command;
 
-import java.util.Stack;
-
 public abstract class Command {
 	private int id;
-	//protected static Stack<Command> allCommands;
 	private CommandType type;
 	private boolean undoable;
 
+	//String for reporting error from behaviour that is not supposed to be present.
+	//Could be used for logging.
+	protected static final String MESSAGE_ERROR = "Error happened when attempting to execute %1$s method in %2$s command\n";
+
 	public enum CommandType {
-		ADD, DELETE, LOAD, CLEAR, DISPLAY, EDIT, SEARCH, UNDO, REORDER, MOVE, MARK, REMIND, RECUR, EXIT, INVALID;
+		ADD, DELETE, LOAD, CLEAR, EDIT, SEARCH, UNDO, REORDER, MOVE, MARK, UNMARK, REMIND, RECUR, EXIT, INVALID;
 	}
-	
-	public Command(CommandType type, boolean undoable){
+
+	public Command(CommandType type, boolean undoable) {
 		this.type = type;
 		this.undoable = undoable;
 	}
 
-	public CommandType getCommandType(){
+	// Only getter of CommandType is given as CommandType is not set to be
+	// mutable
+	public CommandType getCommandType() {
 		return this.type;
 	}
-	
-	/*private void setCommandType(CommandType type){
-		this.type = type;
-	}
-	
-	public List getContent(){
-		return this.content;
-	}
-	
-	public void setContent(List content){
-		this.content = content;
-	}*/
-	
-	public int getId(){
+
+	public int getId() {
 		return this.id;
 	}
-	
-	public void setId(int id){
+
+	public void setId(int id) {
 		this.id = id;
 	}
-	
+
 	public abstract void execute() throws Exception;
+
 	public abstract void undo();
 
 	public boolean isUndoable() {
