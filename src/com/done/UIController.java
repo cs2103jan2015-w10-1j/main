@@ -41,16 +41,17 @@ public class UIController implements Observer {
 	private static final String SHOWUNDO_ERROR_MESSAGE = "Error: No recent command available";
 	private static final String SHOWUNDO_SUCCESS_MESSAGE = "Undo %1$s %2$s";
 	private static final String SHOWINVALIDCOMMAND_ERROR_MESSAGE = "Error: Invalid command";
+	private static final String UPDATEREMINDER_MESSAGE = "Reminder for %1$s";
 	
 	public UIController(){
 		logicFacade = new LogicFacade();
-		UIController uiController = new UIController();
-		logicFacade.addUI(uiController);
 	}
 
 	@FXML
 	public void initialize() {
 		display();
+		UIController uiController = new UIController();
+		logicFacade.addUI(uiController);
 		commandField.setOnAction((event) -> {
 			processInput();
 		});
@@ -110,7 +111,8 @@ public class UIController implements Observer {
 	}
 	
 	public void updateReminder(int taskId){
-		
+		String reminder = logicFacade.getReminder(taskId);
+		Notifications.create().title("Task Reminder").text(String.format(UPDATEREMINDER_MESSAGE, reminder)).showWarning();
 	}
 
 	private void showAdd(boolean isSuccessful, String commandContent) {
