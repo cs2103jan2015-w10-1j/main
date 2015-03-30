@@ -117,5 +117,9 @@ public class InMemStorage {
 			i++;
 		}
 	}
+	
+	public void setMarked(Done task){
+		//@Jerry:feel free to implement/extend the method.
+	}
 
 }

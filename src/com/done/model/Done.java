@@ -6,6 +6,7 @@ public abstract class Done {
 	private String tag;
 	private TaskType type;
 	private boolean completed;
+	private boolean marked;
 
 	public static enum TaskType {
 		FLOATING, TIMED, DEADLINE;
@@ -62,6 +63,14 @@ public abstract class Done {
 
 	public void setCompleted(boolean completed) {
 		this.completed = completed;
+	}
+	
+	public boolean isMarked(){
+		return marked;
+	}
+	
+	public void setMarked(boolean marked){
+		this.marked = marked;
 	}
 
 }
