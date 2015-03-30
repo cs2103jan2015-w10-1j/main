@@ -14,7 +14,7 @@ import org.controlsfx.control.Notifications;
 import com.done.logic.LogicFacade;
 import com.done.model.Done;
 import com.done.command.Command.CommandType;
-import com.done.result.Result;
+import com.done.result.ExecutionResult;
 import com.done.observer.Observer;
 
 public class UIController implements Observer {
@@ -66,14 +66,14 @@ public class UIController implements Observer {
 	
 	private void processCommand(String userCommand){
 		
-		Result result = logicFacade.getExecutionResult(userCommand);
-		CommandType currCommandType = result.getCommandType();
-		String commandContent = result.getCommandContent();
+		ExecutionResult executionResult = logicFacade.getExecutionResult(userCommand);
+		CommandType currCommandType = executionResult.getCommandType();
+		String commandContent = executionResult.getCommandContent();
 		
 		
 		switch(currCommandType){
 			case ADD:				
-				showAdd(result.isSuccessful(), commandContent);
+				showAdd(executionResult.isSuccessful(), commandContent);
 				break;
 			case DISPLAY:
 				/* TODO: Enable display command to fit in parameters such that
@@ -81,22 +81,22 @@ public class UIController implements Observer {
 				 */
 				break;
 			case DELETE:				
-				showDelete(result.isSuccessful(), commandContent);
+				showDelete(executionResult.isSuccessful(), commandContent);
 				break;
 			case EDIT:
-				showEdit(result.isSuccessful(), commandContent);
+				showEdit(executionResult.isSuccessful(), commandContent);
 				break;
 			case LOAD:
-				showLoad(result.isSuccessful(), commandContent);
+				showLoad(executionResult.isSuccessful(), commandContent);
 				break;
 			case CLEAR:
-				showClear(result.isSuccessful());
+				showClear(executionResult.isSuccessful());
 				break;
 			case SEARCH:
 				displaySearches();
 				break;
 			case UNDO:
-				showUndo(result.isSuccessful(), commandContent);
+				showUndo(executionResult.isSuccessful(), commandContent);
 				break;
 			case EXIT:
 				System.exit(0);

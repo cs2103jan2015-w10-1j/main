@@ -2,12 +2,12 @@ package com.done.result;
 
 import com.done.command.Command.CommandType;
 
-public class Result {
+public class ExecutionResult {
 	private CommandType commandType;
 	private boolean isSuccessful;
 	private String commandContent;
 	
-	public Result(CommandType commandType, boolean isSuccessful,
+	public ExecutionResult(CommandType commandType, boolean isSuccessful,
 			String commandContent) {
 		assert isSuccessful;
 		this.commandType = commandType;
@@ -15,7 +15,7 @@ public class Result {
 		this.commandContent = commandContent;
 	}
 	
-	public Result(CommandType commandType, boolean isSuccessful){
+	public ExecutionResult(CommandType commandType, boolean isSuccessful){
 		assert (!isSuccessful);
 		this.commandType = commandType;
 		this.isSuccessful = isSuccessful;
