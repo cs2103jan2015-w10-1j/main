@@ -38,6 +38,15 @@ public class LogicFacade {
 		return tempExecutionResult;	
 	}
 	
+	public String getReminder(int taskId){
+		/* To Zitong: Please follow this return format 
+		 * if(deadline task)
+		 * return 'task name' reaching deadline in '# of hours' hours
+		 * else if(timed task)
+		 * return 'task name' beginning in '# of hours' hours */
+		return "CS2103 homework reaching deadline in 2 hours";
+	}
+	
 	public List<Done> getTasks(){
 		logic = new Logic();
 		return this.logic.getTasksForUI();
