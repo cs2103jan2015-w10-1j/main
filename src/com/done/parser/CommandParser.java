@@ -69,8 +69,8 @@ public class CommandParser {
 			return CommandType.REORDER;
 		} else if (command.equalsIgnoreCase("move")) {
 			return CommandType.MOVE;
-		} else if (command.equalsIgnoreCase("mark")) {
-			return CommandType.MARK;
+		} else if (command.equalsIgnoreCase("done")) {
+			return CommandType.DONE;
 		} else if (command.equalsIgnoreCase("remind")) {
 			return CommandType.REMIND;
 		} else if (command.equalsIgnoreCase("recur")) {
@@ -195,7 +195,7 @@ public class CommandParser {
 		if (commandWord.equalsIgnoreCase("add")) {
 			return true;
 		} else if (commandWord.equalsIgnoreCase("delete")
-				|| commandWord.equalsIgnoreCase("mark")) {
+				|| commandWord.equalsIgnoreCase("done")) {
 			return isPositiveNonZeroInt(commandContent);
 		} else {
 			return false;

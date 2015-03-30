@@ -118,11 +118,11 @@ public class InMemStorage {
 		}
 	}
 	
-	public void setMarked(Done task){
+	public void setCompleted(Done task){
 		//@Jerry:feel free to implement/extend the method.
 	}
 
-	public void setUnmarked(Done task){
+	public void setIncompleted(Done task){
 		//@Jerry:feel free to implement/extend the method.
 	}
 
