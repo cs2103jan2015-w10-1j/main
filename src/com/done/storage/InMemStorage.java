@@ -12,7 +12,7 @@ public class InMemStorage {
 
 	private static InMemStorage instance = null;
 
-	private static final int ARRAY_DELETE_OFFSET = 1;
+	private static final int ARRAY_POSITION_OFFSET = 1;
 
 	private List<Done> tasks;
 	private List<Done> workingTasks;
@@ -37,7 +37,7 @@ public class InMemStorage {
 	}
 
 	public Done getTask(int id) {
-		return getTasks().get(id - ARRAY_DELETE_OFFSET);
+		return getTasks().get(id - ARRAY_POSITION_OFFSET);
 	}
 
 	public void loadNew() {
@@ -78,6 +78,17 @@ public class InMemStorage {
 		return false;
 	}
 
+	public void setCompleted(Done task) {
+		getTasks().get(task.getId() - ARRAY_POSITION_OFFSET).setCompleted(true);
+		jsonStorage.store(getTasks());
+	}
+
+	public void setIncompleted(Done task) {
+		getTasks().get(task.getId() - ARRAY_POSITION_OFFSET)
+				.setCompleted(false);
+		jsonStorage.store(getTasks());
+	}
+
 	public void pushToUndoStack(Command command) {
 		this.undoStack.push(command);
 	}
@@ -108,7 +119,7 @@ public class InMemStorage {
 	public void addIntoWorkingTask(Done task) {
 		this.workingTasks.add(task);
 	}
-	
+
 	private void updateTaskID() {
 		Iterator<Done> listIterator = getTasks().iterator();
 		int i = 1;
@@ -116,14 +127,6 @@ public class InMemStorage {
 			listIterator.next().setId(i);
 			i++;
 		}
-	}
-	
-	public void setCompleted(Done task){
-		//@Jerry:feel free to implement/extend the method.
-	}
-
-	public void setIncompleted(Done task){
-		//@Jerry:feel free to implement/extend the method.
 	}
 
 }
