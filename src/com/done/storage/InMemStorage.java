@@ -122,4 +122,8 @@ public class InMemStorage {
 		//@Jerry:feel free to implement/extend the method.
 	}
 
+	public void setUnmarked(Done task){
+		//@Jerry:feel free to implement/extend the method.
+	}
+
 }
