@@ -26,8 +26,17 @@ import com.done.storage.InMemStorage;
 
 public class CommandParser {
 
-	public CommandParser() {
+	private static CommandParser instance = null;
 
+	private CommandParser() {
+
+	}
+
+	public static CommandParser getInstance() {
+		if (instance == null) {
+			instance = new CommandParser();
+		}
+		return instance;
 	}
 
 	public Command parseInputToMakeCommand(String userInput) {
@@ -116,7 +125,7 @@ public class CommandParser {
 		} else if (commandWord.equalsIgnoreCase("delete")) {
 			if (isContentValid(commandWord, commandContent)) {
 				// get Done object by index
-				
+
 				return new CommandDelete(Integer.parseInt(commandContent));
 			} else {
 				return new CommandInvalid();
@@ -233,7 +242,7 @@ public class CommandParser {
 				}
 			} catch (NullPointerException e) {
 				System.out.println("Missing time information");
-			}			
+			}
 			LocalTime localStartTime = dtf.parseLocalTime(startTime);
 			LocalTime localEndTime = dtf.parseLocalTime(endTime);
 
@@ -241,13 +250,13 @@ public class CommandParser {
 					+ localStartTime.getMillisOfDay();
 			endTimeValue = localEndDate.toDate().getTime()
 					+ localEndTime.getMillisOfDay();
-			
-		}else if(content[timeIndex - 1].equalsIgnoreCase("..e")){
+
+		} else if (content[timeIndex - 1].equalsIgnoreCase("..e")) {
 			endTime = content[timeIndex];
-			
+
 			DateTime localStartDateTime = DateTime.now();
 			LocalTime localEndTime = dtf.parseLocalTime(endTime);
-			
+
 			startTimeValue = localStartDateTime.getMillis();
 			endTimeValue = localEndDate.toDate().getTime()
 					+ localEndTime.getMillisOfDay();

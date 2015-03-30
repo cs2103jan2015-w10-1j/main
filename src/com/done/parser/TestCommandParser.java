@@ -9,7 +9,7 @@ import com.done.command.Command.CommandType;
 
 public class TestCommandParser {
 	
-	CommandParser testedParser = new CommandParser();
+	CommandParser testedParser = CommandParser.getInstance();
 
 	@Test
 	//Equivalence partition: String content that is positive integer

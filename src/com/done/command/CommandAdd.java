@@ -22,7 +22,7 @@ public class CommandAdd extends Command {
 	}
 
 	public void setContent(String content) {
-		CommandParser cmdParser = new CommandParser();
+		CommandParser cmdParser = CommandParser.getInstance();
 		this.content = cmdParser.getCommandContent(content);
 	}
 

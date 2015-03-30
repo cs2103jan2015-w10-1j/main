@@ -30,7 +30,7 @@ public class Logic {
 	
 	public Logic(){
 		this.inMemStorage = InMemStorage.getInstance();
-		this.cmdParser = new CommandParser();
+		this.cmdParser = CommandParser.getInstance();
 	}
  	
 	public void executeCommand(Command command){

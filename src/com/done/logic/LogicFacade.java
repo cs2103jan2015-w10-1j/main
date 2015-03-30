@@ -22,7 +22,7 @@ public class LogicFacade {
 		// sorry to comment this but parsing the command should be done in the parser component
 		//CommandType commandType = logic.getCmdType(userCommand);
 		String commandContent = logic.getCmdContent(userCommand);
-		CommandParser parser = new CommandParser();
+		CommandParser parser = CommandParser.getInstance();
 		Command command = parser.parseInputToMakeCommand(userCommand);
 		
 		logic.executeCommand(command);
