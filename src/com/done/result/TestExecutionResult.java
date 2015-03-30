@@ -4,14 +4,14 @@ import static org.junit.Assert.*;
 
 import org.junit.Test;
 
-import com.done.result.ExecutionResult;
+import com.done.result.Result;
 import com.done.command.Command.CommandType;
 
 public class TestExecutionResult {
 
 	@Test
 	public void testExecutionResult() {
-		ExecutionResult result = new ExecutionResult(CommandType.ADD, true, "meet John at 6");
+		Result result = new Result(CommandType.ADD, true, "meet John at 6");
 		
 		//test the getters
 		assertEquals(result.getCommandType(), CommandType.ADD);

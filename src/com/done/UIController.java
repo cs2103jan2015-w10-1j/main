@@ -14,9 +14,10 @@ import org.controlsfx.control.Notifications;
 import com.done.logic.LogicFacade;
 import com.done.model.Done;
 import com.done.command.Command.CommandType;
-import com.done.result.ExecutionResult;
+import com.done.result.Result;
+import com.done.observer.Observer;
 
-public class UIController {
+public class UIController implements Observer {
 	@FXML 
 	private TextField commandField;
 	
@@ -43,6 +44,8 @@ public class UIController {
 	
 	public UIController(){
 		logicFacade = new LogicFacade();
+		UIController uiController = new UIController();
+		logicFacade.addUI(uiController);
 	}
 
 	@FXML
@@ -63,8 +66,7 @@ public class UIController {
 	
 	private void processCommand(String userCommand){
 		
-		
-		ExecutionResult result = logicFacade.getExecutionResult(userCommand);
+		Result result = logicFacade.getExecutionResult(userCommand);
 		CommandType currCommandType = result.getCommandType();
 		String commandContent = result.getCommandContent();
 		
@@ -105,6 +107,10 @@ public class UIController {
 		}
 		prevCommandType = currCommandType;
 		commandField.clear();
+	}
+	
+	public void updateReminder(int taskId){
+		
 	}
 
 	private void showAdd(boolean isSuccessful, String commandContent) {

@@ -4,7 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import com.done.parser.CommandParser;
-import com.done.result.ExecutionResult;
+import com.done.result.Result;
 import com.done.storage.JSONStorage;
 import com.done.command.Command;
 import com.done.command.Command.CommandType;
@@ -17,7 +17,7 @@ public class LogicFacade {
 	private Logic logic;
 	private List<Observer> observerList = new ArrayList<Observer>();
 	
-	public ExecutionResult getExecutionResult(String userCommand){
+	public Result getExecutionResult(String userCommand){
 
 		// sorry to comment this but parsing the command should be done in the parser component
 		//CommandType commandType = logic.getCmdType(userCommand);
@@ -28,12 +28,12 @@ public class LogicFacade {
 		logic.executeCommand(command);
 		//ExecutionResult tempExecutionResult = new ExecutionResult(command.getCommandType(), true);
 		boolean isSuccessful = logic.isSuccessful();
-		ExecutionResult tempExecutionResult;
+		Result tempExecutionResult;
 		
 		if (isSuccessful){
-			tempExecutionResult = new ExecutionResult(command.getCommandType(), isSuccessful, commandContent);
+			tempExecutionResult = new Result(command.getCommandType(), isSuccessful, commandContent);
 		} else {
-			tempExecutionResult = new ExecutionResult(command.getCommandType(), isSuccessful);
+			tempExecutionResult = new Result(command.getCommandType(), isSuccessful);
 		}
 		return tempExecutionResult;	
 	}
