@@ -38,6 +38,8 @@ public class UIController implements Observer {
 	private static final String SHOWCLEAR_ERROR_MESSAGE = "Error: Clearing tasks not successful";
 	private static final String SHOWLOAD_SUCCESS_MESSAGE = "%1$s loaded";
 	private static final String SHOWLOAD_ERROR_MESSAGE = "Error: File load not successful";
+	private static final String SHOWREMIND_SUCCESS_MESSAGE = "Set reminder for %1$s";
+	private static final String SHOWREMIND_ERROR_MESSAGE = "Error: Reminder cannot be set for this task";
 	private static final String SHOWUNDO_ERROR_MESSAGE = "Error: No recent command available";
 	private static final String SHOWUNDO_SUCCESS_MESSAGE = "Undo %1$s %2$s";
 	private static final String SHOWINVALIDCOMMAND_ERROR_MESSAGE = "Error: Invalid command";
@@ -96,6 +98,8 @@ public class UIController implements Observer {
 			case SEARCH:
 				displaySearches();
 				break;
+			case REMIND:
+				showRemind(executionResult.isSuccessful(), commandContent);
 			case UNDO:
 				showUndo(executionResult.isSuccessful(), commandContent);
 				break;
@@ -157,10 +161,20 @@ public class UIController implements Observer {
 	
 	private void showClear(boolean isSuccessful) {
 		if(isSuccessful){
-			Notifications.create().text(String.format(SHOWCLEAR_SUCCESS_MESSAGE)).showInformation();
+			Notifications.create().text(SHOWCLEAR_SUCCESS_MESSAGE).showInformation();
 		}
 		else{
 			Notifications.create().text(SHOWCLEAR_ERROR_MESSAGE).showError();
+		}
+		display();
+	}
+	
+	private void showRemind(boolean isSuccessful, String commandContent){
+		if(isSuccessful){
+			Notifications.create().text(String.format(SHOWREMIND_SUCCESS_MESSAGE, commandContent)).showInformation();
+		}
+		else{
+			Notifications.create().text(SHOWREMIND_ERROR_MESSAGE).showError();
 		}
 		display();
 	}
