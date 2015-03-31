@@ -102,8 +102,12 @@ public class UIController implements Observer {
 			case SEARCH:
 				displaySearches();
 				break;
+			case SHOWALL:
+				display();
+				break;
 			case REMIND:
 				showRemind(executionResult.isSuccessful(), commandContent);
+				break;
 			case UNDO:
 				showUndo(executionResult.isSuccessful(), commandContent);
 				break;
@@ -113,7 +117,7 @@ public class UIController implements Observer {
 			case EXIT:
 				System.exit(0);
 				break;
-			default:
+			default:	
 				showInvalidCommand();
 				break;
 		}
