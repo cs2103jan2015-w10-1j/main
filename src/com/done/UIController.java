@@ -36,6 +36,8 @@ public class UIController implements Observer {
 	private static final String SHOWEDIT_ERROR_MESSAGE = "Error: Editing task not successful";
 	private static final String SHOWCLEAR_SUCCESS_MESSAGE = "All tasks cleared";
 	private static final String SHOWCLEAR_ERROR_MESSAGE = "Error: Clearing tasks not successful";
+	private static final String SHOWMOVE_SUCCESS_MESSAGE = "%1$s moved";
+	private static final String SHOWMOVE_ERROR_MESSAGE = "Error: Moving task not successful";
 	private static final String SHOWLOAD_SUCCESS_MESSAGE = "%1$s loaded";
 	private static final String SHOWLOAD_ERROR_MESSAGE = "Error: File load not successful";
 	private static final String SHOWREMIND_SUCCESS_MESSAGE = "Set reminder for %1$s";
@@ -89,6 +91,9 @@ public class UIController implements Observer {
 				break;
 			case CLEAR:
 				showClear(executionResult.isSuccessful());
+				break;
+			case MOVE:
+				showMove(executionResult.isSuccessful(), commandContent);
 				break;
 			case SEARCH:
 				displaySearches();
@@ -163,6 +168,16 @@ public class UIController implements Observer {
 		}
 		else{
 			Notifications.create().text(SHOWCLEAR_ERROR_MESSAGE).showError();
+		}
+		display();
+	}
+	
+	private void showMove(boolean isSuccessful, String commandContent){
+		if(isSuccessful){
+			Notifications.create().text(String.format(SHOWMOVE_SUCCESS_MESSAGE, commandContent)).showInformation();
+		}
+		else{
+			Notifications.create().text(SHOWMOVE_ERROR_MESSAGE).showError();
 		}
 		display();
 	}
