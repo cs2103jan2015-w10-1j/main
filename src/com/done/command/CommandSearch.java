@@ -1,6 +1,7 @@
 package com.done.command;
 
 import java.util.List;
+import java.util.logging.Level;
 
 import com.done.model.Done;
 import com.done.storage.InMemStorage;
@@ -12,6 +13,7 @@ public class CommandSearch extends Command {
 	public CommandSearch(String searchString) {
 		super(CommandType.SEARCH, false);
 		this.searchString = searchString;
+		commandLogger.log(Level.INFO, "Search Command Created");
 	}
 
 	public String getSearchString() {
