@@ -130,6 +130,7 @@ public class CommandParser {
 			if (isContentValid(commandWord, commandContent)) {
 				return new CommandDelete(Integer.parseInt(commandContent));
 			} else {
+				parserLogger.log(Level.INFO, "make invalid Command instead");
 				return new CommandInvalid();
 			}
 		} else if (commandWord.equalsIgnoreCase("load")) {
