@@ -2,6 +2,8 @@ package com.done.parser;
 
 import java.time.LocalDateTime;
 import java.util.ArrayList;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 import org.joda.time.DateTime;
 import org.joda.time.LocalDate;
@@ -28,6 +30,7 @@ import com.done.storage.InMemStorage;
 public class CommandParser {
 
 	private static CommandParser instance = null;
+	private static Logger parserLogger = Logger.getLogger("CommandParser");
 
 	private CommandParser() {
 
@@ -42,6 +45,7 @@ public class CommandParser {
 
 	public Command parseInputToMakeCommand(String userInput) {
 
+		parserLogger.log(Level.INFO, "Input passed to make Command");
 		String commandWord = getFirstWord(userInput);
 		String commandContent = removeFirstWord(userInput);
 		return makeCommand(commandWord, commandContent);
@@ -118,26 +122,37 @@ public class CommandParser {
 			 * definer to differentiate the type of tasks so you should use
 			 * commandContent as the parameter of a new method
 			 */
+			parserLogger.log(Level.INFO, "make add Command");
 			Done tempTask = defineTask(commandContent);
 			return new CommandAdd(tempTask);
 		} else if (commandWord.equalsIgnoreCase("delete")) {
+			parserLogger.log(Level.INFO, "make delete Command");
 			if (isContentValid(commandWord, commandContent)) {
-				// get Done object by index
 				return new CommandDelete(Integer.parseInt(commandContent));
 			} else {
 				return new CommandInvalid();
 			}
 		} else if (commandWord.equalsIgnoreCase("load")) {
+			parserLogger.log(Level.INFO, "make load Command");
 			return new CommandLoad(commandContent);
 		} else if (commandWord.equalsIgnoreCase("clear")) {
+			parserLogger.log(Level.INFO, "make clear Command");
 			return new CommandClear();
 		} else if (commandWord.equalsIgnoreCase("search")) {
+			parserLogger.log(Level.INFO, "make search Command");
 			return new CommandSearch(commandContent);
 		} else if (commandWord.equalsIgnoreCase("undo")) {
+			parserLogger.log(Level.INFO, "make undo Command");
 			return new CommandUndo();
-		} else if (commandWord.equalsIgnoreCase("done")){
-			return new CommandDone(Integer.parseInt(commandContent));
-		}else {
+		} else if (commandWord.equalsIgnoreCase("done")) {
+			parserLogger.log(Level.INFO, "make done Command");
+			if (isContentValid(commandWord, commandContent)) {
+				return new CommandDone(Integer.parseInt(commandContent));
+			} else {
+				return new CommandInvalid();
+			}
+		} else {
+			parserLogger.log(Level.INFO, "make invalid Command");
 			return new CommandInvalid();
 		}
 	}
@@ -171,6 +186,7 @@ public class CommandParser {
 			// if content contains start time
 			// we generate (new) timeTask
 			// return timedTask
+			parserLogger.log(Level.INFO, "make Timed Task");
 			task = addTimed(split, timeIndex);
 			return task;
 
@@ -178,6 +194,7 @@ public class CommandParser {
 			// if content has deadline (time) at
 			// we generate new deadlinedTask
 			// return deadlinedTask
+			parserLogger.log(Level.INFO, "make Deadline Task");
 			task = addDeadline(split, timeIndex, dateIndex);
 			return task;
 		}
@@ -186,6 +203,7 @@ public class CommandParser {
 			// if content isn't null or ""
 			// we generate new floatingTask
 			// we return floatingTask
+			parserLogger.log(Level.INFO, "make Floating Task");
 			task = new DoneFloatingTask(commandContent);
 			return task;
 		}
@@ -196,11 +214,13 @@ public class CommandParser {
 
 	private boolean isContentValid(String commandWord, String commandContent) {
 		if (commandWord.equalsIgnoreCase("add")) {
+			parserLogger.log(Level.INFO, "Command Content is Valid");
 			return true;
 		} else if (commandWord.equalsIgnoreCase("delete")
 				|| commandWord.equalsIgnoreCase("done")) {
 			return isPositiveNonZeroInt(commandContent);
 		} else {
+			parserLogger.log(Level.INFO, "Command Content is invalid");
 			return false;
 		}
 	}
@@ -210,6 +230,7 @@ public class CommandParser {
 			int i = Integer.parseInt(content);
 			return (i > 0 ? true : false);
 		} catch (NumberFormatException nfe) {
+			parserLogger.log(Level.INFO, "Command Content is invalid");
 			return false;
 		}
 	}
