@@ -70,8 +70,6 @@ public class CommandParser {
 			return CommandType.SEARCH;
 		} else if (command.equalsIgnoreCase("undo")) {
 			return CommandType.UNDO;
-		} else if (command.equalsIgnoreCase("reorder")) {
-			return CommandType.REORDER;
 		} else if (command.equalsIgnoreCase("move")) {
 			return CommandType.MOVE;
 		} else if (command.equalsIgnoreCase("done")) {

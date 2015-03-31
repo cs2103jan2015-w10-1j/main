@@ -19,8 +19,8 @@ public class CommandDelete extends Command {
 
 	@Override
 	public void execute() {
-		InMemStorage inMemStorage = InMemStorage.getInstance();
-		inMemStorage.delete(task, false);
+		InMemStorage memory = InMemStorage.getInstance();
+		memory.delete(task, false);
 	}
 
 	@Override
