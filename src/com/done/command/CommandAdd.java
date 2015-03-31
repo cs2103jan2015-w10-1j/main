@@ -1,5 +1,7 @@
 package com.done.command;
 
+import java.util.logging.Level;
+
 import com.done.model.Done;
 import com.done.storage.InMemStorage;
 
@@ -10,6 +12,7 @@ public class CommandAdd extends Command {
 	public CommandAdd(Done task) {
 		super(CommandType.ADD, true);
 		this.task = task;
+		commandLogger.log(Level.INFO, "Add Command Created");
 	}
 
 	public Done getTask() {
