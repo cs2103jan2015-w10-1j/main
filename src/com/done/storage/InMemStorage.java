@@ -77,6 +77,16 @@ public class InMemStorage {
 
 		return false;
 	}
+	
+	public boolean edit(Done task, int editIndex){
+		getTasks().set(editIndex, task);
+		updateTaskID();
+		if(jsonStorage.store(getTasks()) == true){
+			return true;
+		}
+		
+		return false;
+	}
 
 	public void setCompleted(Done task) {
 		getTasks().get(task.getId() - ARRAY_POSITION_OFFSET).setCompleted(true);

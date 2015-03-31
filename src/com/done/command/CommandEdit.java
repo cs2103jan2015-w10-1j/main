@@ -24,17 +24,15 @@ public class CommandEdit extends Command {
 	public void execute() throws Exception {
 		commandLogger.log(Level.INFO, "Edit Command called");
 		InMemStorage memory = InMemStorage.getInstance();
-		List<Done> tasks = memory.getTasks();
-		subbedTask = tasks.get(targetIndex);
-		tasks.set(targetIndex, task);
+		subbedTask = memory.getTask(targetIndex+1);
+		memory.edit(task, targetIndex);
 		commandLogger.log(Level.INFO, "Edit Command successfully executed");
 	}
 
 	@Override
 	public void undo() {
 		InMemStorage memory = InMemStorage.getInstance();
-		List<Done> tasks = memory.getTasks();
-		tasks.set(targetIndex, subbedTask);
+		memory.edit(subbedTask, targetIndex);
 	}
 
 }
