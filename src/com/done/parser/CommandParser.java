@@ -17,6 +17,7 @@ import com.done.command.CommandAdd;
 import com.done.command.CommandClear;
 import com.done.command.CommandDelete;
 import com.done.command.CommandDone;
+import com.done.command.CommandExit;
 import com.done.command.CommandInvalid;
 import com.done.command.CommandLoad;
 import com.done.command.CommandMove;
@@ -150,7 +151,10 @@ public class CommandParser {
 			} else {
 				return new CommandInvalid();
 			}
-		} else {
+		} else if (commandWord.equalsIgnoreCase("exit")) {
+			parserLogger.log(Level.INFO, "make exit Command");
+			return new CommandExit(true);
+		}else {
 			parserLogger.log(Level.INFO, "make invalid Command");
 			return new CommandInvalid();
 		}

@@ -20,6 +20,7 @@ public class CommandMove extends Command {
 
 	@Override
 	public void execute() throws Exception {
+		commandLogger.log(Level.INFO, "Move Command Execution called");
 		InMemStorage memory = InMemStorage.getInstance();
 		List<Done> tasks = memory.getTasks();
 		swap(tasks, origin, destination);
