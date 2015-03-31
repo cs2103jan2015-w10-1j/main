@@ -29,7 +29,7 @@ public class UIController implements Observer {
 	private TableView<Done> tableViewTasks;
 	
 	private LogicFacade logicFacade;
-	private CommandType prevCommandType = null;
+	//private CommandType prevCommandType = null;
 	
 	private static final String EMPTY_STRING = "";
 	private static final String SHOWADD_SUCCESS_MESSAGE = "%1$s added to the list";
@@ -47,7 +47,7 @@ public class UIController implements Observer {
 	private static final String SHOWREMIND_SUCCESS_MESSAGE = "Set reminder for %1$s";
 	private static final String SHOWREMIND_ERROR_MESSAGE = "Error: Reminder cannot be set for this task";
 	private static final String SHOWUNDO_ERROR_MESSAGE = "Error: No recent command available";
-	private static final String SHOWUNDO_SUCCESS_MESSAGE = "Undo %1$s %2$s";
+	private static final String SHOWUNDO_SUCCESS_MESSAGE = "Undo %1$s";
 	private static final String SHOWINVALIDCOMMAND_ERROR_MESSAGE = "Error: Invalid command";
 	private static final String UPDATEREMINDER_MESSAGE = "Reminder for %1$s";
 	
@@ -121,7 +121,7 @@ public class UIController implements Observer {
 				showInvalidCommand();
 				break;
 		}
-		prevCommandType = currCommandType;
+		//prevCommandType = currCommandType;
 		commandField.clear();
 	}
 	
@@ -201,7 +201,7 @@ public class UIController implements Observer {
 	}
 
 	private void showUndo(boolean isSuccessful, String commandContent)  {
-		if(isSuccessful){
+		/*if(isSuccessful){
 			assert prevCommandType!=null;
 			if(commandContent!=null){
 				Notifications.create().text(String.format(SHOWUNDO_SUCCESS_MESSAGE, prevCommandType, commandContent)).showInformation();
@@ -210,6 +210,12 @@ public class UIController implements Observer {
 				Notifications.create().text(String.format(SHOWUNDO_SUCCESS_MESSAGE, prevCommandType, EMPTY_STRING)).showInformation();
 			}
 			prevCommandType = null;
+		}
+		else{
+			Notifications.create().text(SHOWUNDO_ERROR_MESSAGE).showError();
+		}*/
+		if(isSuccessful){
+			Notifications.create().text(String.format(SHOWUNDO_SUCCESS_MESSAGE, commandContent)).showInformation();
 		}
 		else{
 			Notifications.create().text(SHOWUNDO_ERROR_MESSAGE).showError();
