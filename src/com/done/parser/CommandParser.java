@@ -19,6 +19,7 @@ import com.done.command.CommandDelete;
 import com.done.command.CommandDone;
 import com.done.command.CommandInvalid;
 import com.done.command.CommandLoad;
+import com.done.command.CommandMove;
 import com.done.command.CommandSearch;
 import com.done.command.CommandUndo;
 import com.done.model.Done;
@@ -88,7 +89,7 @@ public class CommandParser {
 	public ArrayList<String> getCommandContent(String userCommand) {
 		String currentContent = removeFirstWord(userCommand);
 		assert currentContent != null;
-		ArrayList<String> commandContent = processContent(currentContent);
+		ArrayList<String> commandContent = sliceContent(currentContent);
 		return commandContent;
 	}
 
@@ -100,17 +101,6 @@ public class CommandParser {
 
 	public String getFirstWord(String userCommand) {
 		return userCommand.trim().split("\\s+")[0];
-	}
-
-	// At current Stage, only slice the content into parts separated by spaces
-	// Might modify in later versions
-	private ArrayList<String> processContent(String content) {
-		ArrayList<String> processedContent = new ArrayList<String>();
-		String[] contentPieces = content.split("\\s+");
-		for (String pieceOfContent : contentPieces) {
-			processedContent.add(pieceOfContent);
-		}
-		return processedContent;
 	}
 
 	private Command makeCommand(String commandWord, String commandContent) {
@@ -136,6 +126,17 @@ public class CommandParser {
 		} else if (commandWord.equalsIgnoreCase("clear")) {
 			parserLogger.log(Level.INFO, "make clear Command");
 			return new CommandClear();
+		} else if (commandWord.equalsIgnoreCase("move")) {
+			parserLogger.log(Level.INFO, "make move Command");
+			ArrayList<String> indexes = sliceContent(commandContent);
+			if ((isContentValid(commandWord, indexes.get(0)))
+					&& (isContentValid(commandWord, indexes.get(1)))) {
+				int origin = Integer.parseInt(indexes.get(0));
+				int destination = Integer.parseInt(indexes.get(1));
+				return new CommandMove(origin,destination);
+			} else {
+				return new CommandInvalid();
+			}
 		} else if (commandWord.equalsIgnoreCase("search")) {
 			parserLogger.log(Level.INFO, "make search Command");
 			return new CommandSearch(commandContent);
@@ -210,12 +211,24 @@ public class CommandParser {
 
 	}
 
+	// At current Stage, only slice the content into parts separated by spaces
+	// Might modify in later versions
+	private ArrayList<String> sliceContent(String content) {
+		ArrayList<String> slicedContent = new ArrayList<String>();
+		String[] contentPieces = content.split("\\s+");
+		for (String pieceOfContent : contentPieces) {
+			slicedContent.add(pieceOfContent);
+		}
+		return slicedContent;
+	}
+
 	private boolean isContentValid(String commandWord, String commandContent) {
 		if (commandWord.equalsIgnoreCase("add")) {
 			parserLogger.log(Level.INFO, "Command Content is Valid");
 			return true;
 		} else if (commandWord.equalsIgnoreCase("delete")
-				|| commandWord.equalsIgnoreCase("done")) {
+				|| commandWord.equalsIgnoreCase("done")
+				|| commandWord.equalsIgnoreCase("move")) {
 			return isPositiveNonZeroInt(commandContent);
 		} else {
 			parserLogger.log(Level.INFO, "Command Content is invalid");
