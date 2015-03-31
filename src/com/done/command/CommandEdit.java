@@ -1,6 +1,7 @@
 package com.done.command;
 
 import java.util.List;
+import java.util.logging.Level;
 
 import com.done.model.Done;
 import com.done.storage.InMemStorage;
@@ -15,6 +16,7 @@ public class CommandEdit extends Command {
 		super(CommandType.EDIT, true);
 		this.targetIndex = index;
 		this.task = task;
+		commandLogger.log(Level.INFO, "Edit Command Created");
 	}
 
 	@Override

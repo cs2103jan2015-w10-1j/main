@@ -1,11 +1,14 @@
 package com.done.command;
 
+import java.util.logging.Level;
+
 import com.done.storage.InMemStorage;
 
 public class CommandUndo extends Command{
 	
 	public CommandUndo() {
 		super(CommandType.UNDO, false);
+		commandLogger.log(Level.INFO, "Undo Command Created");
 	}
 	
 	@Override

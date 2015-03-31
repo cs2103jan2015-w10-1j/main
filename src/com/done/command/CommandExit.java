@@ -1,5 +1,7 @@
 package com.done.command;
 
+import java.util.logging.Level;
+
 public class CommandExit extends Command {
 	
 	private boolean isNormal;
@@ -9,6 +11,7 @@ public class CommandExit extends Command {
 	public CommandExit(boolean isNormal){
 		super(CommandType.EXIT,false);
 		this.isNormal = isNormal;
+		commandLogger.log(Level.INFO, "Add Command Created");
 	}
 
 	@Override

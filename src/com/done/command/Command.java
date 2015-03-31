@@ -1,9 +1,12 @@
 package com.done.command;
 
+import java.util.logging.Logger;
+
 public abstract class Command {
 	private int id;
 	private CommandType type;
 	private boolean undoable;
+	protected static Logger commandLogger = Logger.getLogger("Command");
 
 	//String for reporting error from behaviour that is not supposed to be present.
 	//Could be used for logging.

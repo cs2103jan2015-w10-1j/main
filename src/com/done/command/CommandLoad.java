@@ -1,5 +1,7 @@
 package com.done.command;
 
+import java.util.logging.Level;
+
 import com.done.storage.InMemStorage;
 import com.done.storage.JSONStorage;
 
@@ -10,6 +12,7 @@ public class CommandLoad extends Command {
 	public CommandLoad(String jsonName) {
 		super(CommandType.LOAD, false);
 		this.jsonName = jsonName;
+		commandLogger.log(Level.INFO, "Load Command Created");
 	}
 
 	@Override

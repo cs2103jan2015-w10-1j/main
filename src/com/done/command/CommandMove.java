@@ -1,6 +1,7 @@
 package com.done.command;
 
 import java.util.List;
+import java.util.logging.Level;
 
 import com.done.model.Done;
 import com.done.storage.InMemStorage;
@@ -14,6 +15,7 @@ public class CommandMove extends Command {
 		super(CommandType.MOVE,true);
 		this.origin = origin;
 		this.destination = destination;
+		commandLogger.log(Level.INFO, "Move Command Created");
 	}
 
 	@Override
