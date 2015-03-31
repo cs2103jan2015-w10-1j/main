@@ -1,4 +1,4 @@
-package come.done;
+package com.done;
 
 import static org.hamcrest.CoreMatchers.is;
 import static org.junit.Assert.assertThat;
