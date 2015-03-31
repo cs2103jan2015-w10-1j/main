@@ -4,6 +4,10 @@ import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 
+import java.util.concurrent.Executors;
+import java.util.concurrent.ScheduledExecutorService;
+import java.util.concurrent.TimeUnit;
+
 import com.done.model.Done;
 import com.done.model.DoneFloatingTask;
 import com.done.storage.InMemStorage;
@@ -178,5 +182,24 @@ public class Logic {
 	public void setReminder(String date){
 		
 	}
+	
+	/*
+	 * possible implementation of recurring task
+	public void setRecurTask(String input, int delay){
+		ScheduledExecutorService ses = Executors.newScheduledThreadPool(1);
+	    ses.scheduleWithFixedDelay(new Runnable() {
+	        @Override
+	        public void run() {
+	            task.addTask(input);
+	            try {
+	                Thread.sleep(500);
+	            } catch (InterruptedException e) {
+	                e.printStackTrace();
+	            }
+	        }
+	    }, 0, 1000, TimeUnit.delay);
+	}
+	*/
+	
  
  }
