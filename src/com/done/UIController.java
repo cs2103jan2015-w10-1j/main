@@ -78,11 +78,6 @@ public class UIController implements Observer {
 			case ADD:				
 				showAdd(executionResult.isSuccessful(), commandContent);
 				break;
-			case DISPLAY:
-				/* TODO: Enable display command to fit in parameters such that
-				 * it will be able to display <all> <floating> <timed> <deadline> 	
-				 */
-				break;
 			case DELETE:				
 				showDelete(executionResult.isSuccessful(), commandContent);
 				break;
@@ -102,6 +97,9 @@ public class UIController implements Observer {
 				showRemind(executionResult.isSuccessful(), commandContent);
 			case UNDO:
 				showUndo(executionResult.isSuccessful(), commandContent);
+				break;
+			case DONE:
+				// @peeraya: you can implement the showDone();
 				break;
 			case EXIT:
 				System.exit(0);

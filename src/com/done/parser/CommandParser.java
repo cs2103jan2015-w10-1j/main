@@ -14,6 +14,7 @@ import com.done.command.Command.CommandType;
 import com.done.command.CommandAdd;
 import com.done.command.CommandClear;
 import com.done.command.CommandDelete;
+import com.done.command.CommandDone;
 import com.done.command.CommandInvalid;
 import com.done.command.CommandLoad;
 import com.done.command.CommandSearch;
@@ -134,7 +135,9 @@ public class CommandParser {
 			return new CommandSearch(commandContent);
 		} else if (commandWord.equalsIgnoreCase("undo")) {
 			return new CommandUndo();
-		} else {
+		} else if (commandWord.equalsIgnoreCase("done")){
+			return new CommandDone(Integer.parseInt(commandContent));
+		}else {
 			return new CommandInvalid();
 		}
 	}
