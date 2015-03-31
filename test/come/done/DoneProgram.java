@@ -80,9 +80,10 @@ public class DoneProgram {
 	public void testSearch(){
 		LogicFacade logicFacade = new LogicFacade();
 		InMemStorage inMemStorage = InMemStorage.getInstance();
+		ExecutionResult result = null;
 		
 		// add 4 items 
-		ExecutionResult result = logicFacade.getExecutionResult("add hello");
+		result = logicFacade.getExecutionResult("add hello");
 		assertTrue(result.isSuccessful());
 		assertThat(result.getCommandType(), is(CommandType.ADD));
 		result = logicFacade.getExecutionResult("add hello2");
@@ -98,6 +99,7 @@ public class DoneProgram {
 		// search for "hello", size of WorkingTask(search) List should be 3
 		// as there are 3 instances of "hello"
 		result = logicFacade.getExecutionResult("search hello");
+		assertTrue(result.isSuccessful());
 		assertThat(result.getCommandType(), is(CommandType.SEARCH));
 		assertTrue(inMemStorage.getWorkingTasks().size() == 3);
 	}
