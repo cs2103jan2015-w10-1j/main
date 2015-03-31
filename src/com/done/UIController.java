@@ -1,13 +1,17 @@
 package com.done;
 
+import java.util.Collections;
 import java.util.List;
 
 import javafx.collections.FXCollections;
+import javafx.collections.ListChangeListener;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
+import javafx.scene.control.TableRow;
 import javafx.scene.control.TableView;
 import javafx.scene.control.TextField;
 import javafx.scene.control.cell.PropertyValueFactory;
+import javafx.util.Callback;
 
 import org.controlsfx.control.Notifications;
 
@@ -104,7 +108,7 @@ public class UIController implements Observer {
 				showUndo(executionResult.isSuccessful(), commandContent);
 				break;
 			case DONE:
-				// @peeraya: you can implement the showDone();
+				display();
 				break;
 			case EXIT:
 				System.exit(0);
@@ -135,11 +139,11 @@ public class UIController implements Observer {
 	private void showDelete(boolean isSuccessful, String commandContent) {
 		if(isSuccessful){
 			Notifications.create().text(String.format(SHOWDELETE_SUCCESS_MESSAGE, commandContent)).showInformation();
-			display();
 		}
 		else{
 			Notifications.create().text(SHOWDELETE_ERROR_MESSAGE).showError();
 		}
+		display();
 	}
 	
 	private void showEdit(boolean isSuccessful, String commandContent) {
@@ -219,11 +223,43 @@ public class UIController implements Observer {
 	private void display() {
 		List<Done> tasks = logicFacade.getTasks();
 		ObservableList<Done> tableTasks = FXCollections.observableArrayList(tasks);
+		/*final ObservableList<Integer> doneTasks = FXCollections.observableArrayList();
+		doneTasks.clear();
+		for(Done task: tableTasks){
+			if(task.isCompleted()){
+				doneTasks.add(task.getId()-1);
+			}
+		}*/
+		
 		tableViewTasks.setItems(tableTasks);
 		tableViewTasks.getColumns().get(0).setCellValueFactory(new PropertyValueFactory<>("id"));
 		tableViewTasks.getColumns().get(1).setCellValueFactory(new PropertyValueFactory<>("title"));
 		tableViewTasks.getColumns().get(2).setCellValueFactory(new PropertyValueFactory<>("startTime"));
 		tableViewTasks.getColumns().get(3).setCellValueFactory(new PropertyValueFactory<>("endTime"));
+		tableViewTasks.setRowFactory(new Callback<TableView<Done>, TableRow<Done>>() {
+	        @Override
+	        public TableRow<Done> call(TableView<Done> tableView) {
+	            final TableRow<Done> row = new TableRow<Done>() {
+	                @Override
+	                protected void updateItem(Done task, boolean empty){
+	                    super.updateItem(task, empty);
+	                    if(task == null || empty){
+	                    	setStyle("");
+	                    }
+	                    else{
+		                    if(task.isCompleted()){
+		                    	setStyle("-fx-background-color: #F72068; -fx-background: -fx-accent;");
+		                    }
+		                    else{
+		                    	setStyle("");
+		                    }
+	                    }
+	                   
+	                }
+	            };
+	            return row;
+	        }
+	    });
 	}
 	
 	private void displaySearches() {
@@ -234,6 +270,30 @@ public class UIController implements Observer {
 		tableViewTasks.getColumns().get(1).setCellValueFactory(new PropertyValueFactory<>("title"));
 		tableViewTasks.getColumns().get(2).setCellValueFactory(new PropertyValueFactory<>("startTime"));
 		tableViewTasks.getColumns().get(3).setCellValueFactory(new PropertyValueFactory<>("endTime"));
+		tableViewTasks.setRowFactory(new Callback<TableView<Done>, TableRow<Done>>() {
+	        @Override
+	        public TableRow<Done> call(TableView<Done> tableView) {
+	            final TableRow<Done> row = new TableRow<Done>() {
+	                @Override
+	                protected void updateItem(Done task, boolean empty){
+	                    super.updateItem(task, empty);
+	                    if(task == null || empty){
+	                    	setStyle("");
+	                    }
+	                    else{
+		                    if(task.isCompleted()){
+		                    	setStyle("-fx-background-color: #F72068; -fx-background: -fx-accent;");
+		                    }
+		                    else{
+		                    	setStyle("");
+		                    }
+	                    }
+	                   
+	                }
+	            };
+	            return row;
+	        }
+	    });
 	}
 
 }
