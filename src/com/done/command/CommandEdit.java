@@ -14,7 +14,7 @@ public class CommandEdit extends Command {
 
 	public CommandEdit(int index, Done task) {
 		super(CommandType.EDIT, true);
-		this.targetIndex = index;
+		this.targetIndex = index-1;
 		this.task = task;
 		commandLogger.log(Level.INFO, "Edit Command Created");
 	}
