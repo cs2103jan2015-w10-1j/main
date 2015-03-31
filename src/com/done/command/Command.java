@@ -13,7 +13,7 @@ public abstract class Command {
 	protected static final String MESSAGE_ERROR = "Error happened when attempting to execute %1$s method in %2$s command\n";
 
 	public enum CommandType {
-		ADD, DELETE, LOAD, CLEAR, EDIT, SEARCH, UNDO, MOVE, DONE, REMIND, RECUR, EXIT, INVALID;
+		ADD, DELETE, LOAD, CLEAR, EDIT, SEARCH, SHOWALL, UNDO, MOVE, DONE, REMIND, RECUR, EXIT, INVALID;
 	}
 
 	public Command(CommandType type, boolean undoable) {

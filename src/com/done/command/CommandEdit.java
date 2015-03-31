@@ -22,10 +22,12 @@ public class CommandEdit extends Command {
 	@Override
 	// This method edits First tasks with the same Title
 	public void execute() throws Exception {
+		commandLogger.log(Level.INFO, "Edit Command called");
 		InMemStorage memory = InMemStorage.getInstance();
 		List<Done> tasks = memory.getTasks();
 		subbedTask = tasks.get(targetIndex);
 		tasks.set(targetIndex, task);
+		commandLogger.log(Level.INFO, "Edit Command successfully executed");
 	}
 
 	@Override

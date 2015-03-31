@@ -23,6 +23,7 @@ import com.done.command.CommandInvalid;
 import com.done.command.CommandLoad;
 import com.done.command.CommandMove;
 import com.done.command.CommandSearch;
+import com.done.command.CommandShowAll;
 import com.done.command.CommandUndo;
 import com.done.model.Done;
 import com.done.model.DoneDeadlineTask;
@@ -124,11 +125,11 @@ public class CommandParser {
 				return new CommandInvalid();
 			}
 		} else if (commandWord.equalsIgnoreCase("edit")) {
-			parserLogger.log(Level.INFO, "make edit Command");
 			String indexString = getFirstWord(commandContent);
 			if(isPositiveNonZeroInt(indexString)){
 				int index = Integer.parseInt(indexString);
 				Done changedTask = defineTask(removeFirstWord(commandContent));
+				parserLogger.log(Level.INFO, "make edit Command");
 				return new CommandEdit(index, changedTask);
 			}else{
 				return new CommandInvalid();
@@ -153,6 +154,9 @@ public class CommandParser {
 		} else if (commandWord.equalsIgnoreCase("search")) {
 			parserLogger.log(Level.INFO, "make search Command");
 			return new CommandSearch(commandContent);
+		} else if (commandWord.equalsIgnoreCase("showall")) {
+			parserLogger.log(Level.INFO, "make showall Command");
+			return new CommandShowAll();
 		} else if (commandWord.equalsIgnoreCase("undo")) {
 			parserLogger.log(Level.INFO, "make undo Command");
 			return new CommandUndo();
