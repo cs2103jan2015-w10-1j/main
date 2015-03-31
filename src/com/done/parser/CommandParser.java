@@ -17,6 +17,7 @@ import com.done.command.CommandAdd;
 import com.done.command.CommandClear;
 import com.done.command.CommandDelete;
 import com.done.command.CommandDone;
+import com.done.command.CommandEdit;
 import com.done.command.CommandExit;
 import com.done.command.CommandInvalid;
 import com.done.command.CommandLoad;
@@ -121,6 +122,16 @@ public class CommandParser {
 			} else {
 				return new CommandInvalid();
 			}
+		} else if (commandWord.equalsIgnoreCase("edit")) {
+			parserLogger.log(Level.INFO, "make edit Command");
+			String indexString = getFirstWord(commandContent);
+			if(isPositiveNonZeroInt(indexString)){
+				int index = Integer.parseInt(indexString);
+				Done changedTask = defineTask(removeFirstWord(commandContent));
+				return new CommandEdit(index, changedTask);
+			}else{
+				return new CommandInvalid();
+			}
 		} else if (commandWord.equalsIgnoreCase("load")) {
 			parserLogger.log(Level.INFO, "make load Command");
 			return new CommandLoad(commandContent);
@@ -134,7 +145,7 @@ public class CommandParser {
 					&& (isContentValid(commandWord, indexes.get(1)))) {
 				int origin = Integer.parseInt(indexes.get(0));
 				int destination = Integer.parseInt(indexes.get(1));
-				return new CommandMove(origin,destination);
+				return new CommandMove(origin, destination);
 			} else {
 				return new CommandInvalid();
 			}
@@ -154,7 +165,7 @@ public class CommandParser {
 		} else if (commandWord.equalsIgnoreCase("exit")) {
 			parserLogger.log(Level.INFO, "make exit Command");
 			return new CommandExit(true);
-		}else {
+		} else {
 			parserLogger.log(Level.INFO, "make invalid Command");
 			return new CommandInvalid();
 		}
