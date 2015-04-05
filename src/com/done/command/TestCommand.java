@@ -35,9 +35,17 @@ public class TestCommand {
 	}
 
 	@Test
-	public void testCommandInvalid() {
-		Command command = new CommandInvalid();
-		assertEquals(command.getCommandType(), CommandType.INVALID);
+	public void testCommandRecur() {
+		Command command = new CommandRecur(1,"weekly");
+		assertEquals(command.getCommandType(), CommandType.RECUR);
 	}
+	
+	@Test
+	public void testCommandRemind() {
+		Command command = new CommandRemind(1,"weekly");
+		assertEquals(command.getCommandType(), CommandType.REMIND);
+	}
+	
+	
 
 }

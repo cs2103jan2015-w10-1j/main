@@ -22,6 +22,8 @@ import com.done.command.CommandExit;
 import com.done.command.CommandInvalid;
 import com.done.command.CommandLoad;
 import com.done.command.CommandMove;
+import com.done.command.CommandRecur;
+import com.done.command.CommandRemind;
 import com.done.command.CommandSearch;
 import com.done.command.CommandShowAll;
 import com.done.command.CommandUndo;
@@ -126,7 +128,7 @@ public class CommandParser {
 			}
 		} else if (commandWord.equalsIgnoreCase("edit")) {
 			String indexString = getFirstWord(commandContent);
-			if(isPositiveNonZeroInt(indexString)){
+			if(isPositiveInt(indexString)){
 				int index = Integer.parseInt(indexString);
 				Done changedTask = defineTask(removeFirstWord(commandContent));
 				parserLogger.log(Level.INFO, "make edit Command");
@@ -165,6 +167,26 @@ public class CommandParser {
 			if (isContentValid(commandWord, commandContent)) {
 				return new CommandDone(Integer.parseInt(commandContent));
 			} else {
+				return new CommandInvalid();
+			}
+		} else if (commandWord.equalsIgnoreCase("recur")) {
+			parserLogger.log(Level.INFO, "make recur Command");
+			ArrayList<String> contents = sliceContent(commandContent);
+			String index = contents.get(0);
+			String period = contents.get(1);
+			if(isPositiveInt(index)&&isValidPeriod(period)){
+				return new CommandRecur(Integer.parseInt(index),period);
+			}else{
+				return new CommandInvalid();
+			}
+		} else if (commandWord.equalsIgnoreCase("remind")) {
+			parserLogger.log(Level.INFO, "make remind Command");
+			ArrayList<String> contents = sliceContent(commandContent);
+			String index = contents.get(0);
+			String period = contents.get(1);
+			if(isPositiveInt(index)&&isValidPeriod(period)){
+				return new CommandRemind(Integer.parseInt(index),period);
+			}else{
 				return new CommandInvalid();
 			}
 		} else if (commandWord.equalsIgnoreCase("exit")) {
@@ -249,19 +271,27 @@ public class CommandParser {
 		} else if (commandWord.equalsIgnoreCase("delete")
 				|| commandWord.equalsIgnoreCase("done")
 				|| commandWord.equalsIgnoreCase("move")) {
-			return isPositiveNonZeroInt(commandContent);
+			return isPositiveInt(commandContent);
 		} else {
 			parserLogger.log(Level.INFO, "Command Content is invalid");
 			return false;
 		}
 	}
 
-	private boolean isPositiveNonZeroInt(String content) {
+	private boolean isPositiveInt(String content) {
 		try {
 			int i = Integer.parseInt(content);
 			return (i > 0 ? true : false);
 		} catch (NumberFormatException nfe) {
 			parserLogger.log(Level.INFO, "Command Content is invalid");
+			return false;
+		}
+	}
+
+	private boolean isValidPeriod(String content){
+		if(content.equals("hourly")||content.equals("daily")||content.equals("weekly")||content.equals("monthly")||content.equals("yearly")){
+			return true;
+		}else{
 			return false;
 		}
 	}
