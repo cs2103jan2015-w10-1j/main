@@ -26,6 +26,10 @@ public abstract class Command {
 	public CommandType getCommandType() {
 		return this.type;
 	}
+	
+	protected void setCommandType(CommandType type){
+		this.type = type;
+	}
 
 	public int getId() {
 		return this.id;

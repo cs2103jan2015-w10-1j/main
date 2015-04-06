@@ -7,11 +7,12 @@ import com.done.storage.InMemStorage;
 
 public class CommandDelete extends Command {
 
+	private int deleteIndex;
 	private Done task;
 
 	public CommandDelete(int deleteIndex) {
 		super(CommandType.DELETE, true);
-		this.task = InMemStorage.getInstance().getTask(deleteIndex);
+		this.deleteIndex = deleteIndex;
 		commandLogger.log(Level.INFO, "Delete Command Created");
 	}
 
@@ -24,7 +25,12 @@ public class CommandDelete extends Command {
 	@Override
 	public void execute() {
 		InMemStorage memory = InMemStorage.getInstance();
-		memory.delete(task, false);
+		if (task == null) {
+			this.task = InMemStorage.getInstance().getTask(deleteIndex);
+			memory.delete(task, false);
+		} else {
+			memory.delete(task, false);
+		}
 	}
 
 	@Override

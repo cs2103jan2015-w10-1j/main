@@ -11,7 +11,7 @@ public class CommandExit extends Command {
 	public CommandExit(boolean isNormal){
 		super(CommandType.EXIT,false);
 		this.isNormal = isNormal;
-		commandLogger.log(Level.INFO, "Add Command Created");
+		commandLogger.log(Level.INFO, "Exit Command Created");
 	}
 
 	@Override
