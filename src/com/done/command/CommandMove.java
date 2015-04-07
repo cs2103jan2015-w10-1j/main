@@ -14,8 +14,8 @@ public class CommandMove extends Command {
 	//@author A0115777W
 	public CommandMove(int origin, int destination) {
 		super(CommandType.MOVE, true);
-		this.origin = origin;
-		this.destination = destination;
+		this.origin = origin-1;
+		this.destination = destination-1;
 		commandLogger.log(Level.INFO, "Move Command Created");
 	}
 
@@ -23,20 +23,21 @@ public class CommandMove extends Command {
 	public void execute() throws Exception {
 		commandLogger.log(Level.INFO, "Move Command Execution called");
 		InMemStorage memory = InMemStorage.getInstance();
-		commandLogger.log(Level.INFO, "Move Command Execution 1");
-		List<Done> tasks = memory.getTasks();
-		commandLogger.log(Level.INFO, "Move Command Execution 2");
-		swap(tasks, origin, destination);
+		//List<Done> tasks = memory.getTasks();
+		//swap(tasks, origin, destination);
+		memory.move(origin, destination);
 		commandLogger.log(Level.INFO, "Move Command Execution Successful");
 	}
 
 	@Override
-	public void undo() {
+	public void undo() throws Exception {
 		InMemStorage memory = InMemStorage.getInstance();
-		List<Done> tasks = memory.getTasks();
-		swap(tasks, destination, origin);
+		//List<Done> tasks = memory.getTasks();
+		//swap(tasks, destination, origin);
+		memory.move(destination, origin);
 	}
 
+	//@author A0115777W-unused
 	private void swap(List<Done> tasks, int origin, int destination) {
 		Done temp = tasks.get(destination);
 		tasks.set(destination, tasks.get(origin));
