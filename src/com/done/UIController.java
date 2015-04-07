@@ -46,6 +46,7 @@ public class UIController implements Observer {
 	private static final String SHOWSEARCH_ERROR_MESSAGE = "Error: Search not successful";
 	private static final String SHOWLOAD_SUCCESS_MESSAGE = "%1$s loaded";
 	private static final String SHOWLOAD_ERROR_MESSAGE = "Error: File load not successful";
+	private static final String SHOWSHOWALL_SUCCESS_MESSAGE = "Showing all tasks";
 	private static final String SHOWREMIND_SUCCESS_MESSAGE = "Set reminder for %1$s";
 	private static final String SHOWREMIND_ERROR_MESSAGE = "Error: Reminder cannot be set for this task";
 	private static final String SHOWUNDO_ERROR_MESSAGE = "Error: No recent command available";
@@ -109,7 +110,7 @@ public class UIController implements Observer {
 				showSearch(executionResult.isSuccessful(), commandContent);
 				break;
 			case SHOWALL:
-				display();
+				showShowAll();
 				break;
 			case REMIND:
 				showRemind(executionResult.isSuccessful(), commandContent);
@@ -235,6 +236,11 @@ public class UIController implements Observer {
 		else{
 			Notifications.create().text(SHOWSEARCH_ERROR_MESSAGE).showError();
 		}
+		displaySearches();
+	}
+	
+	private void showShowAll(){
+		Notifications.create().text(SHOWSHOWALL_SUCCESS_MESSAGE).showInformation();
 		display();
 	}
 	
