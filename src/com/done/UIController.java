@@ -129,6 +129,10 @@ public class UIController implements Observer {
 	public void updateReminder(int taskId){
 		String reminder = logicFacade.getReminder(taskId);
 		Notifications.create().title("Task Reminder").text(String.format(UPDATEREMINDER_MESSAGE, reminder)).showWarning();
+		highlightReminderRow(taskId);
+	}
+
+	private void highlightReminderRow(int taskId) {
 		tableViewTasks.setRowFactory(new Callback<TableView<Done>, TableRow<Done>>() {
 	        @Override
 	        public TableRow<Done> call(TableView<Done> tableView) {
@@ -258,6 +262,11 @@ public class UIController implements Observer {
 	
 
 	private void display() {
+		createDisplayTable();
+		strikethroughDoneRows();
+	}
+
+	private void createDisplayTable() {
 		List<Done> tasks = logicFacade.getTasks();
 		ObservableList<Done> tableTasks = FXCollections.observableArrayList(tasks);		
 		tableViewTasks.setItems(tableTasks);
@@ -265,38 +274,14 @@ public class UIController implements Observer {
 		tableViewTasks.getColumns().get(1).setCellValueFactory(new PropertyValueFactory<>("title"));
 		tableViewTasks.getColumns().get(2).setCellValueFactory(new PropertyValueFactory<>("startTime"));
 		tableViewTasks.getColumns().get(3).setCellValueFactory(new PropertyValueFactory<>("endTime"));
-		tableViewTasks.setRowFactory(new Callback<TableView<Done>, TableRow<Done>>() {
-	        @Override
-	        public TableRow<Done> call(TableView<Done> tableView) {
-	            final TableRow<Done> row = new TableRow<Done>() {
-	                @Override
-	                protected void updateItem(Done task, boolean empty){
-	                    super.updateItem(task, empty);
-	                    if(task == null || empty){
-	                    	 getStyleClass().removeAll(Collections.singleton("doneRow"));
-	                    }
-	                    else{
-		                    if(task.isCompleted()){
-		                    	if (!getStyleClass().contains("doneRow")) {
-		                            getStyleClass().add("doneRow");
-		                    	}
-		                    }
-		                    else{
-		                    	 getStyleClass().removeAll(Collections.singleton("doneRow"));
-		                    }
-	                    }
-	                   
-	                }
-	            };
-	            return row;
-	        }
-	    });
-		if(!tableViewTasks.getColumns().get(0).getStyleClass().contains("firstColumn")){
-			tableViewTasks.getColumns().get(0).getStyleClass().add("firstColumn");
-		}
 	}
 	
 	private void displaySearches() {
+		createDisplaySearchesTable();
+		strikethroughDoneRows();
+	}
+
+	private void createDisplaySearchesTable() {
 		List<Done> tasks = logicFacade.getSearchResult();
 		ObservableList<Done> tableTasks = FXCollections.observableArrayList(tasks);
 		tableViewTasks.setItems(tableTasks);
@@ -304,6 +289,9 @@ public class UIController implements Observer {
 		tableViewTasks.getColumns().get(1).setCellValueFactory(new PropertyValueFactory<>("title"));
 		tableViewTasks.getColumns().get(2).setCellValueFactory(new PropertyValueFactory<>("startTime"));
 		tableViewTasks.getColumns().get(3).setCellValueFactory(new PropertyValueFactory<>("endTime"));
+	}
+	
+	private void strikethroughDoneRows() {
 		tableViewTasks.setRowFactory(new Callback<TableView<Done>, TableRow<Done>>() {
 	        @Override
 	        public TableRow<Done> call(TableView<Done> tableView) {
@@ -334,5 +322,4 @@ public class UIController implements Observer {
 			tableViewTasks.getColumns().get(0).getStyleClass().add("firstColumn");
 		}
 	}
-
 }
