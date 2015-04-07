@@ -7,6 +7,8 @@ import javafx.application.Platform;
 
 import org.controlsfx.control.Notifications;
 import org.joda.time.DateTime;
+import org.joda.time.LocalDateTime;
+import org.joda.time.LocalTime;
 import org.joda.time.format.DateTimeFormat;
 import org.joda.time.format.DateTimeFormatter;
 
@@ -31,10 +33,11 @@ public class TaskReminder {
 	public TaskReminder(Done done, String remindDate, String remindTime) {
 		DateTimeFormatter dtf = DateTimeFormat.forPattern("ddMMyyyy HH:mm");
 		DateTime dateTime = dtf.parseDateTime(remindDate + " " + remindTime);
-		long endTimeValue = dateTime.getMillis();
+		long currentTime = LocalDateTime.now().getMillisOfDay();
+		long endTimeValue = dateTime.getMillisOfDay();
 
 		timer = new Timer();
-		timer.schedule(new DoneReminder(done), endTimeValue);
+		timer.schedule(new DoneReminder(done), (endTimeValue - currentTime));
 	}
 
 	class DoneReminder extends TimerTask {
@@ -49,7 +52,7 @@ public class TaskReminder {
 		public void run() {
 			Platform.runLater(new Runnable() {
 				public void run() {
-					Notifications.create().title("Done! Timed Task")
+					Notifications.create().title("Done! Reminder")
 							.text("Reminder for: " + done.getTitle())
 							.showWarning();
 					timer.cancel();
