@@ -30,6 +30,6 @@ public class CommandDone extends Command {
 	@Override
 	public void undo() {
 		InMemStorage inMemStorage = InMemStorage.getInstance();
-		inMemStorage.setIncompleted(task);
+		inMemStorage.setIncomplete(task);
 	}
 }

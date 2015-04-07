@@ -11,12 +11,15 @@ public class CommandClear extends Command {
 		commandLogger.log(Level.INFO, "Clear Command Created");
 	}
 
+	//@author A0111830X
 	@Override
 	public void execute() {
 		InMemStorage.getInstance().delete(null, true);
 
 	}
-
+	
+	//@author A0111830X-unused
+	//undo not required in CLEAR
 	@Override
 	public void undo() {
 		// UNUSED

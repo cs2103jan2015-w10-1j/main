@@ -29,6 +29,7 @@ public class DoneAdapter implements JsonSerializer<List<Done>>,
 		map.put("DoneTimedTask", DoneTimedTask.class);
 	}
 
+	//@author A0111830X
 	@Override
 	public List<Done> deserialize(JsonElement arg0, Type arg1,
 			JsonDeserializationContext arg2) throws JsonParseException {
@@ -42,7 +43,7 @@ public class DoneAdapter implements JsonSerializer<List<Done>>,
 		}
 
 		for (JsonElement out : jsonArray) {
-			JsonObject jsonObj = out.getAsJsonObject();	
+			JsonObject jsonObj = out.getAsJsonObject();
 			JsonElement element = jsonObj.get("task");
 			String classType = jsonObj.get("class").getAsString();
 

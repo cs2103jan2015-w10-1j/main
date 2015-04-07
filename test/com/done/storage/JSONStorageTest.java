@@ -13,13 +13,14 @@ public class JSONStorageTest {
 
 	JSONStorage test = JSONStorage.getInstance();
 
+	//@author A0111830X
 	@Test
 	public void testJsonNameToPrefs() throws FileNotFoundException, IOException {
 
 		assertTrue(test.setJsonNameToPref("tasks.json"));
 
 	}
-
+	
 	@Test
 	public void testGetJsonName() {
 		test.setJsonNameToPref("testJson");

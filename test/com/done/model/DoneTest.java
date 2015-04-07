@@ -8,7 +8,9 @@ import org.junit.Test;
 import com.done.model.Done.TaskType;
 
 public class DoneTest {
-
+	
+	//@author A0111830X
+	
 	@Test
 	public void testFloatingTask() {
 		// assert that if is a new instance of DoneFloatingTask, then the

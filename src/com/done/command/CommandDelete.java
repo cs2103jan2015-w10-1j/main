@@ -22,6 +22,7 @@ public class CommandDelete extends Command {
 		commandLogger.log(Level.INFO, "Delete Command Created");
 	}
 
+	//@author A0111830X
 	@Override
 	public void execute() {
 		InMemStorage memory = InMemStorage.getInstance();

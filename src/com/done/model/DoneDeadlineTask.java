@@ -18,10 +18,12 @@ public class DoneDeadlineTask extends Done {
 		this.setEndTime(endTime);
 	}
 
+	//@author generated
 	public void setEndTime(long endTime) {
 		this.endTime = endTime;
 	}
 	
+	//@author A0111830X
 	public String getEndTime(){
 		SimpleDateFormat sdf = new SimpleDateFormat("d MMM yyyy HH:mm");
 		return sdf.format(endTime);

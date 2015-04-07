@@ -9,7 +9,7 @@ import com.done.command.Command;
 import com.done.model.Done;
 
 public class InMemStorage {
-
+	
 	private static InMemStorage instance = null;
 
 	private static final int ARRAY_POSITION_OFFSET = 1;
@@ -35,7 +35,8 @@ public class InMemStorage {
 
 		return instance;
 	}
-
+	
+	//@author A0111830X
 	public Done getTask(int id) {
 		return getTasks().get(id - ARRAY_POSITION_OFFSET);
 	}
@@ -53,7 +54,7 @@ public class InMemStorage {
 	public List<Done> loadSearchResult() {
 		return getWorkingTasks();
 	}
-
+	
 	public boolean store(Done task) {
 		getTasks().add(task);
 		updateTaskID();
@@ -77,14 +78,14 @@ public class InMemStorage {
 
 		return false;
 	}
-	
-	public boolean edit(Done task, int editIndex){
+
+	public boolean edit(Done task, int editIndex) {
 		getTasks().set(editIndex, task);
 		updateTaskID();
-		if(jsonStorage.store(getTasks()) == true){
+		if (jsonStorage.store(getTasks()) == true) {
 			return true;
 		}
-		
+
 		return false;
 	}
 
@@ -93,7 +94,7 @@ public class InMemStorage {
 		jsonStorage.store(getTasks());
 	}
 
-	public void setIncompleted(Done task) {
+	public void setIncomplete(Done task) {
 		getTasks().get(task.getId() - ARRAY_POSITION_OFFSET)
 				.setCompleted(false);
 		jsonStorage.store(getTasks());
@@ -108,18 +109,6 @@ public class InMemStorage {
 			throw new Exception("Command Stack is empty!");
 		}
 		return this.undoStack.pop();
-	}
-
-	public List<Done> getTasks() {
-		return tasks;
-	}
-
-	public void setTasks(List<Done> tasks) {
-		this.tasks = tasks;
-	}
-
-	public List<Done> getWorkingTasks() {
-		return workingTasks;
 	}
 
 	public void emptyWorkingTasks() {
@@ -137,6 +126,19 @@ public class InMemStorage {
 			listIterator.next().setId(i);
 			i++;
 		}
+	}
+	
+	//@author generated
+	public List<Done> getTasks() {
+		return tasks;
+	}
+
+	public void setTasks(List<Done> tasks) {
+		this.tasks = tasks;
+	}
+
+	public List<Done> getWorkingTasks() {
+		return workingTasks;
 	}
 
 }

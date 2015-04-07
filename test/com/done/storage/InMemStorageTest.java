@@ -22,6 +22,8 @@ public class InMemStorageTest {
 	InMemStorage inMem = InMemStorage.getInstance();
 	DateTime dateTime = new DateTime();
 	
+	//@author A0111830X
+	
 	@Before
 	public void setUp(){
 		// delete all tasks from memory and JSON first before performing tests
@@ -42,7 +44,7 @@ public class InMemStorageTest {
 		assertTrue(inMem.store(doneDT));
 
 	}
-
+	
 	@Test
 	public void testStore2() {
 		List<Done> testDone = new ArrayList<Done>();

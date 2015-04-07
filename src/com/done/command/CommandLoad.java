@@ -15,6 +15,7 @@ public class CommandLoad extends Command {
 		commandLogger.log(Level.INFO, "Load Command Created");
 	}
 
+	//@author A0111830X
 	@Override
 	public void execute() {
 		JSONStorage jsonPref = JSONStorage.getInstance();
@@ -25,6 +26,8 @@ public class CommandLoad extends Command {
 		
 	}
 
+	//@author A0111830X-unused
+	//undo not required in LOAD
 	@Override
 	public void undo() {
 		// UNUSED

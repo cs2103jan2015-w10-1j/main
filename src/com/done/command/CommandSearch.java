@@ -24,6 +24,7 @@ public class CommandSearch extends Command {
 		this.searchString = searchstring;
 	}
 
+	//@author A0111830X
 	@Override
 	public void execute() {
 		InMemStorage memory = InMemStorage.getInstance();
@@ -37,7 +38,9 @@ public class CommandSearch extends Command {
 		}
 
 	}
-
+	
+	//@author A0111830X-unused
+	//undo not required in SEARCH
 	@Override
 	public void undo() {
 		// UNUSED

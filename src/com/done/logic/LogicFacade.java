@@ -19,7 +19,6 @@ public class LogicFacade {
 	
 	public ExecutionResult getExecutionResult(String userCommand){
 
-		// sorry to comment this but parsing the command should be done in the parser component
 		//CommandType commandType = logic.getCmdType(userCommand);
 		String commandContent = logic.getCmdContent(userCommand);
 		CommandParser parser = CommandParser.getInstance();

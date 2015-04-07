@@ -17,8 +17,8 @@ import com.done.storage.InMemStorage;
 
 public class DoneProgram {
 
+	//@author A0111830X
 	// Integration test
-
 	@Test
 	public void testAddFloatingFromFacade() {
 		String input = "add facade test";
@@ -33,7 +33,6 @@ public class DoneProgram {
 
 	}
 	
-	// redundant test from Logic (one level higher)
 	@Test
 	public void testAddFloatingFromLogic() {
 		Logic logic = new Logic();
@@ -53,7 +52,7 @@ public class DoneProgram {
 		assertThat(command.getCommandType(), is(CommandType.ADD));
 		assertTrue(inMemStorage.getTasks().size() > 0);
 	}
-
+	
 	@Test
 	public void testUndo() {
 		InMemStorage inMemStorage = InMemStorage.getInstance();

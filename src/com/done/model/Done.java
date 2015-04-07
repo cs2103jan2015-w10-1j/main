@@ -7,6 +7,7 @@ public abstract class Done {
 	private TaskType type;
 	private boolean completed;
 
+	//@author A0111830X
 	public static enum TaskType {
 		FLOATING, TIMED, DEADLINE;
 	}
@@ -24,6 +25,7 @@ public abstract class Done {
 		this.setCompleted(false);
 	}
 
+	//@author generated
 	public String getTitle() {
 		return title;
 	}

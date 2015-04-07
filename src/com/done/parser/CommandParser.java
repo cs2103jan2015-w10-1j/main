@@ -98,6 +98,7 @@ public class CommandParser {
 		return commandContent;
 	}
 
+	//@author A0111830X
 	public String removeFirstWord(String userCommand) {
 		String returnStr = getFirstWord(userCommand).trim();
 		returnStr = userCommand.substring(returnStr.length());
@@ -197,7 +198,8 @@ public class CommandParser {
 			return new CommandInvalid();
 		}
 	}
-
+	
+	//@author A0111830X
 	private Done defineTask(String commandContent) {
 		Done task;
 		boolean isTimed = false;
@@ -225,7 +227,7 @@ public class CommandParser {
 
 		if (isTimed) {
 			// if content contains start time
-			// we generate (new) timeTask
+			// we generate (new) timedTask
 			// return timedTask
 			parserLogger.log(Level.INFO, "make Timed Task");
 			task = addTimed(split, timeIndex);
@@ -296,6 +298,7 @@ public class CommandParser {
 		}
 	}
 
+	//@author A0111830X
 	private Done addTimed(String[] content, int timeIndex) {
 		Done task = null;
 		DateTimeFormatter dtf = DateTimeFormat.forPattern("HH:mm");
@@ -347,6 +350,7 @@ public class CommandParser {
 		return task;
 	}
 
+	//@author A0111830X
 	private Done addDeadline(String[] content, int timeIndex, int dateIndex) {
 		Done task = null;
 		StringBuilder sb = new StringBuilder();
@@ -360,8 +364,8 @@ public class CommandParser {
 		}
 		String taskTitle = sb.toString();
 		DateTimeFormatter dtf = DateTimeFormat.forPattern("ddMMyyyy HH:mm");
-		DateTime date = null;
-		date = dtf.parseDateTime(content[dateIndex] + " " + content[timeIndex]);
+		DateTime date = dtf.parseDateTime(content[dateIndex] + " "
+				+ content[timeIndex]);
 		task = new DoneDeadlineTask(taskTitle, date.getMillis());
 		return task;
 

@@ -11,12 +11,15 @@ public class CommandUndo extends Command{
 		commandLogger.log(Level.INFO, "Undo Command Created");
 	}
 	
+	//@author A0111830X
 	@Override
 	public void execute() throws Exception {
 		Command command = InMemStorage.getInstance().popFromUndoStack();
 		command.undo();
 	}
-
+	
+	//@author A0111830X-unused
+	//redo function not required
 	@Override
 	public void undo() {
 		// UNUSED
