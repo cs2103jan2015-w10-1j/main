@@ -8,11 +8,15 @@ import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.lang.reflect.Type;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 import java.util.Properties;
+import java.util.logging.FileHandler;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import java.util.logging.SimpleFormatter;
 
 import com.done.model.Done;
 import com.google.gson.Gson;
@@ -34,10 +38,10 @@ public class JSONStorage {
 	private String jsonName;
 	private boolean isNewJson;
 
-	// private FileHandler fileHandler;
+	private FileHandler fileHandler;
 
 	private JSONStorage() {
-		// setUpLogger();
+		setUpLogger();
 		this.gson = new GsonBuilder()
 				.registerTypeAdapter(Done.class, new DoneAdapter())
 				.setPrettyPrinting().serializeNulls().create();
@@ -69,7 +73,7 @@ public class JSONStorage {
 		// read the actual JSON file
 		try {
 			inFileRead = new FileReader(jsonName);
-		} catch (FileNotFoundException e) {
+		} catch (IOException e) {
 			logger.log(Level.WARNING, "File not found!", e);
 		}
 
@@ -99,7 +103,6 @@ public class JSONStorage {
 	public boolean store(List<Done> task) {
 		logger.log(Level.INFO, "store() method executed");
 
-		// String jsonName = getJsonNameFromPref();
 		try {
 			FileWriter outFile = new FileWriter(jsonName);
 			outFile.write(gson.toJson(task, Done.class));
@@ -154,17 +157,21 @@ public class JSONStorage {
 		return file;
 	}
 
-	/*private void setUpLogger() {
+	private void setUpLogger() {
 		SimpleFormatter sf = new SimpleFormatter();
 
 		try {
-			fileHandler = new FileHandler("Done.log");
+			String out = new SimpleDateFormat(
+					"'StorageLog-'dd-MM-yyyy HH-mm'.log'").format(new Date());
+			File file = new File("log\\");
+			file.mkdir();
+			fileHandler = new FileHandler("log\\" + out);
 			logger.addHandler(fileHandler);
 			fileHandler.setFormatter(sf);
 		} catch (SecurityException | IOException e) {
 			logger.log(Level.WARNING, "Unable to read file!", e);
 		}
-	}*/
+	}
 	
 	//@author generated
 	public boolean isNewJson() {
