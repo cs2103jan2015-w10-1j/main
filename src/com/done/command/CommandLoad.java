@@ -8,6 +8,7 @@ import com.done.storage.JSONStorage;
 public class CommandLoad extends Command {
 	
 	private String jsonName;
+	private static final String DIR_TASKS = "tasks\\";
 
 	//@author A0115777W
 	public CommandLoad(String jsonName) {
@@ -22,7 +23,7 @@ public class CommandLoad extends Command {
 		JSONStorage jsonPref = JSONStorage.getInstance();
 		InMemStorage inMemStorage = InMemStorage.getInstance();
 		
-		jsonPref.setJsonNameToPref(jsonName);
+		jsonPref.setJsonNameToPref(DIR_TASKS+jsonName);
 		inMemStorage.loadNew();
 		
 	}

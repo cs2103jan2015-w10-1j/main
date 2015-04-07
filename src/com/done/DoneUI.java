@@ -31,7 +31,7 @@ public class DoneUI extends Application {
 	        primaryStage.setResizable(false);
 	        primaryStage.show();
 	        
-	        Notifications.create().text(logicFacade.getJsonName() + " loaded").showInformation();
+	        Notifications.create().text(logicFacade.getJsonName().substring(6) + " loaded").showInformation();
 	        
 		} catch(Exception e) {
 			e.printStackTrace();
