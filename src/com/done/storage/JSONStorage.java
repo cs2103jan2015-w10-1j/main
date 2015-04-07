@@ -27,10 +27,13 @@ import com.google.gson.reflect.TypeToken;
 public class JSONStorage {
 
 	private static JSONStorage instance = null;
-
+	
+	private static final String DIR_LOG = "log\\";
+	private static final String DIR_PREF = "prefs\\";
+	private static final String DIR_TASKS = "tasks\\";
 	private static final String FILE_JSON_EXT = ".json";
-	private static final String FILE_TASKS_JSON = "tasks";
-	private static final String FILE_PREFS_XML = "done_prefs.xml";
+	private static final String FILE_TASKS_JSON = DIR_TASKS + "tasks";
+	private static final String FILE_PREFS_XML = DIR_PREF + "done_prefs.xml";
 	private static Logger logger = Logger.getLogger("JSONStorage");
 
 	private Gson gson;
@@ -42,6 +45,7 @@ public class JSONStorage {
 
 	private JSONStorage() {
 		setUpLogger();
+		setUpDirectories();
 		this.gson = new GsonBuilder()
 				.registerTypeAdapter(Done.class, new DoneAdapter())
 				.setPrettyPrinting().serializeNulls().create();
@@ -61,14 +65,14 @@ public class JSONStorage {
 	//@author A0111830X
 	public List<Done> load() {
 		logger.log(Level.INFO, "load() method executed");
+		FileReader inFileRead = null;
+		List<Done> tasks = null;
 
 		if (isNewJson) {
 			jsonName = getJsonNameFromPref();
 		}
-
-		FileReader inFileRead = null;
 		File inFile = openFile(jsonName);
-		List<Done> tasks = null;
+		
 
 		// read the actual JSON file
 		try {
@@ -83,18 +87,16 @@ public class JSONStorage {
 			assert inFile.length() <= 0; // assert that the file is indeed empty
 			return new ArrayList<Done>();
 		} else {
-
 			// else get from JSON object in file into ArrayList
 			Type collectionType = new TypeToken<Done>() {
 			}.getType();
 			try {
 				tasks = gson.fromJson(inFileRead, collectionType);
-				assert tasks != null; // assert that the tasks ArrayList is not
-										// null
+				assert tasks != null; // assert that the tasks ArrayList is not null
 			} catch (JsonIOException e) {
-				logger.log(Level.WARNING, "Unable to read JSON file", e);
+				logger.log(Level.WARNING, "Unable to read JSON file, creating new empty List", e);
+				return new ArrayList<Done>();
 			}
-
 			return tasks;
 		}
 
@@ -111,8 +113,8 @@ public class JSONStorage {
 			return true;
 		} catch (IOException e) {
 			logger.log(Level.WARNING, "Unable to write file!", e);
+			return false;
 		}
-		return false;
 	}
 
 	public boolean setJsonNameToPref(String jsonName) {
@@ -132,16 +134,15 @@ public class JSONStorage {
 		logger.log(Level.INFO, "Retrieving JSON name");
 		try {
 			File prefFile = openFile(FILE_PREFS_XML);
-			if (prefFile.length() <= 0) {
-				logger.log(Level.INFO,
-						"Preference file not found, using default name");
-				setJsonNameToPref(FILE_TASKS_JSON);
-			}
 			pref.loadFromXML(new FileInputStream(prefFile));
 		} catch (IOException e) {
-			logger.log(Level.WARNING, "Unable to read preference file!", e);
+			logger.log(Level.WARNING,
+					"Unable to read preference file! Using default.");
+			setJsonNameToPref(FILE_TASKS_JSON);
 		}
+
 		return pref.getProperty("jsonName", FILE_TASKS_JSON);
+
 	}
 
 	private static File openFile(String fileName) {
@@ -163,9 +164,9 @@ public class JSONStorage {
 		try {
 			String out = new SimpleDateFormat(
 					"'StorageLog-'dd-MM-yyyy HH-mm'.log'").format(new Date());
-			File file = new File("log\\");
+			File file = new File(DIR_LOG);
 			file.mkdir();
-			fileHandler = new FileHandler("log\\" + out);
+			fileHandler = new FileHandler(DIR_LOG + out);
 			logger.addHandler(fileHandler);
 			fileHandler.setFormatter(sf);
 		} catch (SecurityException | IOException e) {
@@ -173,6 +174,18 @@ public class JSONStorage {
 		}
 	}
 	
+	private void setUpDirectories() {
+		File tasksDir = new File(DIR_TASKS);
+		File prefDir = new File(DIR_PREF);
+		if(!tasksDir.exists()){
+			tasksDir.mkdir();
+		}
+		if(!prefDir.exists()){
+			prefDir.mkdir();
+		}
+		
+	}
+
 	//@author generated
 	public boolean isNewJson() {
 		return isNewJson;
