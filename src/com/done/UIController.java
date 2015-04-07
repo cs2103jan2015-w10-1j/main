@@ -255,19 +255,16 @@ public class UIController implements Observer {
 	                protected void updateItem(Done task, boolean empty){
 	                    super.updateItem(task, empty);
 	                    if(task == null || empty){
-	                    	 getStyleClass().removeAll(Collections.singleton("highlightedRow"));
-	                    	//setStyle("");
+	                    	 getStyleClass().removeAll(Collections.singleton("doneRow"));
 	                    }
 	                    else{
 		                    if(task.isCompleted()){
-		                    	if (!getStyleClass().contains("highlightedRow")) {
-		                            getStyleClass().add("highlightedRow");
+		                    	if (!getStyleClass().contains("doneRow")) {
+		                            getStyleClass().add("doneRow");
 		                    	}
-		                    	//setStyle("-fx-background-color: #F72068; -fx-background: -fx-accent;");
 		                    }
 		                    else{
-		                    	 getStyleClass().removeAll(Collections.singleton("highlightedRow"));
-		                    	//setStyle("");
+		                    	 getStyleClass().removeAll(Collections.singleton("doneRow"));
 		                    }
 	                    }
 	                   
@@ -276,6 +273,9 @@ public class UIController implements Observer {
 	            return row;
 	        }
 	    });
+		if(!tableViewTasks.getColumns().get(0).getStyleClass().contains("firstColumn")){
+			tableViewTasks.getColumns().get(0).getStyleClass().add("firstColumn");
+		}
 	}
 	
 	private void displaySearches() {
@@ -294,14 +294,16 @@ public class UIController implements Observer {
 	                protected void updateItem(Done task, boolean empty){
 	                    super.updateItem(task, empty);
 	                    if(task == null || empty){
-	                    	setStyle("");
+	                    	 getStyleClass().removeAll(Collections.singleton("doneRow"));
 	                    }
 	                    else{
 		                    if(task.isCompleted()){
-		                    	setStyle("-fx-background-color: #F72068; -fx-background: -fx-accent;");
+		                    	if (!getStyleClass().contains("doneRow")) {
+		                            getStyleClass().add("doneRow");
+		                    	}
 		                    }
 		                    else{
-		                    	setStyle("");
+		                    	 getStyleClass().removeAll(Collections.singleton("doneRow"));
 		                    }
 	                    }
 	                   
@@ -310,6 +312,9 @@ public class UIController implements Observer {
 	            return row;
 	        }
 	    });
+		if(!tableViewTasks.getColumns().get(0).getStyleClass().contains("firstColumn")){
+			tableViewTasks.getColumns().get(0).getStyleClass().add("firstColumn");
+		}
 	}
 
 }
