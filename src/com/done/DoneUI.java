@@ -5,6 +5,7 @@ package com.done;
 import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
+import javafx.scene.image.Image;
 import javafx.scene.layout.AnchorPane;
 import javafx.stage.Stage;
 
@@ -25,7 +26,7 @@ public class DoneUI extends Application {
 	        
 	        AnchorPane anchorPane = (AnchorPane) loader.load();
 	        Scene scene = new Scene(anchorPane);
-	        
+	        primaryStage.getIcons().add(new Image(getClass().getResourceAsStream("doneicon.png")));
 	        primaryStage.setTitle("Done!");
 	        primaryStage.setScene(scene);
 	        primaryStage.setResizable(false);
