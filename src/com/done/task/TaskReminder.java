@@ -13,11 +13,11 @@ import org.joda.time.format.DateTimeFormatter;
 import com.done.model.Done;
 import com.done.model.DoneTimedTask;
 
-public class ReminderTask {
+public class TaskReminder {
 	Timer timer;
 
 	//@author A0111830X
-	public ReminderTask(DoneTimedTask done) {
+	public TaskReminder(DoneTimedTask done) {
 
 		long startTimeValue = done.getStartTimeLong();
 		long endTimeValue = done.getEndTimeLong();
@@ -28,7 +28,7 @@ public class ReminderTask {
 
 	}
 
-	public ReminderTask(Done done, String remindDate, String remindTime) {
+	public TaskReminder(Done done, String remindDate, String remindTime) {
 		DateTimeFormatter dtf = DateTimeFormat.forPattern("ddMMyyyy HH:mm");
 		DateTime dateTime = dtf.parseDateTime(remindDate + " " + remindTime);
 		long endTimeValue = dateTime.getMillis();

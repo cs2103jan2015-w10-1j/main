@@ -182,12 +182,14 @@ public class CommandParser {
 			}
 		} else if (commandWord.equalsIgnoreCase("remind")) {
 			parserLogger.log(Level.INFO, "make remind Command");
-			ArrayList<String> contents = sliceContent(commandContent);
-			String index = contents.get(0);
-			String period = contents.get(1);
-			if(isPositiveInt(index)&&isValidPeriod(period)){
-				return new CommandRemind(Integer.parseInt(index),period);
-			}else{
+			try{
+				ArrayList<String> contents = sliceContent(commandContent);
+				String index = contents.get(0);
+				String date = contents.get(1);
+				String time = contents.get(2);
+				return new CommandRemind(Integer.parseInt(index),date,time);
+			}catch (Exception e){
+				parserLogger.log(Level.INFO, "make invalid Command instead");
 				return new CommandInvalid();
 			}
 		} else if (commandWord.equalsIgnoreCase("exit")) {

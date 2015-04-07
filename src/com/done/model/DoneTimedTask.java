@@ -2,7 +2,7 @@ package com.done.model;
 
 import java.text.SimpleDateFormat;
 
-import com.done.task.ReminderTask;
+import com.done.task.TaskReminder;
 
 public class DoneTimedTask extends Done {
 
@@ -15,7 +15,7 @@ public class DoneTimedTask extends Done {
 		super.setType(TaskType.TIMED);
 		this.setStartTime(startTime);
 		this.setEndTime(endTime);
-		new ReminderTask(this);
+		new TaskReminder(this);
 	}
 
 	public DoneTimedTask(String title, String tag, long startTime, long endTime) {

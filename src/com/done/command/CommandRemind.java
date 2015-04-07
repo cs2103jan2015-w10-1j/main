@@ -2,39 +2,40 @@ package com.done.command;
 
 import java.util.logging.Level;
 
-import com.done.command.Command.CommandType;
 import com.done.model.Done;
+import com.done.model.DoneTimedTask;
 import com.done.storage.InMemStorage;
+import com.done.task.TaskReminder;
 
 public class CommandRemind extends Command {
 	
+	private int remindIndex;
 	private Done task;
-	private String period;
+	private String date;
+	private String time;
+	private TaskReminder reminderTask;
 	
-	public CommandRemind(int remindIndex, String period) {
-		super(CommandType.REMIND, true);
+	public CommandRemind(int remindIndex, String date, String time) {
+		super(CommandType.REMIND, false);
 		this.task = InMemStorage.getInstance().getTask(remindIndex);
-		this.period = period;
-		commandLogger.log(Level.INFO, "Remind Command Created");
-	}
-	
-	public CommandRemind(Done task,String period){
-		super(CommandType.REMIND, true);
-		this.task = task;
-		this.period = period;
+		this.remindIndex = remindIndex;
+		this.date = date;
+		this.time = time;
 		commandLogger.log(Level.INFO, "Remind Command Created");
 	}
 
 	@Override
 	public void execute() throws Exception {
-		// TODO Auto-generated method stub
-
+		commandLogger.log(Level.INFO, "Remind Command called");
+		this.reminderTask = new TaskReminder(task, date, time);
+		commandLogger.log(Level.INFO, "Remind Command successfully executed");
 	}
 
 	@Override
 	public void undo() {
-		// TODO Auto-generated method stub
-
+		//Currently not undoable
+		//commandLogger.log(Level.INFO, "undo Remind Command called");
+		//commandLogger.log(Level.INFO, "undo Remind Command successfully executed");
 	}
 
 }
