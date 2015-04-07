@@ -9,6 +9,7 @@ public class CommandLoad extends Command {
 	
 	private String jsonName;
 
+	//@author A0115777W
 	public CommandLoad(String jsonName) {
 		super(CommandType.LOAD, false);
 		this.jsonName = jsonName;
