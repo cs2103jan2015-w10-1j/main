@@ -15,6 +15,7 @@ import com.done.command.Command;
 import com.done.command.Command.CommandType;
 import com.done.command.CommandAdd;
 import com.done.command.CommandClear;
+import com.done.command.CommandClearDone;
 import com.done.command.CommandDelete;
 import com.done.command.CommandDone;
 import com.done.command.CommandEdit;
@@ -171,6 +172,9 @@ public class CommandParser {
 			} else {
 				return new CommandInvalid();
 			}
+		} else if (commandWord.equalsIgnoreCase("cleardone")) {
+			parserLogger.log(Level.INFO, "make cleardone Command");
+			return new CommandClearDone();
 		} else if (commandWord.equalsIgnoreCase("recur")) {
 			parserLogger.log(Level.INFO, "make recur Command");
 			ArrayList<String> contents = sliceContent(commandContent);

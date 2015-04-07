@@ -103,6 +103,22 @@ public class InMemStorage {
 
 		return false;
 	}
+	
+	public boolean clearDoneTasks(){
+		List<Done> tasks = getTasks();
+
+		for (int i = 0; i < tasks.size(); i++) {
+			if (tasks.get(i).isCompleted()) {
+				tasks.remove(i);
+			}
+		}
+
+		if (jsonStorage.store(getTasks()) == true) {
+			return true;
+		}
+
+		return false;
+	}
 
 	public void setCompleted(Done task) {
 		getTasks().get(task.getId() - ARRAY_POSITION_OFFSET).setCompleted(true);
