@@ -129,6 +129,32 @@ public class UIController implements Observer {
 	public void updateReminder(int taskId){
 		String reminder = logicFacade.getReminder(taskId);
 		Notifications.create().title("Task Reminder").text(String.format(UPDATEREMINDER_MESSAGE, reminder)).showWarning();
+		tableViewTasks.setRowFactory(new Callback<TableView<Done>, TableRow<Done>>() {
+	        @Override
+	        public TableRow<Done> call(TableView<Done> tableView) {
+	            final TableRow<Done> row = new TableRow<Done>() {
+	                @Override
+	                protected void updateItem(Done task, boolean empty){
+	                    super.updateItem(task, empty);
+	                    if(task == null || empty){
+	                    	 getStyleClass().removeAll(Collections.singleton("reminderRow"));
+	                    }
+	                    else{
+		                    if(task.getId() == taskId){
+		                    	if (!getStyleClass().contains("reminderRow")) {
+		                            getStyleClass().add("reminderRow");
+		                    	}
+		                    }
+		                    else{
+		                    	 getStyleClass().removeAll(Collections.singleton("reminderRow"));
+		                    }
+	                    }
+	                   
+	                }
+	            };
+	            return row;
+	        }
+	    });
 	}
 
 	private void showAdd(boolean isSuccessful, String commandContent) {
@@ -233,15 +259,7 @@ public class UIController implements Observer {
 
 	private void display() {
 		List<Done> tasks = logicFacade.getTasks();
-		ObservableList<Done> tableTasks = FXCollections.observableArrayList(tasks);
-		/*final ObservableList<Integer> doneTasks = FXCollections.observableArrayList();
-		doneTasks.clear();
-		for(Done task: tableTasks){
-			if(task.isCompleted()){
-				doneTasks.add(task.getId()-1);
-			}
-		}*/
-		
+		ObservableList<Done> tableTasks = FXCollections.observableArrayList(tasks);		
 		tableViewTasks.setItems(tableTasks);
 		tableViewTasks.getColumns().get(0).setCellValueFactory(new PropertyValueFactory<>("id"));
 		tableViewTasks.getColumns().get(1).setCellValueFactory(new PropertyValueFactory<>("title"));

@@ -10,3 +10,8 @@
 .firstColumn .text {
 	-fx-strikethrough: false;
 }
+
+.reminderRow {
+	-fx-background-color: FA2355;
+	-fx-background: -fx-accent;
+}
