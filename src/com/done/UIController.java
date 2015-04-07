@@ -30,7 +30,6 @@ public class UIController implements Observer {
 	private TableView<Done> tableViewTasks;
 	
 	private LogicFacade logicFacade;
-	//private CommandType prevCommandType = null;
 	
 	private static final String EMPTY_STRING = "";
 	private static final String SHOWADD_SUCCESS_MESSAGE = "%1$s added to the list";
@@ -49,6 +48,10 @@ public class UIController implements Observer {
 	private static final String SHOWREMIND_ERROR_MESSAGE = "Error: Reminder cannot be set for this task";
 	private static final String SHOWUNDO_ERROR_MESSAGE = "Error: No recent command available";
 	private static final String SHOWUNDO_SUCCESS_MESSAGE = "Undo %1$s";
+	private static final String SHOWDONE_ERROR_MESSAGE = "Error: Invalid attempt to mark a task as done";
+	private static final String SHOWDONE_SUCCESS_MESSAGE = "%1$s marked as done";
+	private static final String SHOWCLEARDONE_ERROR_MESSAGE = "Error: Invalid attempt to clear tasks marked as done";
+	private static final String SHOWCLEARDONE_SUCCESS_MESSAGE = "All done tasks cleared";
 	private static final String SHOWINVALIDCOMMAND_ERROR_MESSAGE = "Error: Invalid command";
 	private static final String UPDATEREMINDER_MESSAGE = "Reminder for %1$s";
 	
@@ -113,7 +116,10 @@ public class UIController implements Observer {
 				showUndo(executionResult.isSuccessful(), commandContent);
 				break;
 			case DONE:
-				display();
+				showDone(executionResult.isSuccessful(), commandContent);
+				break;
+			case CLEARDONE:
+				showClearDone(executionResult.isSuccessful());
 				break;
 			case EXIT:
 				System.exit(0);
@@ -122,7 +128,6 @@ public class UIController implements Observer {
 				showInvalidCommand();
 				break;
 		}
-		//prevCommandType = currCommandType;
 		commandField.clear();
 	}
 	
@@ -232,28 +237,35 @@ public class UIController implements Observer {
 	}
 
 	private void showUndo(boolean isSuccessful, String commandContent)  {
-		/*if(isSuccessful){
-			assert prevCommandType!=null;
-			if(commandContent!=null){
-				Notifications.create().text(String.format(SHOWUNDO_SUCCESS_MESSAGE, prevCommandType, commandContent)).showInformation();
-			}
-			else{
-				Notifications.create().text(String.format(SHOWUNDO_SUCCESS_MESSAGE, prevCommandType, EMPTY_STRING)).showInformation();
-			}
-			prevCommandType = null;
-		}
-		else{
-			Notifications.create().text(SHOWUNDO_ERROR_MESSAGE).showError();
-		}*/
 		if(isSuccessful){
 			Notifications.create().text(String.format(SHOWUNDO_SUCCESS_MESSAGE, commandContent)).showInformation();
 		}
 		else{
 			Notifications.create().text(SHOWUNDO_ERROR_MESSAGE).showError();
 		}
-		
 		display();
 		
+	}
+	
+	private void showDone(boolean isSuccessful, String commandContent) {
+		if(isSuccessful){
+			Notifications.create().text(String.format(SHOWDONE_SUCCESS_MESSAGE, commandContent)).showInformation();
+		}
+		else{
+			Notifications.create().text(SHOWDONE_ERROR_MESSAGE).showError();
+		}
+		display();
+	}
+	
+	private void showClearDone(boolean isSuccessful) {
+		if(isSuccessful){
+			Notifications.create().text(SHOWCLEARDONE_SUCCESS_MESSAGE).showInformation();
+		}
+		else{
+			Notifications.create().text(SHOWCLEARDONE_ERROR_MESSAGE).showError();
+		}
+		
+		display();
 	}
 
 	private void showInvalidCommand() {
