@@ -1,14 +1,15 @@
 package com.done;
 
-import org.controlsfx.control.Notifications;
-
-import com.done.logic.LogicFacade;
 
 import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
 import javafx.scene.layout.AnchorPane;
 import javafx.stage.Stage;
+
+import org.controlsfx.control.Notifications;
+
+import com.done.logic.LogicFacade;
 
 
 public class DoneUI extends Application {
