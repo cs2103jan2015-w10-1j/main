@@ -136,18 +136,18 @@ public class UIController implements Observer {
 	                @Override
 	                protected void updateItem(Done task, boolean empty){
 	                    super.updateItem(task, empty);
-	                    if(task == null || empty){
+	                    /*if(task == null || empty){
 	                    	 getStyleClass().removeAll(Collections.singleton("reminderRow"));
-	                    }
-	                    else{
+	                    }*/
+	                    //else{
 		                    if(task.getId() == taskId){
 		                    	if (!getStyleClass().contains("reminderRow")) {
 		                            getStyleClass().add("reminderRow");
 		                    	}
-		                    }
-		                    else{
+		                //    }
+		                    /*else{
 		                    	 getStyleClass().removeAll(Collections.singleton("reminderRow"));
-		                    }
+		                    }*/
 	                    }
 	                   
 	                }
