@@ -254,14 +254,19 @@ public class UIController implements Observer {
 	                protected void updateItem(Done task, boolean empty){
 	                    super.updateItem(task, empty);
 	                    if(task == null || empty){
-	                    	setStyle("");
+	                    	 getStyleClass().removeAll(Collections.singleton("highlightedRow"));
+	                    	//setStyle("");
 	                    }
 	                    else{
 		                    if(task.isCompleted()){
-		                    	setStyle("-fx-background-color: #F72068; -fx-background: -fx-accent;");
+		                    	if (!getStyleClass().contains("highlightedRow")) {
+		                            getStyleClass().add("highlightedRow");
+		                    	}
+		                    	//setStyle("-fx-background-color: #F72068; -fx-background: -fx-accent;");
 		                    }
 		                    else{
-		                    	setStyle("");
+		                    	 getStyleClass().removeAll(Collections.singleton("highlightedRow"));
+		                    	//setStyle("");
 		                    }
 	                    }
 	                   
