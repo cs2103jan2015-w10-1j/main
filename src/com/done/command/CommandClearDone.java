@@ -7,7 +7,8 @@ import com.done.storage.InMemStorage;
 public class CommandClearDone extends Command {
 	
 	private static final String EMPTY_STRING = "";
-	
+
+	//@author A0115777W
 	public CommandClearDone(){
 		super(CommandType.CLEARDONE,false);
 		commandLogger.log(Level.INFO, "ClearDone Command Created");

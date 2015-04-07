@@ -106,12 +106,13 @@ public class InMemStorage {
 
 	public boolean clearDoneTasks() {
 		List<Done> tasks = getTasks();
-
-		for (int i = 0; i < tasks.size(); i++) {
+		int size = tasks.size();
+		for (int i = size-1; i >= 0; i--) {
 			if (tasks.get(i).isCompleted()) {
 				tasks.remove(i);
 			}
 		}
+		updateTaskID();
 
 		if (jsonStorage.store(getTasks()) == true) {
 			return true;
