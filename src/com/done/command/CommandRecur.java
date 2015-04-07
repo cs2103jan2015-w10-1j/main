@@ -10,6 +10,7 @@ public class CommandRecur extends Command {
 	
 	private Done task;
 	private String period;
+	private static final String EMPTY_STRING = "";
 	
 	//@author A0115777W
 	public CommandRecur(int recurIndex, String period){
@@ -36,5 +37,10 @@ public class CommandRecur extends Command {
 		// TODO Auto-generated method stub
 
 	}
-
+	
+	//@author A0088821X
+	@Override
+	public String getCommandContent() {
+		return EMPTY_STRING;
+	}
 }

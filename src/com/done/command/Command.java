@@ -41,6 +41,8 @@ public abstract class Command {
 	public abstract void execute() throws Exception;
 
 	public abstract void undo() throws Exception;
+	
+	public abstract String getCommandContent();
 
 	public boolean isUndoable() {
 		return undoable;

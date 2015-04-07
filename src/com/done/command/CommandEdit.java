@@ -12,6 +12,7 @@ public class CommandEdit extends Command {
 	private int editIndex;
 	private Done task;
 	private Done subbedTask;
+	private static final String EDIT_COMMAND_CONTENT = "%1$s edited to %2$s";
 
 	//@author A0115777W
 	public CommandEdit(int index, Done task) {
@@ -37,4 +38,9 @@ public class CommandEdit extends Command {
 		memory.edit(subbedTask, editIndex);
 	}
 
+	//@author A0088821X
+	@Override
+	public String getCommandContent() {
+		return String.format(EDIT_COMMAND_CONTENT, editIndex, task.getTitle());
+	}
 }

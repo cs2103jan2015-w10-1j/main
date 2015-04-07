@@ -35,5 +35,11 @@ public class CommandLoad extends Command {
 		// UNUSED
 		
 	}
+	
+	//@author A0088821X
+	@Override
+	public String getCommandContent() {
+		return jsonName;
+	}
 
 }

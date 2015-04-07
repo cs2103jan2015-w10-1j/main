@@ -7,6 +7,8 @@ import com.done.model.Done;
 import com.done.storage.InMemStorage;
 
 public class CommandShowAll extends Command {
+	
+	private static final String EMPTY_STRING = "";
 
 	//@author A0115777W
 	public CommandShowAll() {
@@ -29,6 +31,12 @@ public class CommandShowAll extends Command {
 	@Override
 	public void undo() {
 		//NOT IMPLEMENTED
+	}
+	
+	//@author A0088821X
+	@Override
+	public String getCommandContent(){
+		return EMPTY_STRING;
 	}
 
 }

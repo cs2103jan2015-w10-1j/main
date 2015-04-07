@@ -36,12 +36,14 @@ public class UIController implements Observer {
 	private static final String SHOWADD_ERROR_MESSAGE = "Error: Adding task not successful";
 	private static final String SHOWDELETE_ERROR_MESSAGE = "Error: Invalid delete";
 	private static final String SHOWDELETE_SUCCESS_MESSAGE = "%1$s deleted";
-	private static final String SHOWEDIT_SUCCESS_MESSAGE = "Task edited to %1$s";
+	private static final String SHOWEDIT_SUCCESS_MESSAGE = "Task %1$s";
 	private static final String SHOWEDIT_ERROR_MESSAGE = "Error: Editing task not successful";
 	private static final String SHOWCLEAR_SUCCESS_MESSAGE = "All tasks cleared";
 	private static final String SHOWCLEAR_ERROR_MESSAGE = "Error: Clearing tasks not successful";
-	private static final String SHOWMOVE_SUCCESS_MESSAGE = "%1$s moved";
+	private static final String SHOWMOVE_SUCCESS_MESSAGE = "Moved from %1$s";
 	private static final String SHOWMOVE_ERROR_MESSAGE = "Error: Moving task not successful";
+	private static final String SHOWSEARCH_SUCCESS_MESSAGE = "Showing search for: %1$s";
+	private static final String SHOWSEARCH_ERROR_MESSAGE = "Error: Search not successful";
 	private static final String SHOWLOAD_SUCCESS_MESSAGE = "%1$s loaded";
 	private static final String SHOWLOAD_ERROR_MESSAGE = "Error: File load not successful";
 	private static final String SHOWREMIND_SUCCESS_MESSAGE = "Set reminder for %1$s";
@@ -104,7 +106,7 @@ public class UIController implements Observer {
 				showMove(executionResult.isSuccessful(), commandContent);
 				break;
 			case SEARCH:
-				displaySearches();
+				showSearch(executionResult.isSuccessful(), commandContent);
 				break;
 			case SHOWALL:
 				display();
@@ -222,6 +224,16 @@ public class UIController implements Observer {
 		}
 		else{
 			Notifications.create().text(SHOWMOVE_ERROR_MESSAGE).showError();
+		}
+		display();
+	}
+	
+	private void showSearch(boolean isSuccessful, String commandContent){
+		if(isSuccessful){
+			Notifications.create().text(String.format(SHOWSEARCH_SUCCESS_MESSAGE, commandContent)).showInformation();
+		}
+		else{
+			Notifications.create().text(SHOWSEARCH_ERROR_MESSAGE).showError();
 		}
 		display();
 	}

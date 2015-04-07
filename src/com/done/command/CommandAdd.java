@@ -41,5 +41,11 @@ public class CommandAdd extends Command {
 		CommandDelete command = new CommandDelete(task);
 		command.execute();
 	}
+	
+	//@author A0088821X
+	@Override
+	public String getCommandContent(){
+		return task.getTitle();
+	}
 
 }

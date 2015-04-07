@@ -46,5 +46,11 @@ public class CommandDelete extends Command {
 		}
 
 	}
+	
+	//@author A0088821X
+	@Override
+	public String getCommandContent(){
+		return task.getTitle();
+	}
 
 }

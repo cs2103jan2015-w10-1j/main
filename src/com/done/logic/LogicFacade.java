@@ -20,9 +20,10 @@ public class LogicFacade {
 	public ExecutionResult getExecutionResult(String userCommand){
 
 		//CommandType commandType = logic.getCmdType(userCommand);
-		String commandContent = logic.getCmdContent(userCommand);
+		//String commandContent = logic.getCmdContent(userCommand);
 		CommandParser parser = CommandParser.getInstance();
 		Command command = parser.parseInputToMakeCommand(userCommand);
+		
 		
 		logic.executeCommand(command);
 		//ExecutionResult tempExecutionResult = new ExecutionResult(command.getCommandType(), true);
@@ -30,6 +31,7 @@ public class LogicFacade {
 		ExecutionResult tempExecutionResult;
 		
 		if (isSuccessful){
+			String commandContent = command.getCommandContent();
 			tempExecutionResult = new ExecutionResult(command.getCommandType(), isSuccessful, commandContent);
 		} else {
 			tempExecutionResult = new ExecutionResult(command.getCommandType(), isSuccessful);

@@ -7,6 +7,7 @@ public class CommandExit extends Command {
 	private boolean isNormal;
 	private static final int STATUS_NORMAL = 0;
 	private static final int STATUS_ABNORMAL = 1;
+	private static final String EMPTY_STRING = "";
 	
 	//@author A0115777W
 	public CommandExit(boolean isNormal){
@@ -26,6 +27,12 @@ public class CommandExit extends Command {
 	@Override
 	public void undo() {
 		//not implemented
+	}
+	
+	//@author A0088821X
+	@Override
+	public String getCommandContent(){
+		return EMPTY_STRING;
 	}
 
 }

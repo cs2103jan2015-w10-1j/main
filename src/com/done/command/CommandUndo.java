@@ -6,6 +6,8 @@ import com.done.storage.InMemStorage;
 
 public class CommandUndo extends Command{
 	
+	private static final String EMPTY_STRING = "";
+	
 	//@author A0115777W
 	public CommandUndo() {
 		super(CommandType.UNDO, false);
@@ -25,6 +27,12 @@ public class CommandUndo extends Command{
 	public void undo() {
 		// UNUSED
 		//System.out.printf(MESSAGE_ERROR,"undo",this.getCommandType());
+	}
+	
+	//@author A0088821X
+	@Override
+	public String getCommandContent(){
+		return EMPTY_STRING;
 	}
 
 }

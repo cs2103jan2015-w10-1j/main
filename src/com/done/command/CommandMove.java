@@ -10,6 +10,7 @@ public class CommandMove extends Command {
 
 	private int origin;
 	private int destination;
+	private static final String MOVE_COMMAND_CONTENT = "%1$s to %2$s";
 	
 	//@author A0115777W
 	public CommandMove(int origin, int destination) {
@@ -42,6 +43,12 @@ public class CommandMove extends Command {
 		Done temp = tasks.get(destination);
 		tasks.set(destination, tasks.get(origin));
 		tasks.set(origin, temp);
+	}
+	
+	//@author A0088821X
+	@Override
+	public String getCommandContent() {
+		return String.format(MOVE_COMMAND_CONTENT, origin, destination);
 	}
 
 }

@@ -6,6 +6,8 @@ import com.done.storage.InMemStorage;
 
 public class CommandClearDone extends Command {
 	
+	private static final String EMPTY_STRING = "";
+	
 	public CommandClearDone(){
 		super(CommandType.CLEARDONE,false);
 		commandLogger.log(Level.INFO, "ClearDone Command Created");
@@ -23,6 +25,12 @@ public class CommandClearDone extends Command {
 	public void undo() throws Exception {
 		// TODO Auto-generated method stub
 
+	}
+	
+	//@author A0088821X
+	@Override
+	public String getCommandContent(){
+		return EMPTY_STRING;
 	}
 
 }

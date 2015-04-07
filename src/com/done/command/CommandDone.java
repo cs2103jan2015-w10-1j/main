@@ -33,4 +33,11 @@ public class CommandDone extends Command {
 		InMemStorage inMemStorage = InMemStorage.getInstance();
 		inMemStorage.setIncomplete(task);
 	}
+	
+	//@author A0088821X
+	@Override
+	public String getCommandContent() {
+		return task.getTitle();
+	}
+
 }

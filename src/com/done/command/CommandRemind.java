@@ -38,5 +38,11 @@ public class CommandRemind extends Command {
 		//commandLogger.log(Level.INFO, "undo Remind Command called");
 		//commandLogger.log(Level.INFO, "undo Remind Command successfully executed");
 	}
+	
+	//@author A0088821X
+	@Override
+	public String getCommandContent(){
+		return task.getTitle();
+	}
 
 }
