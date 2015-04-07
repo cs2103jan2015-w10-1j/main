@@ -1,0 +1,1147 @@
+//@author: a0111830x
+
+
+
+	/**
+	 * origin: C:\Users\Jerry\workspace\CS2103Project\src\com\done\command\CommandAdd.java
+	 */
+
+	@Override
+	public void execute() throws Exception {
+		if (this.task != null) {
+			InMemStorage inMemStorage = InMemStorage.getInstance();
+			inMemStorage.store(task);
+		} else {
+			throw new Exception("TaskNullException");
+		}
+
+	}
+
+	@Override
+	public void undo() {
+		CommandDelete command = new CommandDelete(task);
+		command.execute();
+	}
+	
+	// End of segment: C:\Users\Jerry\workspace\CS2103Project\src\com\done\command\CommandAdd.java
+
+
+
+
+
+	/**
+	 * origin: C:\Users\Jerry\workspace\CS2103Project\src\com\done\command\CommandClear.java
+	 */
+
+	@Override
+	public void execute() {
+		InMemStorage.getInstance().delete(null, true);
+
+	}
+	
+	// End of segment: C:\Users\Jerry\workspace\CS2103Project\src\com\done\command\CommandClear.java
+
+
+
+
+
+	/**
+	 * origin: C:\Users\Jerry\workspace\CS2103Project\src\com\done\command\CommandDelete.java
+	 */
+
+	@Override
+	public void execute() {
+		InMemStorage memory = InMemStorage.getInstance();
+		if (task == null) {
+			this.task = InMemStorage.getInstance().getTask(deleteIndex);
+			memory.delete(task, false);
+		} else {
+			memory.delete(task, false);
+		}
+	}
+
+	@Override
+	public void undo() {
+		CommandAdd command = new CommandAdd(task);
+
+		try {
+			command.execute();
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+
+	}
+	
+	// End of segment: C:\Users\Jerry\workspace\CS2103Project\src\com\done\command\CommandDelete.java
+
+
+
+
+
+	/**
+	 * origin: C:\Users\Jerry\workspace\CS2103Project\src\com\done\command\CommandLoad.java
+	 */
+
+	@Override
+	public void execute() {
+		JSONStorage jsonPref = JSONStorage.getInstance();
+		InMemStorage inMemStorage = InMemStorage.getInstance();
+
+		jsonPref.setJsonNameToPref(DIR_TASKS + jsonName);
+		inMemStorage.loadNew();
+
+	}
+
+	// End of segment: C:\Users\Jerry\workspace\CS2103Project\src\com\done\command\CommandLoad.java
+
+
+
+
+
+	/**
+	 * origin: C:\Users\Jerry\workspace\CS2103Project\src\com\done\command\CommandSearch.java
+	 */
+
+	@Override
+	public void execute() {
+		InMemStorage memory = InMemStorage.getInstance();
+		List<Done> tasks = memory.getTasks();
+		memory.emptyWorkingTasks();
+
+		for (int i = 0; i < tasks.size(); i++) {
+			if (tasks.get(i).getTitle().contains(searchString)) {
+				memory.addIntoWorkingTask(tasks.get(i));
+			}
+		}
+
+	}
+	
+	// End of segment: C:\Users\Jerry\workspace\CS2103Project\src\com\done\command\CommandSearch.java
+
+
+
+
+
+	/**
+	 * origin: C:\Users\Jerry\workspace\CS2103Project\src\com\done\command\CommandUndo.java
+	 */
+
+	@Override
+	public void execute() throws Exception {
+		Command command = InMemStorage.getInstance().popFromUndoStack();
+		command.undo();
+	}
+	
+	// End of segment: C:\Users\Jerry\workspace\CS2103Project\src\com\done\command\CommandUndo.java
+
+
+
+
+
+	/**
+	 * origin: C:\Users\Jerry\workspace\CS2103Project\src\com\done\model\Done.java
+	 */
+
+	public static enum TaskType {
+		FLOATING, TIMED, DEADLINE;
+	}
+
+	// Task without tag constructor
+	public Done(String title) {
+		this.title = title;
+		this.setCompleted(false);
+	}
+
+	// Task with tag constructor
+	public Done(String title, String tag) {
+		this.title = title;
+		this.setTag(tag);
+		this.setCompleted(false);
+	}
+
+	// End of segment: C:\Users\Jerry\workspace\CS2103Project\src\com\done\model\Done.java
+
+
+
+
+
+	/**
+	 * origin: C:\Users\Jerry\workspace\CS2103Project\src\com\done\model\DoneDeadlineTask.java
+	 */
+
+	public String getEndTime(){
+		SimpleDateFormat sdf = new SimpleDateFormat("d MMM yyyy HH:mm");
+		return sdf.format(endTime);
+	}
+
+}
+
+	// End of segment: C:\Users\Jerry\workspace\CS2103Project\src\com\done\model\DoneDeadlineTask.java
+
+
+
+
+
+	/**
+	 * origin: C:\Users\Jerry\workspace\CS2103Project\src\com\done\model\DoneTimedTask.java
+	 */
+
+	public String getStartTime() {
+		// SimpleDateFormat sdf = new SimpleDateFormat("d MMM yyyy HH:mm");
+		SimpleDateFormat sdf = new SimpleDateFormat("HH:mm");
+		return sdf.format(startTime);
+	}
+
+	// End of segment: C:\Users\Jerry\workspace\CS2103Project\src\com\done\model\DoneTimedTask.java
+
+
+
+
+
+	/**
+	 * origin: C:\Users\Jerry\workspace\CS2103Project\src\com\done\model\DoneTimedTask.java
+	 */
+
+	public long getStartTimeLong() {
+		return startTime;
+	}
+
+	// End of segment: C:\Users\Jerry\workspace\CS2103Project\src\com\done\model\DoneTimedTask.java
+
+
+
+
+
+	/**
+	 * origin: C:\Users\Jerry\workspace\CS2103Project\src\com\done\model\DoneTimedTask.java
+	 */
+
+	public String getEndTime() {
+		SimpleDateFormat sdf = new SimpleDateFormat("HH:mm");
+		return sdf.format(endTime);
+	}
+
+	public long getEndTimeLong() {
+		return endTime;
+	}
+
+	// End of segment: C:\Users\Jerry\workspace\CS2103Project\src\com\done\model\DoneTimedTask.java
+
+
+
+
+
+	/**
+	 * origin: C:\Users\Jerry\workspace\CS2103Project\src\com\done\parser\CommandParser.java
+	 */
+
+	public String removeFirstWord(String userCommand) {
+		String returnStr = getFirstWord(userCommand).trim();
+		returnStr = userCommand.substring(returnStr.length());
+		return returnStr.trim();
+	}
+
+	public String getFirstWord(String userCommand) {
+		return userCommand.trim().split("\\s+")[0];
+	}
+
+	private Command makeCommand(String commandWord, String commandContent) {
+		if (commandWord.equalsIgnoreCase("add")) {
+			/*
+			 * after we know that this is a "add" command we should implement a
+			 * definer to differentiate the type of tasks so you should use
+			 * commandContent as the parameter of a new method
+			 */
+			parserLogger.log(Level.INFO, "make add Command");
+			Done tempTask = defineTask(commandContent);
+			return new CommandAdd(tempTask);
+		} else if (commandWord.equalsIgnoreCase("delete")) {
+			parserLogger.log(Level.INFO, "make delete Command");
+			if (isContentValid(commandWord, commandContent)) {
+				return new CommandDelete(Integer.parseInt(commandContent));
+			} else {
+				parserLogger.log(Level.INFO, "make invalid Command instead");
+				return new CommandInvalid();
+			}
+		} else if (commandWord.equalsIgnoreCase("edit")) {
+			String indexString = getFirstWord(commandContent);
+			if (isPositiveInt(indexString)) {
+				int index = Integer.parseInt(indexString);
+				Done changedTask = defineTask(removeFirstWord(commandContent));
+				parserLogger.log(Level.INFO, "make edit Command");
+				return new CommandEdit(index, changedTask);
+			} else {
+				return new CommandInvalid();
+			}
+		} else if (commandWord.equalsIgnoreCase("load")) {
+			parserLogger.log(Level.INFO, "make load Command");
+			return new CommandLoad(commandContent);
+		} else if (commandWord.equalsIgnoreCase("clear")) {
+			parserLogger.log(Level.INFO, "make clear Command");
+			return new CommandClear();
+		} else if (commandWord.equalsIgnoreCase("move")) {
+			parserLogger.log(Level.INFO, "make move Command");
+			ArrayList<String> indexes = sliceContent(commandContent);
+			if ((isContentValid(commandWord, indexes.get(0)))
+					&& (isContentValid(commandWord, indexes.get(1)))) {
+				int origin = Integer.parseInt(indexes.get(0));
+				int destination = Integer.parseInt(indexes.get(1));
+				return new CommandMove(origin, destination);
+			} else {
+				return new CommandInvalid();
+			}
+		} else if (commandWord.equalsIgnoreCase("search")) {
+			parserLogger.log(Level.INFO, "make search Command");
+			return new CommandSearch(commandContent);
+		} else if (commandWord.equalsIgnoreCase("showall")) {
+			parserLogger.log(Level.INFO, "make showall Command");
+			return new CommandShowAll();
+		} else if (commandWord.equalsIgnoreCase("undo")) {
+			parserLogger.log(Level.INFO, "make undo Command");
+			return new CommandUndo();
+		} else if (commandWord.equalsIgnoreCase("done")) {
+			parserLogger.log(Level.INFO, "make done Command");
+			if (isContentValid(commandWord, commandContent)) {
+				return new CommandDone(Integer.parseInt(commandContent));
+			} else {
+				return new CommandInvalid();
+			}
+		} else if (commandWord.equalsIgnoreCase("cleardone")) {
+			parserLogger.log(Level.INFO, "make cleardone Command");
+			return new CommandClearDone();
+		} else if (commandWord.equalsIgnoreCase("recur")) {
+			parserLogger.log(Level.INFO, "make recur Command");
+			ArrayList<String> contents = sliceContent(commandContent);
+			String index = contents.get(0);
+			String period = contents.get(1);
+			if (isPositiveInt(index) && isValidPeriod(period)) {
+				return new CommandRecur(Integer.parseInt(index), period);
+			} else {
+				return new CommandInvalid();
+			}
+		} else if (commandWord.equalsIgnoreCase("remind")) {
+			parserLogger.log(Level.INFO, "make remind Command");
+			try {
+				ArrayList<String> contents = sliceContent(commandContent);
+				String index = contents.get(0);
+				String date = contents.get(1);
+				String time = contents.get(2);
+				return new CommandRemind(Integer.parseInt(index), date, time);
+			} catch (Exception e) {
+				parserLogger.log(Level.INFO, "make invalid Command instead");
+				return new CommandInvalid();
+			}
+		} else if (commandWord.equalsIgnoreCase("exit")) {
+			parserLogger.log(Level.INFO, "make exit Command");
+			return new CommandExit(true);
+		} else {
+			parserLogger.log(Level.INFO, "make invalid Command");
+			return new CommandInvalid();
+		}
+	}
+	
+	// End of segment: C:\Users\Jerry\workspace\CS2103Project\src\com\done\parser\CommandParser.java
+
+
+
+
+
+	/**
+	 * origin: C:\Users\Jerry\workspace\CS2103Project\src\com\done\parser\CommandParser.java
+	 */
+
+	private Done defineTask(String commandContent) {
+		Done task;
+		boolean isTimed = false;
+		boolean isDeadline = false;
+		int dateIndex = 0;
+		int timeIndex = 0;
+
+		// now u breakdown commandContent
+		// search for the type and set corresponding boolean
+		String[] split = commandContent.split("\\s+");
+		for (int i = 0; i < split.length; i++) {
+			if (split[i].equals("..s") || split[i].equals("..e")) {
+				// timedtask
+				isTimed = true;
+				timeIndex = i + 1;
+				break;
+			} else if (split[i].equals("..d")) {
+				// deadline task
+				isDeadline = true;
+				timeIndex = i + 2;
+				dateIndex = i + 1;
+				break;
+			}
+		}
+
+		if (isTimed) {
+			// if content contains start time
+			// we generate (new) timedTask
+			// return timedTask
+			parserLogger.log(Level.INFO, "make Timed Task");
+			task = addTimed(split, timeIndex);
+			return task;
+
+		} else if (isDeadline) {
+			// if content has deadline (time) at
+			// we generate new deadlinedTask
+			// return deadlinedTask
+			parserLogger.log(Level.INFO, "make Deadline Task");
+			task = addDeadline(split, timeIndex, dateIndex);
+			return task;
+		}
+
+		if (!commandContent.equals(null) && !commandContent.equals("")) {
+			// if content isn't null or ""
+			// we generate new floatingTask
+			// we return floatingTask
+			parserLogger.log(Level.INFO, "make Floating Task");
+			task = new DoneFloatingTask(commandContent);
+			return task;
+		}
+		// else return null or throw exception
+		return null;
+
+	}
+
+	// End of segment: C:\Users\Jerry\workspace\CS2103Project\src\com\done\parser\CommandParser.java
+
+
+
+
+
+	/**
+	 * origin: C:\Users\Jerry\workspace\CS2103Project\src\com\done\parser\CommandParser.java
+	 */
+
+	private Done addTimed(String[] content, int timeIndex) {
+		Done task = null;
+		DateTimeFormatter dtf = DateTimeFormat.forPattern("HH:mm");
+		long startTimeValue = 0;
+		long endTimeValue = 0;
+		LocalDate localStartDate = LocalDate.now();
+		LocalDate localEndDate = LocalDate.now();
+
+		StringBuilder taskTitleBuilder = new StringBuilder();
+		for (int i = 0; i < timeIndex - 1; i++) {
+			if (i == timeIndex - 2) {
+				taskTitleBuilder.append(content[i]);
+			} else {
+				taskTitleBuilder.append(content[i] + " ");
+			}
+		}
+		String taskTitle = taskTitleBuilder.toString();
+		String startTime = "";
+		String endTime = "";
+		if (content[timeIndex - 1].equalsIgnoreCase("..s")) {
+			startTime = content[timeIndex];
+			try {
+				if (content[timeIndex + 1].equalsIgnoreCase("..e")) {
+					endTime = content[timeIndex + 2];
+				}
+			} catch (NullPointerException e) {
+				System.out.println("Missing time information");
+			}
+			LocalTime localStartTime = dtf.parseLocalTime(startTime);
+			LocalTime localEndTime = dtf.parseLocalTime(endTime);
+
+			startTimeValue = localStartDate.toDate().getTime()
+					+ localStartTime.getMillisOfDay();
+			endTimeValue = localEndDate.toDate().getTime()
+					+ localEndTime.getMillisOfDay();
+
+		} else if (content[timeIndex - 1].equalsIgnoreCase("..e")) {
+			endTime = content[timeIndex];
+
+			DateTime localStartDateTime = DateTime.now();
+			LocalTime localEndTime = dtf.parseLocalTime(endTime);
+
+			startTimeValue = localStartDateTime.getMillis();
+			endTimeValue = localEndDate.toDate().getTime()
+					+ localEndTime.getMillisOfDay();
+		}
+
+		task = new DoneTimedTask(taskTitle, startTimeValue, endTimeValue);
+		return task;
+	}
+
+	// End of segment: C:\Users\Jerry\workspace\CS2103Project\src\com\done\parser\CommandParser.java
+
+
+
+
+
+	/**
+	 * origin: C:\Users\Jerry\workspace\CS2103Project\src\com\done\parser\CommandParser.java
+	 */
+
+	private Done addDeadline(String[] content, int timeIndex, int dateIndex) {
+		Done task = null;
+		StringBuilder sb = new StringBuilder();
+		for (int i = 0; i < dateIndex - 1; i++) {
+			if (i == dateIndex - 2) {
+				sb.append(content[i]);
+			} else {
+				sb.append(content[i] + " ");
+			}
+
+		}
+		String taskTitle = sb.toString();
+		DateTimeFormatter dtf = DateTimeFormat.forPattern("ddMMyyyy HH:mm");
+		DateTime date = dtf.parseDateTime(content[dateIndex] + " "
+				+ content[timeIndex]);
+		task = new DoneDeadlineTask(taskTitle, date.getMillis());
+		return task;
+
+	}
+
+}
+
+	// End of segment: C:\Users\Jerry\workspace\CS2103Project\src\com\done\parser\CommandParser.java
+
+
+
+
+
+	/**
+	 * origin: C:\Users\Jerry\workspace\CS2103Project\src\com\done\storage\DoneAdapter.java
+	 */
+
+	@Override
+	public List<Done> deserialize(JsonElement arg0, Type arg1,
+			JsonDeserializationContext arg2) throws JsonParseException {
+		List<Done> result = new ArrayList<Done>();
+		JsonArray jsonArray = null;
+		try {
+			jsonArray = arg0.getAsJsonArray();
+		} catch (IllegalStateException e) {
+			e.printStackTrace();
+			System.exit(0);
+		}
+
+		for (JsonElement out : jsonArray) {
+			JsonObject jsonObj = out.getAsJsonObject();
+			JsonElement element = jsonObj.get("task");
+			String classType = jsonObj.get("class").getAsString();
+
+			result.add(arg2.deserialize(element, map.get(classType)));
+
+		}
+		return result;
+	}
+
+	@Override
+	public JsonElement serialize(List<Done> arg0, Type arg1,
+			JsonSerializationContext arg2) {
+
+		JsonArray result = new JsonArray();
+		for (Done out : arg0) {
+			JsonObject obj = new JsonObject();
+			JsonElement element = arg2.serialize(out);
+			obj.addProperty("class", out.getClass().getSimpleName());
+			obj.add("task", element);
+			result.add(obj);
+		}
+
+		return result;
+	}
+
+}
+
+	// End of segment: C:\Users\Jerry\workspace\CS2103Project\src\com\done\storage\DoneAdapter.java
+
+
+
+
+
+	/**
+	 * origin: C:\Users\Jerry\workspace\CS2103Project\src\com\done\storage\InMemStorage.java
+	 */
+
+	public Done getTask(int id) {
+		return getTasks().get(id - ARRAY_POSITION_OFFSET);
+	}
+
+	public void loadNew() {
+		jsonStorage.setNewJson(true);
+		this.setTasks(jsonStorage.load());
+		jsonStorage.setNewJson(false);
+	}
+
+	public List<Done> load() {
+		return getTasks();
+	}
+
+	public List<Done> loadSearchResult() {
+		return getWorkingTasks();
+	}
+
+	public boolean store(Done task) {
+		getTasks().add(task);
+		updateTaskID();
+		if (jsonStorage.store(getTasks()) == true) {
+			return true;
+		}
+
+		return false;
+	}
+
+	public boolean delete(Done task, boolean isDeleteAll) {
+		if (isDeleteAll) {
+			getTasks().clear();
+		} else {
+			getTasks().remove(task);
+			updateTaskID();
+		}
+		if (jsonStorage.store(getTasks()) == true) {
+			return true;
+		}
+
+		return false;
+	}
+
+	public boolean edit(Done task, int editIndex) {
+		getTasks().set(editIndex, task);
+		updateTaskID();
+		if (jsonStorage.store(getTasks()) == true) {
+			return true;
+		}
+
+		return false;
+	}
+
+	public boolean move(int originIndex, int destinationIndex) throws Exception {
+		if (destinationIndex >= getTasks().size() || destinationIndex < 0) {
+			throw new Exception("Invalid Destination Index Value");
+		} else {
+			Done movedTask = getTasks().remove(originIndex);
+			getTasks().add(destinationIndex, movedTask);
+			updateTaskID();
+		}
+		if (jsonStorage.store(getTasks()) == true) {
+			return true;
+		}
+
+		return false;
+	}
+
+	public boolean clearDoneTasks() {
+		List<Done> tasks = getTasks();
+
+		for (int i = 0; i < tasks.size(); i++) {
+			if (tasks.get(i).isCompleted()) {
+				tasks.remove(i);
+			}
+		}
+
+		if (jsonStorage.store(getTasks()) == true) {
+			return true;
+		}
+
+		return false;
+	}
+
+	public void setCompleted(Done task) {
+		getTasks().get(task.getId() - ARRAY_POSITION_OFFSET).setCompleted(true);
+		jsonStorage.store(getTasks());
+	}
+
+	public void setIncomplete(Done task) {
+		getTasks().get(task.getId() - ARRAY_POSITION_OFFSET)
+				.setCompleted(false);
+		jsonStorage.store(getTasks());
+	}
+
+	public void pushToUndoStack(Command command) {
+		this.undoStack.push(command);
+	}
+
+	public Command popFromUndoStack() throws Exception {
+		if (undoStack.isEmpty()) {
+			throw new Exception("Command Stack is empty!");
+		}
+		return this.undoStack.pop();
+	}
+
+	public void emptyWorkingTasks() {
+		this.workingTasks = new ArrayList<Done>();
+	}
+
+	public void addIntoWorkingTask(Done task) {
+		this.workingTasks.add(task);
+	}
+
+	private void updateTaskID() {
+		Iterator<Done> listIterator = getTasks().iterator();
+		int i = 1;
+		while (listIterator.hasNext()) {
+			listIterator.next().setId(i);
+			i++;
+		}
+	}
+	
+	// End of segment: C:\Users\Jerry\workspace\CS2103Project\src\com\done\storage\InMemStorage.java
+
+
+
+
+
+	/**
+	 * origin: C:\Users\Jerry\workspace\CS2103Project\src\com\done\storage\JSONStorage.java
+	 */
+
+	public List<Done> load() {
+		logger.log(Level.INFO, "load() method executed");
+		FileReader inFileRead = null;
+		List<Done> tasks = null;
+
+		if (isNewJson) {
+			jsonName = getJsonNameFromPref();
+		}
+		File inFile = openFile(jsonName);
+
+		// read the actual JSON file
+		try {
+			inFileRead = new FileReader(jsonName);
+		} catch (IOException e) {
+			logger.log(Level.WARNING, "File not found!", e);
+		}
+
+		// check if the JSON file has objects
+		// if not return empty new ArrayList for loading
+		if (inFile.length() <= 0) {
+			assert inFile.length() <= 0; // assert that the file is indeed empty
+			return new ArrayList<Done>();
+		} else {
+			// else get from JSON object in file into ArrayList
+			Type collectionType = new TypeToken<Done>() {
+			}.getType();
+			try {
+				tasks = gson.fromJson(inFileRead, collectionType);
+				assert tasks != null; // assert that the tasks ArrayList is not null
+			} catch (JsonIOException e) {
+				logger.log(Level.WARNING,
+						"Unable to read JSON file, creating new empty List", e);
+				return new ArrayList<Done>();
+			}
+			return tasks;
+		}
+
+	}
+
+	public boolean store(List<Done> task) {
+		logger.log(Level.INFO, "store() method executed");
+
+		try {
+			FileWriter outFile = new FileWriter(jsonName);
+			outFile.write(gson.toJson(task, Done.class));
+			outFile.flush();
+			outFile.close();
+			return true;
+		} catch (IOException e) {
+			logger.log(Level.WARNING, "Unable to write file!", e);
+			return false;
+		}
+	}
+
+	public boolean setJsonNameToPref(String jsonName) {
+		logger.log(Level.INFO, "Setting JSON name");
+		pref.setProperty("jsonName", jsonName + FILE_JSON_EXT);
+		try {
+			File prefFile = openFile(FILE_PREFS_XML);
+			pref.storeToXML(new FileOutputStream(prefFile), "store to XML");
+			return true;
+		} catch (Exception e) {
+			logger.log(Level.WARNING, "Unable to write file!", e);
+			return false;
+		}
+	}
+
+	public String getJsonNameFromPref() {
+		logger.log(Level.INFO, "Retrieving JSON name");
+		try {
+			File prefFile = openFile(FILE_PREFS_XML);
+			pref.loadFromXML(new FileInputStream(prefFile));
+		} catch (IOException e) {
+			logger.log(Level.WARNING,
+					"Unable to read preference file! Using default.");
+			setJsonNameToPref(FILE_TASKS_JSON);
+		}
+
+		return pref.getProperty("jsonName", FILE_TASKS_JSON);
+
+	}
+
+	private static File openFile(String fileName) {
+		File file = new File(fileName);
+
+		if (!file.exists()) {
+			try {
+				file.createNewFile();
+			} catch (IOException e) {
+				System.exit(0);
+			}
+		}
+		return file;
+	}
+
+	private void setUpLogger() {
+		SimpleFormatter sf = new SimpleFormatter();
+
+		try {
+			String out = new SimpleDateFormat(
+					"'StorageLog-'dd-MM-yyyy HH-mm'.log'").format(new Date());
+			File file = new File(DIR_LOG);
+			file.mkdir();
+			fileHandler = new FileHandler(DIR_LOG + out);
+			logger.addHandler(fileHandler);
+			fileHandler.setFormatter(sf);
+		} catch (SecurityException | IOException e) {
+			logger.log(Level.WARNING, "Unable to read file!", e);
+		}
+	}
+
+	private void setUpDirectories() {
+		File tasksDir = new File(DIR_TASKS);
+		File prefDir = new File(DIR_PREF);
+		if (!tasksDir.exists()) {
+			tasksDir.mkdir();
+		}
+		if (!prefDir.exists()) {
+			prefDir.mkdir();
+		}
+
+	}
+
+	// End of segment: C:\Users\Jerry\workspace\CS2103Project\src\com\done\storage\JSONStorage.java
+
+
+
+
+
+	/**
+	 * origin: C:\Users\Jerry\workspace\CS2103Project\src\com\done\task\TaskReminder.java
+	 */
+
+	public TaskReminder(DoneTimedTask done) {
+
+		long startTimeValue = done.getStartTimeLong();
+		long endTimeValue = done.getEndTimeLong();
+
+		timer = new Timer();
+		timer.schedule(new DoneReminderTimedTask(done),
+				(endTimeValue - startTimeValue));
+
+	}
+
+	public TaskReminder(Done done, String remindDate, String remindTime) {
+		DateTimeFormatter dtf = DateTimeFormat.forPattern("ddMMyyyy HH:mm");
+		DateTime dateTime = dtf.parseDateTime(remindDate + " " + remindTime);
+		long currentTime = LocalDateTime.now().getMillisOfDay();
+		long endTimeValue = dateTime.getMillisOfDay();
+
+		timer = new Timer();
+		timer.schedule(new DoneReminder(done), (endTimeValue - currentTime));
+	}
+
+	class DoneReminder extends TimerTask {
+
+		private final Done done;
+
+		public DoneReminder(Done done) {
+			this.done = done;
+		}
+
+		@Override
+		public void run() {
+			Platform.runLater(new Runnable() {
+				public void run() {
+					Notifications.create().title("Done! Reminder")
+							.text("Reminder for: " + done.getTitle())
+							.showWarning();
+					timer.cancel();
+				}
+			});
+		}
+
+	}
+
+	class DoneReminderTimedTask extends TimerTask {
+
+		private final DoneTimedTask done;
+
+		public DoneReminderTimedTask(DoneTimedTask done) {
+			this.done = done;
+		}
+
+		@Override
+		public void run() {
+			Platform.runLater(new Runnable() {
+				public void run() {
+					Notifications.create().title("Done! Timed Task")
+							.text("Time is up for: " + done.getTitle())
+							.showWarning();
+					timer.cancel();
+				}
+			});
+		}
+
+	}
+
+}
+
+	// End of segment: C:\Users\Jerry\workspace\CS2103Project\src\com\done\task\TaskReminder.java
+
+
+
+
+
+	/**
+	 * origin: C:\Users\Jerry\workspace\CS2103Project\test\com\done\DoneProgram.java
+	 */
+
+	// Integration test
+	@Test
+	public void testAddFloatingFromFacade() {
+		String input = "add facade test";
+		InMemStorage inMemStorage = InMemStorage.getInstance();
+
+		LogicFacade logicFacade = new LogicFacade();
+		ExecutionResult result = logicFacade.getExecutionResult(input);
+
+		assertThat(result.getCommandContent(), is("facade test"));
+		assertThat(result.getCommandType(), is(CommandType.ADD));
+		assertTrue(inMemStorage.getTasks().size() > 0);
+
+	}
+
+	@Test
+	public void testAddFloatingFromLogic() {
+		Logic logic = new Logic();
+		InMemStorage inMemStorage = InMemStorage.getInstance();
+
+		String input = "add logic test";
+
+		String commandContent = logic.getCmdContent(input);
+		CommandParser parser = CommandParser.getInstance();
+		Command command = parser.parseInputToMakeCommand(input);
+
+		logic.executeCommand(command);
+
+		assertThat(logic.isSuccessful(), is(true));
+		assertThat(commandContent, is("logic test"));
+		assertThat(logic.getCmdType(input), is(CommandType.ADD));
+		assertThat(command.getCommandType(), is(CommandType.ADD));
+		assertTrue(inMemStorage.getTasks().size() > 0);
+	}
+
+	@Test
+	public void testUndo() {
+		InMemStorage inMemStorage = InMemStorage.getInstance();
+		String input = "add undo test";
+		String undoInput = "undo";
+
+		// test with add
+		LogicFacade logicFacade = new LogicFacade();
+		ExecutionResult resultAdd = logicFacade.getExecutionResult(input);
+		assertTrue(resultAdd.isSuccessful());
+		// with an empty list, add one task should return size of 1
+		assertThat(inMemStorage.getTasks().size(), is(1));
+
+		// test undo
+		ExecutionResult resultUndo = logicFacade.getExecutionResult(undoInput);
+		assertTrue(resultUndo.isSuccessful());
+		assertThat(resultUndo.getCommandType(), is(CommandType.UNDO));
+		// after undo, means removing the added task above, size should return 0
+		assertThat(inMemStorage.getTasks().size(), is(0));
+
+	}
+
+	@Test
+	public void testSearch() {
+		LogicFacade logicFacade = new LogicFacade();
+		InMemStorage inMemStorage = InMemStorage.getInstance();
+		ExecutionResult result = null;
+
+		// add 4 items
+		result = logicFacade.getExecutionResult("add hello");
+		assertTrue(result.isSuccessful());
+		assertThat(result.getCommandType(), is(CommandType.ADD));
+		result = logicFacade.getExecutionResult("add hello2");
+		assertTrue(result.isSuccessful());
+		assertThat(result.getCommandType(), is(CommandType.ADD));
+		result = logicFacade.getExecutionResult("add hello3");
+		assertTrue(result.isSuccessful());
+		assertThat(result.getCommandType(), is(CommandType.ADD));
+		result = logicFacade.getExecutionResult("add test");
+		assertTrue(result.isSuccessful());
+		assertThat(result.getCommandType(), is(CommandType.ADD));
+
+		// search for "hello", size of WorkingTask(search) List should be 3
+		// as there are 3 instances of "hello"
+		result = logicFacade.getExecutionResult("search hello");
+		assertTrue(result.isSuccessful());
+		assertThat(result.getCommandType(), is(CommandType.SEARCH));
+		assertTrue(inMemStorage.getWorkingTasks().size() == 3);
+	}
+
+	@Before
+	public void setUp() {
+		// delete all tasks from memory and JSON first before performing tests
+		InMemStorage inMemStorage = InMemStorage.getInstance();
+		inMemStorage.delete(null, true);
+	}
+
+}
+
+	// End of segment: C:\Users\Jerry\workspace\CS2103Project\test\com\done\DoneProgram.java
+
+
+
+
+
+	/**
+	 * origin: C:\Users\Jerry\workspace\CS2103Project\test\com\done\model\DoneTest.java
+	 */
+
+	
+	@Test
+	public void testFloatingTask() {
+		// assert that if is a new instance of DoneFloatingTask, then the
+		// type is Floating Task
+		Done done = new DoneFloatingTask("title1", "tag1");
+		assertThat(done.getType(), is(TaskType.FLOATING));
+	}
+
+	@Test
+	public void testTimedTask() {
+		// assert that if is a new instance of DoneTimedTask, then the
+		// type is Timed Task
+		Done done = new DoneTimedTask("title1", 6711253, 6711253);
+		assertThat(done.getType(), is(TaskType.TIMED));
+	}
+
+	@Test
+	public void testDeadlineTask() {
+		// assert that if is a new instance of DoneDeadlineTask, then the
+		// type is Deadline Task
+		Done done = new DoneDeadlineTask("title1", 676721);
+		assertThat(done.getType(), is(TaskType.DEADLINE));
+	}
+
+	@Test
+	public void testDoneString() {
+		Done done = new DoneFloatingTask("test");
+		assertThat(done.getTitle(), not("\\s"));
+		assertThat(done.getTitle().length(), not(0));
+	}
+
+}
+
+	// End of segment: C:\Users\Jerry\workspace\CS2103Project\test\com\done\model\DoneTest.java
+
+
+
+
+
+	/**
+	 * origin: C:\Users\Jerry\workspace\CS2103Project\test\com\done\storage\InMemStorageTest.java
+	 */
+
+
+	@Before
+	public void setUp() {
+		// delete all tasks from memory and JSON first before performing tests
+		inMem.delete(null, true);
+	}
+
+	@Test
+	public void testStore() {
+		Done doneFT = new DoneFloatingTask("test1");
+		Done doneTT = new DoneTimedTask("test2", dateTime.now().getMillis(),
+				dateTime.now().getMillis() + 88888);
+		Done doneDT = new DoneDeadlineTask("test3",
+				dateTime.now().getMillis() + 128000);
+		// This is the equivalence partition for the Done ArrayList
+		// whether is it [NULL] or [NOT NULL]
+		assertNotNull(doneFT);
+		assertNotNull(doneTT);
+		assertTrue(inMem.store(doneFT));
+		assertTrue(inMem.store(doneTT));
+		assertTrue(inMem.store(doneDT));
+
+	}
+
+	@Test
+	public void testStore2() {
+		List<Done> testDone = new ArrayList<Done>();
+		testDone.add(null);
+		assertNull(testDone.get(0));
+	}
+
+	@Test
+	public void testClear() {
+		// add 3 items
+		inMem.store(new DoneFloatingTask("test 1"));
+		inMem.store(new DoneTimedTask("test2", dateTime.now().getMillis(),
+				dateTime.now().getMillis() + 88888));
+		inMem.store(new DoneDeadlineTask("test3",
+				dateTime.now().getMillis() + 128000));
+		assertTrue(inMem.getTasks().size() == 3);
+
+		// boolean true in delete method states that it is clear
+		inMem.delete(null, true);
+		assertTrue(inMem.getTasks().size() == 0);
+
+	}
+
+	@Test
+	public void testSetCompleted() {
+		Done doneFT = new DoneFloatingTask("test1");
+
+		// when first added, it is not a completed task
+		inMem.store(doneFT);
+		assertFalse(inMem.getTask(doneFT.getId()).isCompleted());
+
+		// get and set to completed
+		// should return true
+		inMem.getTask(doneFT.getId()).setCompleted(true);
+		assertTrue(inMem.getTask(doneFT.getId()).isCompleted());
+	}
+
+}
+
+	// End of segment: C:\Users\Jerry\workspace\CS2103Project\test\com\done\storage\InMemStorageTest.java
+
+
+
+
+
+	/**
+	 * origin: C:\Users\Jerry\workspace\CS2103Project\test\com\done\storage\JSONStorageTest.java
+	 */
+
+	@Test
+	public void testJsonNameToPrefs() throws FileNotFoundException, IOException {
+
+		assertTrue(test.setJsonNameToPref("tasks.json"));
+
+	}
+	
+	@Test
+	public void testGetJsonName() {
+		test.setJsonNameToPref("testJson");
+		// if input to Properties is "testJson.json"
+		// then the output after retrieving should be the same
+		assertThat(new String(test.getJsonNameFromPref()), is("testJson.json"));
+	}
+
+}
+
+	// End of segment: C:\Users\Jerry\workspace\CS2103Project\test\com\done\storage\JSONStorageTest.java
+
+
+
+
+

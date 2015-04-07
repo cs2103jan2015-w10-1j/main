@@ -1,0 +1,71 @@
+//@author: a0111830x-unused
+
+
+
+	/**
+	 * origin: C:\Users\Jerry\workspace\CS2103Project\src\com\done\command\CommandClear.java
+	 */
+
+	//undo not required in CLEAR
+	@Override
+	public void undo() {
+		// UNUSED
+		//System.out.printf(MESSAGE_ERROR,"undo",this.getCommandType());
+	}
+	// End of segment: C:\Users\Jerry\workspace\CS2103Project\src\com\done\command\CommandClear.java
+
+
+
+
+
+	/**
+	 * origin: C:\Users\Jerry\workspace\CS2103Project\src\com\done\command\CommandLoad.java
+	 */
+
+	//undo not required in LOAD
+	@Override
+	public void undo() {
+		// UNUSED
+		
+	}
+	
+	// End of segment: C:\Users\Jerry\workspace\CS2103Project\src\com\done\command\CommandLoad.java
+
+
+
+
+
+	/**
+	 * origin: C:\Users\Jerry\workspace\CS2103Project\src\com\done\command\CommandSearch.java
+	 */
+
+	//undo not required in SEARCH
+	@Override
+	public void undo() {
+		// UNUSED
+
+	}
+	
+	// End of segment: C:\Users\Jerry\workspace\CS2103Project\src\com\done\command\CommandSearch.java
+
+
+
+
+
+	/**
+	 * origin: C:\Users\Jerry\workspace\CS2103Project\src\com\done\command\CommandUndo.java
+	 */
+
+	//redo function not required
+	@Override
+	public void undo() {
+		// UNUSED
+		//System.out.printf(MESSAGE_ERROR,"undo",this.getCommandType());
+	}
+	
+	// End of segment: C:\Users\Jerry\workspace\CS2103Project\src\com\done\command\CommandUndo.java
+
+
+
+
+

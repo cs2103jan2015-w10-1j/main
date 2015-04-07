@@ -1,0 +1,798 @@
+//@author: a0088821x
+
+
+
+	/**
+	 * origin: C:\Users\Jerry\workspace\CS2103Project\src\com\done\command\CommandAdd.java
+	 */
+
+	@Override
+	public String getCommandContent(){
+		return task.getTitle();
+	}
+
+}
+
+	// End of segment: C:\Users\Jerry\workspace\CS2103Project\src\com\done\command\CommandAdd.java
+
+
+
+
+
+	/**
+	 * origin: C:\Users\Jerry\workspace\CS2103Project\src\com\done\command\CommandClear.java
+	 */
+
+	@Override
+	public String getCommandContent(){
+		return EMPTY_STRING;
+	}
+}
+
+	// End of segment: C:\Users\Jerry\workspace\CS2103Project\src\com\done\command\CommandClear.java
+
+
+
+
+
+	/**
+	 * origin: C:\Users\Jerry\workspace\CS2103Project\src\com\done\command\CommandClearDone.java
+	 */
+
+	@Override
+	public String getCommandContent(){
+		return EMPTY_STRING;
+	}
+
+}
+
+	// End of segment: C:\Users\Jerry\workspace\CS2103Project\src\com\done\command\CommandClearDone.java
+
+
+
+
+
+	/**
+	 * origin: C:\Users\Jerry\workspace\CS2103Project\src\com\done\command\CommandDelete.java
+	 */
+
+	@Override
+	public String getCommandContent(){
+		return task.getTitle();
+	}
+
+}
+
+	// End of segment: C:\Users\Jerry\workspace\CS2103Project\src\com\done\command\CommandDelete.java
+
+
+
+
+
+	/**
+	 * origin: C:\Users\Jerry\workspace\CS2103Project\src\com\done\command\CommandDone.java
+	 */
+
+	@Override
+	public String getCommandContent() {
+		return task.getTitle();
+	}
+
+}
+
+	// End of segment: C:\Users\Jerry\workspace\CS2103Project\src\com\done\command\CommandDone.java
+
+
+
+
+
+	/**
+	 * origin: C:\Users\Jerry\workspace\CS2103Project\src\com\done\command\CommandEdit.java
+	 */
+
+	@Override
+	public String getCommandContent() {
+		return String.format(EDIT_COMMAND_CONTENT, editIndex, task.getTitle());
+	}
+}
+
+	// End of segment: C:\Users\Jerry\workspace\CS2103Project\src\com\done\command\CommandEdit.java
+
+
+
+
+
+	/**
+	 * origin: C:\Users\Jerry\workspace\CS2103Project\src\com\done\command\CommandExit.java
+	 */
+
+	@Override
+	public String getCommandContent(){
+		return EMPTY_STRING;
+	}
+
+}
+
+	// End of segment: C:\Users\Jerry\workspace\CS2103Project\src\com\done\command\CommandExit.java
+
+
+
+
+
+	/**
+	 * origin: C:\Users\Jerry\workspace\CS2103Project\src\com\done\command\CommandInvalid.java
+	 */
+
+	@Override
+	public String getCommandContent(){
+		return EMPTY_STRING;
+	}
+
+}
+
+	// End of segment: C:\Users\Jerry\workspace\CS2103Project\src\com\done\command\CommandInvalid.java
+
+
+
+
+
+	/**
+	 * origin: C:\Users\Jerry\workspace\CS2103Project\src\com\done\command\CommandLoad.java
+	 */
+
+	@Override
+	public String getCommandContent() {
+		return jsonName;
+	}
+
+}
+
+	// End of segment: C:\Users\Jerry\workspace\CS2103Project\src\com\done\command\CommandLoad.java
+
+
+
+
+
+	/**
+	 * origin: C:\Users\Jerry\workspace\CS2103Project\src\com\done\command\CommandMove.java
+	 */
+
+	@Override
+	public String getCommandContent() {
+		return String.format(MOVE_COMMAND_CONTENT, origin, destination);
+	}
+
+}
+
+	// End of segment: C:\Users\Jerry\workspace\CS2103Project\src\com\done\command\CommandMove.java
+
+
+
+
+
+	/**
+	 * origin: C:\Users\Jerry\workspace\CS2103Project\src\com\done\command\CommandRecur.java
+	 */
+
+	@Override
+	public String getCommandContent() {
+		return EMPTY_STRING;
+	}
+}
+
+	// End of segment: C:\Users\Jerry\workspace\CS2103Project\src\com\done\command\CommandRecur.java
+
+
+
+
+
+	/**
+	 * origin: C:\Users\Jerry\workspace\CS2103Project\src\com\done\command\CommandRemind.java
+	 */
+
+	@Override
+	public String getCommandContent(){
+		return task.getTitle();
+	}
+
+}
+
+	// End of segment: C:\Users\Jerry\workspace\CS2103Project\src\com\done\command\CommandRemind.java
+
+
+
+
+
+	/**
+	 * origin: C:\Users\Jerry\workspace\CS2103Project\src\com\done\command\CommandSearch.java
+	 */
+
+	@Override
+	public String getCommandContent(){
+		return searchString;
+	}
+
+}
+
+	// End of segment: C:\Users\Jerry\workspace\CS2103Project\src\com\done\command\CommandSearch.java
+
+
+
+
+
+	/**
+	 * origin: C:\Users\Jerry\workspace\CS2103Project\src\com\done\command\CommandShowAll.java
+	 */
+
+	@Override
+	public String getCommandContent(){
+		return EMPTY_STRING;
+	}
+
+}
+
+	// End of segment: C:\Users\Jerry\workspace\CS2103Project\src\com\done\command\CommandShowAll.java
+
+
+
+
+
+	/**
+	 * origin: C:\Users\Jerry\workspace\CS2103Project\src\com\done\command\CommandUndo.java
+	 */
+
+	@Override
+	public String getCommandContent(){
+		return EMPTY_STRING;
+	}
+
+}
+
+	// End of segment: C:\Users\Jerry\workspace\CS2103Project\src\com\done\command\CommandUndo.java
+
+
+
+
+
+	/**
+	 * origin: C:\Users\Jerry\workspace\CS2103Project\src\com\done\DoneUI.java
+	 */
+
+package com.done;
+
+
+import javafx.application.Application;
+import javafx.fxml.FXMLLoader;
+import javafx.scene.Scene;
+import javafx.scene.image.Image;
+import javafx.scene.layout.AnchorPane;
+import javafx.stage.Stage;
+
+import org.controlsfx.control.Notifications;
+
+import com.done.logic.LogicFacade;
+
+
+public class DoneUI extends Application {
+	
+	LogicFacade logicFacade = new LogicFacade();
+	
+	@Override
+	public void start(Stage primaryStage) {
+		try {
+			
+			final FXMLLoader loader = new FXMLLoader(getClass().getResource("UILayout.fxml"));
+	        
+	        AnchorPane anchorPane = (AnchorPane) loader.load();
+	        Scene scene = new Scene(anchorPane);
+	        primaryStage.getIcons().add(new Image(getClass().getResourceAsStream("doneicon.png")));
+	        primaryStage.setTitle("Done!");
+	        primaryStage.setScene(scene);
+	        primaryStage.setResizable(false);
+	        primaryStage.show();
+	        
+	        Notifications.create().text(logicFacade.getJsonName().substring(6) + " loaded").showInformation();
+	        
+		} catch(Exception e) {
+			e.printStackTrace();
+		}
+	}
+	
+	public static void main(String[] args) {
+		launch(args);
+	}
+	
+}
+
+	// End of segment: C:\Users\Jerry\workspace\CS2103Project\src\com\done\DoneUI.java
+
+
+
+
+
+	/**
+	 * origin: C:\Users\Jerry\workspace\CS2103Project\src\com\done\observer\Observer.java
+	 */
+
+package com.done.observer;
+
+public interface Observer {
+	void updateReminder(int taskId);
+}
+
+	// End of segment: C:\Users\Jerry\workspace\CS2103Project\src\com\done\observer\Observer.java
+
+
+
+
+
+	/**
+	 * origin: C:\Users\Jerry\workspace\CS2103Project\src\com\done\result\ExecutionResult.java
+	 */
+
+package com.done.result;
+
+import com.done.command.Command.CommandType;
+
+public class ExecutionResult {
+	private CommandType commandType;
+	private boolean isSuccessful;
+	private String commandContent;
+	
+	public ExecutionResult(CommandType commandType, boolean isSuccessful,
+			String commandContent) {
+		assert isSuccessful;
+		this.commandType = commandType;
+		this.isSuccessful = isSuccessful;
+		this.commandContent = commandContent;
+	}
+	
+	public ExecutionResult(CommandType commandType, boolean isSuccessful){
+		assert (!isSuccessful);
+		this.commandType = commandType;
+		this.isSuccessful = isSuccessful;
+		this.commandContent = null;
+	}
+
+	public CommandType getCommandType() {
+		return commandType;
+	}
+
+	public void setCommandType(CommandType commandType) {
+		this.commandType = commandType;
+	}
+
+	public boolean isSuccessful() {
+		return isSuccessful;
+	}
+
+	public void setSuccessful(boolean isSuccessful) {
+		this.isSuccessful = isSuccessful;
+		if(!isSuccessful){
+			commandContent = null;
+		}
+	}
+
+	public String getCommandContent() {
+		return commandContent;
+	}
+
+	public void setCommandContent(String commandContent) {
+		assert isSuccessful;
+		this.commandContent = commandContent;
+	}
+}
+
+	// End of segment: C:\Users\Jerry\workspace\CS2103Project\src\com\done\result\ExecutionResult.java
+
+
+
+
+
+	/**
+	 * origin: C:\Users\Jerry\workspace\CS2103Project\src\com\done\result\TestExecutionResult.java
+	 */
+
+package com.done.result;
+
+import static org.junit.Assert.*;
+
+import org.junit.Test;
+
+import com.done.result.ExecutionResult;
+import com.done.command.Command.CommandType;
+
+public class TestExecutionResult {
+
+	@Test
+	public void testExecutionResult() {
+		ExecutionResult result = new ExecutionResult(CommandType.ADD, true, "meet John at 6");
+		
+		//test the getters
+		assertEquals(result.getCommandType(), CommandType.ADD);
+		assertEquals(result.isSuccessful(), true);
+		assertEquals(result.getCommandContent(), "meet John at 6");
+		
+		//test the setters
+		result.setCommandType(CommandType.DELETE);
+		assertEquals(result.getCommandType(), CommandType.DELETE);
+		result.setSuccessful(false);
+		assertEquals(result.isSuccessful(),false);
+		assertEquals(result.getCommandContent(), null); //if isSuccessful is false, commandContent must be null
+		result.setSuccessful(true); //set isSuccessful back to true
+		result.setCommandContent("finish CS2103 homework");
+		assertEquals(result.getCommandContent(), "finish CS2103 homework");
+	}
+}
+
+	// End of segment: C:\Users\Jerry\workspace\CS2103Project\src\com\done\result\TestExecutionResult.java
+
+
+
+
+
+	/**
+	 * origin: C:\Users\Jerry\workspace\CS2103Project\src\com\done\UIController.java
+	 */
+
+package com.done;
+
+import java.util.Collections;
+import java.util.List;
+
+import javafx.collections.FXCollections;
+import javafx.collections.ListChangeListener;
+import javafx.collections.ObservableList;
+import javafx.fxml.FXML;
+import javafx.scene.control.TableRow;
+import javafx.scene.control.TableView;
+import javafx.scene.control.TextField;
+import javafx.scene.control.cell.PropertyValueFactory;
+import javafx.util.Callback;
+
+import org.controlsfx.control.Notifications;
+
+import com.done.logic.LogicFacade;
+import com.done.model.Done;
+import com.done.command.Command.CommandType;
+import com.done.result.ExecutionResult;
+import com.done.observer.Observer;
+
+public class UIController implements Observer {
+	@FXML 
+	private TextField commandField;
+	
+	@FXML
+	private TableView<Done> tableViewTasks;
+	
+	private LogicFacade logicFacade;
+	
+	private static final String EMPTY_STRING = "";
+	private static final String SHOWADD_SUCCESS_MESSAGE = "%1$s added to the list";
+	private static final String SHOWADD_ERROR_MESSAGE = "Error: Adding task not successful";
+	private static final String SHOWDELETE_ERROR_MESSAGE = "Error: Invalid delete";
+	private static final String SHOWDELETE_SUCCESS_MESSAGE = "%1$s deleted";
+	private static final String SHOWEDIT_SUCCESS_MESSAGE = "Task %1$s";
+	private static final String SHOWEDIT_ERROR_MESSAGE = "Error: Editing task not successful";
+	private static final String SHOWCLEAR_SUCCESS_MESSAGE = "All tasks cleared";
+	private static final String SHOWCLEAR_ERROR_MESSAGE = "Error: Clearing tasks not successful";
+	private static final String SHOWMOVE_SUCCESS_MESSAGE = "Moved from %1$s";
+	private static final String SHOWMOVE_ERROR_MESSAGE = "Error: Moving task not successful";
+	private static final String SHOWSEARCH_SUCCESS_MESSAGE = "Showing search for: %1$s";
+	private static final String SHOWSEARCH_ERROR_MESSAGE = "Error: Search not successful";
+	private static final String SHOWLOAD_SUCCESS_MESSAGE = "%1$s loaded";
+	private static final String SHOWLOAD_ERROR_MESSAGE = "Error: File load not successful";
+	private static final String SHOWSHOWALL_SUCCESS_MESSAGE = "Showing all tasks";
+	private static final String SHOWREMIND_SUCCESS_MESSAGE = "Set reminder for %1$s";
+	private static final String SHOWREMIND_ERROR_MESSAGE = "Error: Reminder cannot be set for this task";
+	private static final String SHOWUNDO_ERROR_MESSAGE = "Error: No recent command available";
+	private static final String SHOWUNDO_SUCCESS_MESSAGE = "Undo %1$s";
+	private static final String SHOWDONE_ERROR_MESSAGE = "Error: Invalid attempt to mark a task as done";
+	private static final String SHOWDONE_SUCCESS_MESSAGE = "%1$s marked as done";
+	private static final String SHOWCLEARDONE_ERROR_MESSAGE = "Error: Invalid attempt to clear tasks marked as done";
+	private static final String SHOWCLEARDONE_SUCCESS_MESSAGE = "All done tasks cleared";
+	private static final String SHOWINVALIDCOMMAND_ERROR_MESSAGE = "Error: Invalid command";
+	private static final String UPDATEREMINDER_MESSAGE = "Reminder for %1$s";
+	
+	public UIController(){
+		logicFacade = new LogicFacade();
+	}
+
+	@FXML
+	public void initialize() {
+		display();
+		UIController uiController = new UIController();
+		logicFacade.addUI(uiController);
+		commandField.setOnAction((event) -> {
+			processInput();
+		});
+	}
+	
+	private void processInput(){
+		String userCommand = commandField.getText();
+		if(!userCommand.equals(EMPTY_STRING)){
+			processCommand(userCommand);	
+		}
+		
+	}
+	
+	private void processCommand(String userCommand){
+		
+		ExecutionResult executionResult = logicFacade.getExecutionResult(userCommand);
+		CommandType currCommandType = executionResult.getCommandType();
+		String commandContent = executionResult.getCommandContent();
+		
+		
+		switch(currCommandType){
+			case ADD:				
+				showAdd(executionResult.isSuccessful(), commandContent);
+				break;
+			case DELETE:				
+				showDelete(executionResult.isSuccessful(), commandContent);
+				break;
+			case EDIT:
+				showEdit(executionResult.isSuccessful(), commandContent);
+				break;
+			case LOAD:
+				showLoad(executionResult.isSuccessful(), commandContent);
+				break;
+			case CLEAR:
+				showClear(executionResult.isSuccessful());
+				break;
+			case MOVE:
+				showMove(executionResult.isSuccessful(), commandContent);
+				break;
+			case SEARCH:
+				showSearch(executionResult.isSuccessful(), commandContent);
+				break;
+			case SHOWALL:
+				showShowAll();
+				break;
+			case REMIND:
+				showRemind(executionResult.isSuccessful(), commandContent);
+				break;
+			case UNDO:
+				showUndo(executionResult.isSuccessful(), commandContent);
+				break;
+			case DONE:
+				showDone(executionResult.isSuccessful(), commandContent);
+				break;
+			case CLEARDONE:
+				showClearDone(executionResult.isSuccessful());
+				break;
+			case EXIT:
+				System.exit(0);
+				break;
+			default:	
+				showInvalidCommand();
+				break;
+		}
+		commandField.clear();
+	}
+	
+	public void updateReminder(int taskId){
+		String reminder = logicFacade.getReminder(taskId);
+		Notifications.create().title("Task Reminder").text(String.format(UPDATEREMINDER_MESSAGE, reminder)).showWarning();
+		highlightReminderRow(taskId);
+	}
+
+	private void highlightReminderRow(int taskId) {
+		tableViewTasks.setRowFactory(new Callback<TableView<Done>, TableRow<Done>>() {
+	        @Override
+	        public TableRow<Done> call(TableView<Done> tableView) {
+	            final TableRow<Done> row = new TableRow<Done>() {
+	                @Override
+	                protected void updateItem(Done task, boolean empty){
+	                    super.updateItem(task, empty);
+	                    /*if(task == null || empty){
+	                    	 getStyleClass().removeAll(Collections.singleton("reminderRow"));
+	                    }*/
+	                    //else{
+		                    if(task.getId() == taskId){
+		                    	if (!getStyleClass().contains("reminderRow")) {
+		                            getStyleClass().add("reminderRow");
+		                    	}
+		                //    }
+		                    /*else{
+		                    	 getStyleClass().removeAll(Collections.singleton("reminderRow"));
+		                    }*/
+	                    }
+	                   
+	                }
+	            };
+	            return row;
+	        }
+	    });
+	}
+
+	private void showAdd(boolean isSuccessful, String commandContent) {
+		if(isSuccessful){
+			Notifications.create().text(String.format(SHOWADD_SUCCESS_MESSAGE, commandContent)).showInformation();
+		}
+		else{
+			Notifications.create().text(SHOWADD_ERROR_MESSAGE).showError();
+		}
+		display();
+	}
+	
+	private void showDelete(boolean isSuccessful, String commandContent) {
+		if(isSuccessful){
+			Notifications.create().text(String.format(SHOWDELETE_SUCCESS_MESSAGE, commandContent)).showInformation();
+		}
+		else{
+			Notifications.create().text(SHOWDELETE_ERROR_MESSAGE).showError();
+		}
+		display();
+	}
+	
+	private void showEdit(boolean isSuccessful, String commandContent) {
+		if(isSuccessful){
+			Notifications.create().text(String.format(SHOWEDIT_SUCCESS_MESSAGE, commandContent)).showInformation();
+		}
+		else{
+			Notifications.create().text(SHOWEDIT_ERROR_MESSAGE).showError();
+		}
+		display();
+	}
+	
+	private void showLoad(boolean isSuccessful, String commandContent){
+		if(isSuccessful){
+			Notifications.create().text(String.format(SHOWLOAD_SUCCESS_MESSAGE, commandContent+".json")).showInformation();
+		}
+		else{
+			Notifications.create().text(SHOWLOAD_ERROR_MESSAGE).showError();
+		}
+		display();
+	}
+	
+	private void showClear(boolean isSuccessful) {
+		if(isSuccessful){
+			Notifications.create().text(SHOWCLEAR_SUCCESS_MESSAGE).showInformation();
+		}
+		else{
+			Notifications.create().text(SHOWCLEAR_ERROR_MESSAGE).showError();
+		}
+		display();
+	}
+	
+	private void showMove(boolean isSuccessful, String commandContent){
+		if(isSuccessful){
+			Notifications.create().text(String.format(SHOWMOVE_SUCCESS_MESSAGE, commandContent)).showInformation();
+		}
+		else{
+			Notifications.create().text(SHOWMOVE_ERROR_MESSAGE).showError();
+		}
+		display();
+	}
+	
+	private void showSearch(boolean isSuccessful, String commandContent){
+		if(isSuccessful){
+			Notifications.create().text(String.format(SHOWSEARCH_SUCCESS_MESSAGE, commandContent)).showInformation();
+		}
+		else{
+			Notifications.create().text(SHOWSEARCH_ERROR_MESSAGE).showError();
+		}
+		displaySearches();
+	}
+	
+	private void showShowAll(){
+		Notifications.create().text(SHOWSHOWALL_SUCCESS_MESSAGE).showInformation();
+		display();
+	}
+	
+	private void showRemind(boolean isSuccessful, String commandContent){
+		if(isSuccessful){
+			Notifications.create().text(String.format(SHOWREMIND_SUCCESS_MESSAGE, commandContent)).showInformation();
+		}
+		else{
+			Notifications.create().text(SHOWREMIND_ERROR_MESSAGE).showError();
+		}
+		display();
+	}
+
+	private void showUndo(boolean isSuccessful, String commandContent)  {
+		if(isSuccessful){
+			Notifications.create().text(String.format(SHOWUNDO_SUCCESS_MESSAGE, commandContent)).showInformation();
+		}
+		else{
+			Notifications.create().text(SHOWUNDO_ERROR_MESSAGE).showError();
+		}
+		display();
+		
+	}
+	
+	private void showDone(boolean isSuccessful, String commandContent) {
+		if(isSuccessful){
+			Notifications.create().text(String.format(SHOWDONE_SUCCESS_MESSAGE, commandContent)).showInformation();
+		}
+		else{
+			Notifications.create().text(SHOWDONE_ERROR_MESSAGE).showError();
+		}
+		display();
+	}
+	
+	private void showClearDone(boolean isSuccessful) {
+		if(isSuccessful){
+			Notifications.create().text(SHOWCLEARDONE_SUCCESS_MESSAGE).showInformation();
+		}
+		else{
+			Notifications.create().text(SHOWCLEARDONE_ERROR_MESSAGE).showError();
+		}
+		
+		display();
+	}
+
+	private void showInvalidCommand() {
+		Notifications.create().text(SHOWINVALIDCOMMAND_ERROR_MESSAGE).showError();
+	}
+	
+
+	private void display() {
+		createDisplayTable();
+		strikethroughDoneRows();
+	}
+
+	private void createDisplayTable() {
+		List<Done> tasks = logicFacade.getTasks();
+		ObservableList<Done> tableTasks = FXCollections.observableArrayList(tasks);		
+		tableViewTasks.setItems(tableTasks);
+		tableViewTasks.getColumns().get(0).setCellValueFactory(new PropertyValueFactory<>("id"));
+		tableViewTasks.getColumns().get(1).setCellValueFactory(new PropertyValueFactory<>("title"));
+		tableViewTasks.getColumns().get(2).setCellValueFactory(new PropertyValueFactory<>("startTime"));
+		tableViewTasks.getColumns().get(3).setCellValueFactory(new PropertyValueFactory<>("endTime"));
+	}
+	
+	private void displaySearches() {
+		createDisplaySearchesTable();
+		strikethroughDoneRows();
+	}
+
+	private void createDisplaySearchesTable() {
+		List<Done> tasks = logicFacade.getSearchResult();
+		ObservableList<Done> tableTasks = FXCollections.observableArrayList(tasks);
+		tableViewTasks.setItems(tableTasks);
+		tableViewTasks.getColumns().get(0).setCellValueFactory(new PropertyValueFactory<>("id"));
+		tableViewTasks.getColumns().get(1).setCellValueFactory(new PropertyValueFactory<>("title"));
+		tableViewTasks.getColumns().get(2).setCellValueFactory(new PropertyValueFactory<>("startTime"));
+		tableViewTasks.getColumns().get(3).setCellValueFactory(new PropertyValueFactory<>("endTime"));
+	}
+	
+	private void strikethroughDoneRows() {
+		tableViewTasks.setRowFactory(new Callback<TableView<Done>, TableRow<Done>>() {
+	        @Override
+	        public TableRow<Done> call(TableView<Done> tableView) {
+	            final TableRow<Done> row = new TableRow<Done>() {
+	                @Override
+	                protected void updateItem(Done task, boolean empty){
+	                    super.updateItem(task, empty);
+	                    if(task == null || empty){
+	                    	 getStyleClass().removeAll(Collections.singleton("doneRow"));
+	                    }
+	                    else{
+		                    if(task.isCompleted()){
+		                    	if (!getStyleClass().contains("doneRow")) {
+		                            getStyleClass().add("doneRow");
+		                    	}
+		                    }
+		                    else{
+		                    	 getStyleClass().removeAll(Collections.singleton("doneRow"));
+		                    }
+	                    }
+	                   
+	                }
+	            };
+	            return row;
+	        }
+	    });
+		if(!tableViewTasks.getColumns().get(0).getStyleClass().contains("firstColumn")){
+			tableViewTasks.getColumns().get(0).getStyleClass().add("firstColumn");
+		}
+	}
+}
+
+	// End of segment: C:\Users\Jerry\workspace\CS2103Project\src\com\done\UIController.java
+
+
+
+
+

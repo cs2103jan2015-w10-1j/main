@@ -1,0 +1,20 @@
+//@author: a0115777w-unused
+
+
+
+	/**
+	 * origin: C:\Users\Jerry\workspace\CS2103Project\src\com\done\command\CommandMove.java
+	 */
+
+	private void swap(List<Done> tasks, int origin, int destination) {
+		Done temp = tasks.get(destination);
+		tasks.set(destination, tasks.get(origin));
+		tasks.set(origin, temp);
+	}
+	
+	// End of segment: C:\Users\Jerry\workspace\CS2103Project\src\com\done\command\CommandMove.java
+
+
+
+
+

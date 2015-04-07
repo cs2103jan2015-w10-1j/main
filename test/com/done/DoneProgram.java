@@ -32,7 +32,7 @@ public class DoneProgram {
 		assertTrue(inMemStorage.getTasks().size() > 0);
 
 	}
-	
+
 	@Test
 	public void testAddFloatingFromLogic() {
 		Logic logic = new Logic();
@@ -52,36 +52,36 @@ public class DoneProgram {
 		assertThat(command.getCommandType(), is(CommandType.ADD));
 		assertTrue(inMemStorage.getTasks().size() > 0);
 	}
-	
+
 	@Test
 	public void testUndo() {
 		InMemStorage inMemStorage = InMemStorage.getInstance();
 		String input = "add undo test";
 		String undoInput = "undo";
-		
+
 		// test with add
 		LogicFacade logicFacade = new LogicFacade();
 		ExecutionResult resultAdd = logicFacade.getExecutionResult(input);
 		assertTrue(resultAdd.isSuccessful());
 		// with an empty list, add one task should return size of 1
 		assertThat(inMemStorage.getTasks().size(), is(1));
-		
+
 		// test undo
 		ExecutionResult resultUndo = logicFacade.getExecutionResult(undoInput);
 		assertTrue(resultUndo.isSuccessful());
 		assertThat(resultUndo.getCommandType(), is(CommandType.UNDO));
 		// after undo, means removing the added task above, size should return 0
 		assertThat(inMemStorage.getTasks().size(), is(0));
-		
+
 	}
-	
+
 	@Test
-	public void testSearch(){
+	public void testSearch() {
 		LogicFacade logicFacade = new LogicFacade();
 		InMemStorage inMemStorage = InMemStorage.getInstance();
 		ExecutionResult result = null;
-		
-		// add 4 items 
+
+		// add 4 items
 		result = logicFacade.getExecutionResult("add hello");
 		assertTrue(result.isSuccessful());
 		assertThat(result.getCommandType(), is(CommandType.ADD));
@@ -94,7 +94,7 @@ public class DoneProgram {
 		result = logicFacade.getExecutionResult("add test");
 		assertTrue(result.isSuccessful());
 		assertThat(result.getCommandType(), is(CommandType.ADD));
-		
+
 		// search for "hello", size of WorkingTask(search) List should be 3
 		// as there are 3 instances of "hello"
 		result = logicFacade.getExecutionResult("search hello");
@@ -102,12 +102,12 @@ public class DoneProgram {
 		assertThat(result.getCommandType(), is(CommandType.SEARCH));
 		assertTrue(inMemStorage.getWorkingTasks().size() == 3);
 	}
-	
+
 	@Before
-	public void setUp(){
+	public void setUp() {
 		// delete all tasks from memory and JSON first before performing tests
 		InMemStorage inMemStorage = InMemStorage.getInstance();
 		inMemStorage.delete(null, true);
 	}
-	
+
 }

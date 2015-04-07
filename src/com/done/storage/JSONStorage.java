@@ -72,7 +72,6 @@ public class JSONStorage {
 			jsonName = getJsonNameFromPref();
 		}
 		File inFile = openFile(jsonName);
-		
 
 		// read the actual JSON file
 		try {
@@ -94,7 +93,8 @@ public class JSONStorage {
 				tasks = gson.fromJson(inFileRead, collectionType);
 				assert tasks != null; // assert that the tasks ArrayList is not null
 			} catch (JsonIOException e) {
-				logger.log(Level.WARNING, "Unable to read JSON file, creating new empty List", e);
+				logger.log(Level.WARNING,
+						"Unable to read JSON file, creating new empty List", e);
 				return new ArrayList<Done>();
 			}
 			return tasks;
@@ -173,17 +173,17 @@ public class JSONStorage {
 			logger.log(Level.WARNING, "Unable to read file!", e);
 		}
 	}
-	
+
 	private void setUpDirectories() {
 		File tasksDir = new File(DIR_TASKS);
 		File prefDir = new File(DIR_PREF);
-		if(!tasksDir.exists()){
+		if (!tasksDir.exists()) {
 			tasksDir.mkdir();
 		}
-		if(!prefDir.exists()){
+		if (!prefDir.exists()) {
 			prefDir.mkdir();
 		}
-		
+
 	}
 
 	//@author generated

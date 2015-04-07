@@ -1,0 +1,663 @@
+//@author: a0115777w
+
+
+
+	/**
+	 * origin: C:\Users\Jerry\workspace\CS2103Project\src\com\done\command\Command.java
+	 */
+
+	public Command(CommandType type, boolean undoable) {
+		this.type = type;
+		this.undoable = undoable;
+	}
+	
+	public CommandType getCommandType() {
+		return this.type;
+	}
+	
+	protected void setCommandType(CommandType type){
+		this.type = type;
+	}
+
+	public int getId() {
+		return this.id;
+	}
+
+	public void setId(int id) {
+		this.id = id;
+	}
+
+	public abstract void execute() throws Exception;
+
+	public abstract void undo() throws Exception;
+	
+	public abstract String getCommandContent();
+
+	public boolean isUndoable() {
+		return undoable;
+	}
+
+	public void setUndoable(boolean undoable) {
+		this.undoable = undoable;
+	}
+}
+
+	// End of segment: C:\Users\Jerry\workspace\CS2103Project\src\com\done\command\Command.java
+
+
+
+
+
+	/**
+	 * origin: C:\Users\Jerry\workspace\CS2103Project\src\com\done\command\CommandAdd.java
+	 */
+
+	public CommandAdd(Done task) {
+		super(CommandType.ADD, true);
+		this.task = task;
+		commandLogger.log(Level.INFO, "Add Command Created");
+	}
+
+	public Done getTask() {
+		return this.task;
+	}
+
+	public void setTask(Done task) {
+		this.task = task;
+	}
+
+	// End of segment: C:\Users\Jerry\workspace\CS2103Project\src\com\done\command\CommandAdd.java
+
+
+
+
+
+	/**
+	 * origin: C:\Users\Jerry\workspace\CS2103Project\src\com\done\command\CommandClear.java
+	 */
+
+	public CommandClear(){
+		super(CommandType.CLEAR, false);
+		commandLogger.log(Level.INFO, "Clear Command Created");
+	}
+
+	// End of segment: C:\Users\Jerry\workspace\CS2103Project\src\com\done\command\CommandClear.java
+
+
+
+
+
+	/**
+	 * origin: C:\Users\Jerry\workspace\CS2103Project\src\com\done\command\CommandDelete.java
+	 */
+
+	public CommandDelete(int deleteIndex) {
+		super(CommandType.DELETE, true);
+		this.deleteIndex = deleteIndex;
+		commandLogger.log(Level.INFO, "Delete Command Created");
+	}
+
+	public CommandDelete(Done task) {
+		super(CommandType.DELETE, true);
+		this.task = task;
+		commandLogger.log(Level.INFO, "Delete Command Created");
+	}
+
+	// End of segment: C:\Users\Jerry\workspace\CS2103Project\src\com\done\command\CommandDelete.java
+
+
+
+
+
+	/**
+	 * origin: C:\Users\Jerry\workspace\CS2103Project\src\com\done\command\CommandDone.java
+	 */
+
+	public CommandDone(int markIndex) {
+		super(CommandType.DONE, true);
+		this.task = InMemStorage.getInstance().getTask(markIndex);
+		commandLogger.log(Level.INFO, "Done Command Created");
+	}
+	
+	public CommandDone(Done task) {
+		super(CommandType.DONE, true);
+		this.task = task;
+		commandLogger.log(Level.INFO, "Done Command Created");
+	}
+	
+	@Override
+	public void execute() throws Exception {
+		InMemStorage inMemStorage = InMemStorage.getInstance();
+		inMemStorage.setCompleted(task);
+	}
+
+	@Override
+	public void undo() {
+		InMemStorage inMemStorage = InMemStorage.getInstance();
+		inMemStorage.setIncomplete(task);
+	}
+	
+	// End of segment: C:\Users\Jerry\workspace\CS2103Project\src\com\done\command\CommandDone.java
+
+
+
+
+
+	/**
+	 * origin: C:\Users\Jerry\workspace\CS2103Project\src\com\done\command\CommandEdit.java
+	 */
+
+	public CommandEdit(int index, Done task) {
+		super(CommandType.EDIT, true);
+		this.editIndex = index;
+		this.task = task;
+		commandLogger.log(Level.INFO, "Edit Command Created");
+	}
+
+	@Override
+	// This method edits First tasks with the same Title
+	public void execute() throws Exception {
+		commandLogger.log(Level.INFO, "Edit Command called");
+		InMemStorage memory = InMemStorage.getInstance();
+		this.subbedTask = memory.getTask(editIndex);
+		memory.edit(task, editIndex - 1);
+		commandLogger.log(Level.INFO, "Edit Command successfully executed");
+	}
+
+	@Override
+	public void undo() {
+		InMemStorage memory = InMemStorage.getInstance();
+		memory.edit(subbedTask, editIndex);
+	}
+
+	// End of segment: C:\Users\Jerry\workspace\CS2103Project\src\com\done\command\CommandEdit.java
+
+
+
+
+
+	/**
+	 * origin: C:\Users\Jerry\workspace\CS2103Project\src\com\done\command\CommandExit.java
+	 */
+
+	public CommandExit(boolean isNormal){
+		super(CommandType.EXIT,false);
+		this.isNormal = isNormal;
+		commandLogger.log(Level.INFO, "Exit Command Created");
+	}
+
+	@Override
+	public void execute() throws Exception {
+		if(isNormal){
+			System.exit(STATUS_NORMAL);
+		}
+		System.exit(STATUS_ABNORMAL);
+	}
+
+	@Override
+	public void undo() {
+		//not implemented
+	}
+	
+	// End of segment: C:\Users\Jerry\workspace\CS2103Project\src\com\done\command\CommandExit.java
+
+
+
+
+
+	/**
+	 * origin: C:\Users\Jerry\workspace\CS2103Project\src\com\done\command\CommandInvalid.java
+	 */
+
+	public CommandInvalid(){
+		super(CommandType.INVALID, false);
+		commandLogger.log(Level.INFO, "Invalid Command Created");
+
+	}
+
+	@Override
+	public void execute() {
+		// TODO Auto-generated method stub
+
+	}
+
+	@Override
+	public void undo() {
+		// TODO Auto-generated method stub
+
+	}
+	
+	// End of segment: C:\Users\Jerry\workspace\CS2103Project\src\com\done\command\CommandInvalid.java
+
+
+
+
+
+	/**
+	 * origin: C:\Users\Jerry\workspace\CS2103Project\src\com\done\command\CommandLoad.java
+	 */
+
+	public CommandLoad(String jsonName) {
+		super(CommandType.LOAD, false);
+		this.jsonName = jsonName;
+		commandLogger.log(Level.INFO, "Load Command Created");
+	}
+
+	// End of segment: C:\Users\Jerry\workspace\CS2103Project\src\com\done\command\CommandLoad.java
+
+
+
+
+
+	/**
+	 * origin: C:\Users\Jerry\workspace\CS2103Project\src\com\done\command\CommandMove.java
+	 */
+
+	public CommandMove(int origin, int destination) {
+		super(CommandType.MOVE, true);
+		this.origin = origin-1;
+		this.destination = destination-1;
+		commandLogger.log(Level.INFO, "Move Command Created");
+	}
+
+	@Override
+	public void execute() throws Exception {
+		commandLogger.log(Level.INFO, "Move Command Execution called");
+		InMemStorage memory = InMemStorage.getInstance();
+		//List<Done> tasks = memory.getTasks();
+		//swap(tasks, origin, destination);
+		memory.move(origin, destination);
+		commandLogger.log(Level.INFO, "Move Command Execution Successful");
+	}
+
+	@Override
+	public void undo() throws Exception {
+		InMemStorage memory = InMemStorage.getInstance();
+		//List<Done> tasks = memory.getTasks();
+		//swap(tasks, destination, origin);
+		memory.move(destination, origin);
+	}
+
+	// End of segment: C:\Users\Jerry\workspace\CS2103Project\src\com\done\command\CommandMove.java
+
+
+
+
+
+	/**
+	 * origin: C:\Users\Jerry\workspace\CS2103Project\src\com\done\command\CommandRecur.java
+	 */
+
+	public CommandRecur(int recurIndex, String period){
+		super(CommandType.RECUR, true);
+		this.task = InMemStorage.getInstance().getTask(recurIndex);
+		this.period = period;
+		commandLogger.log(Level.INFO, "Recur Command Created");
+	}
+
+	public CommandRecur(Done task,String period){
+		super(CommandType.RECUR,true);
+		this.task = task;
+		this.period = period;
+		commandLogger.log(Level.INFO, "Recur Command Created");
+	}
+	@Override
+	public void execute() throws Exception {
+		// TODO Auto-generated method stub
+
+	}
+
+	@Override
+	public void undo() {
+		// TODO Auto-generated method stub
+
+	}
+	
+	// End of segment: C:\Users\Jerry\workspace\CS2103Project\src\com\done\command\CommandRecur.java
+
+
+
+
+
+	/**
+	 * origin: C:\Users\Jerry\workspace\CS2103Project\src\com\done\command\CommandRemind.java
+	 */
+
+	public CommandRemind(int remindIndex, String date, String time) {
+		super(CommandType.REMIND, false);
+		this.task = InMemStorage.getInstance().getTask(remindIndex);
+		this.remindIndex = remindIndex;
+		this.date = date;
+		this.time = time;
+		commandLogger.log(Level.INFO, "Remind Command Created");
+	}
+
+	@Override
+	public void execute() throws Exception {
+		commandLogger.log(Level.INFO, "Remind Command called");
+		this.reminderTask = new TaskReminder(task, date, time);
+		commandLogger.log(Level.INFO, "Remind Command successfully executed");
+	}
+
+	@Override
+	public void undo() {
+		//Currently not undoable
+		//commandLogger.log(Level.INFO, "undo Remind Command called");
+		//commandLogger.log(Level.INFO, "undo Remind Command successfully executed");
+	}
+	
+	// End of segment: C:\Users\Jerry\workspace\CS2103Project\src\com\done\command\CommandRemind.java
+
+
+
+
+
+	/**
+	 * origin: C:\Users\Jerry\workspace\CS2103Project\src\com\done\command\CommandSearch.java
+	 */
+
+	public CommandSearch(String searchString) {
+		super(CommandType.SEARCH, false);
+		this.searchString = searchString;
+		commandLogger.log(Level.INFO, "Search Command Created");
+	}
+
+	public String getSearchString() {
+		return this.searchString;
+	}
+
+	public void setSearchString(String searchstring) {
+		this.searchString = searchstring;
+	}
+
+	// End of segment: C:\Users\Jerry\workspace\CS2103Project\src\com\done\command\CommandSearch.java
+
+
+
+
+
+	/**
+	 * origin: C:\Users\Jerry\workspace\CS2103Project\src\com\done\command\CommandShowAll.java
+	 */
+
+	public CommandShowAll() {
+		super(CommandType.SHOWALL, false);
+	}
+
+	@Override
+	public void execute() {
+		commandLogger.log(Level.INFO, "Showall Command called");
+		InMemStorage memory = InMemStorage.getInstance();
+		List<Done> tasks = memory.getTasks();
+		memory.emptyWorkingTasks();
+
+		for (int i = 0; i < tasks.size(); i++) {
+			memory.addIntoWorkingTask(tasks.get(i));
+		}
+		commandLogger.log(Level.INFO, "Showall Command successful");
+	}
+
+	@Override
+	public void undo() {
+		//NOT IMPLEMENTED
+	}
+	
+	// End of segment: C:\Users\Jerry\workspace\CS2103Project\src\com\done\command\CommandShowAll.java
+
+
+
+
+
+	/**
+	 * origin: C:\Users\Jerry\workspace\CS2103Project\src\com\done\command\CommandUndo.java
+	 */
+
+	public CommandUndo() {
+		super(CommandType.UNDO, false);
+		commandLogger.log(Level.INFO, "Undo Command Created");
+	}
+	
+	// End of segment: C:\Users\Jerry\workspace\CS2103Project\src\com\done\command\CommandUndo.java
+
+
+
+
+
+	/**
+	 * origin: C:\Users\Jerry\workspace\CS2103Project\src\com\done\command\TestCommand.java
+	 */
+
+	@Test
+	public void testCommandAdd() {
+		Command command = new CommandAdd(new DoneFloatingTask("aaa"));
+		assertEquals(command.getCommandType(), CommandType.ADD);
+	}
+
+	@Test
+	public void testCommandDelete() {
+		Command command = new CommandDelete(1);
+		assertEquals(command.getCommandType(), CommandType.DELETE);
+	}
+
+	@Test
+	public void testCommandClear() {
+		Command command = new CommandClear();
+		assertEquals(command.getCommandType(), CommandType.CLEAR);
+	}
+
+	@Test
+	public void testCommandSearch() {
+		Command command = new CommandSearch("aaa");
+		assertEquals(command.getCommandType(), CommandType.SEARCH);
+	}
+
+	@Test
+	public void testCommandRecur() {
+		Command command = new CommandRecur(1, "weekly");
+		assertEquals(command.getCommandType(), CommandType.RECUR);
+	}
+
+	@Test
+	public void testCommandRemind() {
+		// Command command = new CommandRemind(1,"weekly");
+		// assertEquals(command.getCommandType(), CommandType.REMIND);
+	}
+
+}
+
+	// End of segment: C:\Users\Jerry\workspace\CS2103Project\src\com\done\command\TestCommand.java
+
+
+
+
+
+	/**
+	 * origin: C:\Users\Jerry\workspace\CS2103Project\src\com\done\parser\CommandParser.java
+	 */
+
+	private static CommandParser instance = null;
+	private static Logger parserLogger = Logger.getLogger("CommandParser");
+
+	private CommandParser() {
+
+	}
+
+	public static CommandParser getInstance() {
+		if (instance == null) {
+			instance = new CommandParser();
+		}
+		return instance;
+	}
+
+	public Command parseInputToMakeCommand(String userInput) {
+
+		parserLogger.log(Level.INFO, "Input passed to make Command");
+		String commandWord = getFirstWord(userInput);
+		String commandContent = removeFirstWord(userInput);
+		return makeCommand(commandWord, commandContent);
+
+	}
+
+	public CommandType getCommandType(String commandWord) {
+
+		String command = getFirstWord(commandWord);
+
+		if (command.equalsIgnoreCase("add")) {
+			return CommandType.ADD;
+		} else if (command.equalsIgnoreCase("delete")) {
+			return CommandType.DELETE;
+		} else if (command.equalsIgnoreCase("clear")) {
+			return CommandType.CLEAR;
+		} else if (command.equalsIgnoreCase("edit")) {
+			return CommandType.EDIT;
+		} else if (command.equalsIgnoreCase("load")) {
+			return CommandType.LOAD;
+		} else if (command.equalsIgnoreCase("search")) {
+			return CommandType.SEARCH;
+		} else if (command.equalsIgnoreCase("undo")) {
+			return CommandType.UNDO;
+		} else if (command.equalsIgnoreCase("move")) {
+			return CommandType.MOVE;
+		} else if (command.equalsIgnoreCase("done")) {
+			return CommandType.DONE;
+		} else if (command.equalsIgnoreCase("remind")) {
+			return CommandType.REMIND;
+		} else if (command.equalsIgnoreCase("recur")) {
+			return CommandType.RECUR;
+		} else if (command.equalsIgnoreCase("exit")) {
+			return CommandType.EXIT;
+		} else {
+			return CommandType.INVALID;
+		}
+	}
+
+	public ArrayList<String> getCommandContent(String userCommand) {
+		String currentContent = removeFirstWord(userCommand);
+		assert currentContent != null;
+		ArrayList<String> commandContent = sliceContent(currentContent);
+		return commandContent;
+	}
+
+	// End of segment: C:\Users\Jerry\workspace\CS2103Project\src\com\done\parser\CommandParser.java
+
+
+
+
+
+	/**
+	 * origin: C:\Users\Jerry\workspace\CS2103Project\src\com\done\parser\CommandParser.java
+	 */
+
+	private ArrayList<String> sliceContent(String content) {
+		ArrayList<String> slicedContent = new ArrayList<String>();
+		String[] contentPieces = content.split("\\s+");
+		for (String pieceOfContent : contentPieces) {
+			slicedContent.add(pieceOfContent);
+		}
+		return slicedContent;
+	}
+	
+	// End of segment: C:\Users\Jerry\workspace\CS2103Project\src\com\done\parser\CommandParser.java
+
+
+
+
+
+	/**
+	 * origin: C:\Users\Jerry\workspace\CS2103Project\src\com\done\parser\CommandParser.java
+	 */
+
+	private boolean isContentValid(String commandWord, String commandContent) {
+		if (commandWord.equalsIgnoreCase("add")) {
+			parserLogger.log(Level.INFO, "Command Content is Valid");
+			return true;
+		} else if (commandWord.equalsIgnoreCase("delete")
+				|| commandWord.equalsIgnoreCase("done")
+				|| commandWord.equalsIgnoreCase("move")) {
+			return isPositiveInt(commandContent);
+		} else {
+			parserLogger.log(Level.INFO, "Command Content is invalid");
+			return false;
+		}
+	}
+
+	// End of segment: C:\Users\Jerry\workspace\CS2103Project\src\com\done\parser\CommandParser.java
+
+
+
+
+
+	/**
+	 * origin: C:\Users\Jerry\workspace\CS2103Project\src\com\done\parser\CommandParser.java
+	 */
+
+	private boolean isPositiveInt(String content) {
+		try {
+			int i = Integer.parseInt(content);
+			return (i > 0 ? true : false);
+		} catch (NumberFormatException nfe) {
+			parserLogger.log(Level.INFO, "Command Content is invalid");
+			return false;
+		}
+	}
+
+	// End of segment: C:\Users\Jerry\workspace\CS2103Project\src\com\done\parser\CommandParser.java
+
+
+
+
+
+	/**
+	 * origin: C:\Users\Jerry\workspace\CS2103Project\src\com\done\parser\CommandParser.java
+	 */
+
+	private boolean isValidPeriod(String content){
+		if(content.equals("hourly")||content.equals("daily")||content.equals("weekly")||content.equals("monthly")||content.equals("yearly")){
+			return true;
+		}else{
+			return false;
+		}
+	}
+
+	// End of segment: C:\Users\Jerry\workspace\CS2103Project\src\com\done\parser\CommandParser.java
+
+
+
+
+
+	/**
+	 * origin: C:\Users\Jerry\workspace\CS2103Project\src\com\done\parser\TestCommandParser.java
+	 */
+
+	@Test
+	//Equivalence partition: String content that is positive integer
+	public void testGetCommandDeleteValid() {
+		Command validCommandDelete = testedParser.parseInputToMakeCommand("delete 1");
+		assertEquals(validCommandDelete.getCommandType(),CommandType.DELETE);
+	}
+	
+	@Test
+	//Equivalence partition: String content that is not a number
+	public void testGetCommandDeleteInvalid(){
+		Command invalidCommandDelete = testedParser.parseInputToMakeCommand("delete aaa");
+		assertEquals(invalidCommandDelete.getCommandType(), CommandType.INVALID);
+	}
+
+	@Test
+	public void testGetCommandType() {
+		assertEquals(testedParser.getCommandType("add 1"), CommandType.ADD);
+	}
+
+	@Test
+	public void testGetCommandContent() {
+		assertEquals(testedParser.getCommandContent("add abcde"), "abcde");
+	}
+
+}
+
+	// End of segment: C:\Users\Jerry\workspace\CS2103Project\src\com\done\parser\TestCommandParser.java
+
+
+
+
+

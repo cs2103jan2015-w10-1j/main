@@ -131,12 +131,12 @@ public class CommandParser {
 			}
 		} else if (commandWord.equalsIgnoreCase("edit")) {
 			String indexString = getFirstWord(commandContent);
-			if(isPositiveInt(indexString)){
+			if (isPositiveInt(indexString)) {
 				int index = Integer.parseInt(indexString);
 				Done changedTask = defineTask(removeFirstWord(commandContent));
 				parserLogger.log(Level.INFO, "make edit Command");
 				return new CommandEdit(index, changedTask);
-			}else{
+			} else {
 				return new CommandInvalid();
 			}
 		} else if (commandWord.equalsIgnoreCase("load")) {
@@ -180,20 +180,20 @@ public class CommandParser {
 			ArrayList<String> contents = sliceContent(commandContent);
 			String index = contents.get(0);
 			String period = contents.get(1);
-			if(isPositiveInt(index)&&isValidPeriod(period)){
-				return new CommandRecur(Integer.parseInt(index),period);
-			}else{
+			if (isPositiveInt(index) && isValidPeriod(period)) {
+				return new CommandRecur(Integer.parseInt(index), period);
+			} else {
 				return new CommandInvalid();
 			}
 		} else if (commandWord.equalsIgnoreCase("remind")) {
 			parserLogger.log(Level.INFO, "make remind Command");
-			try{
+			try {
 				ArrayList<String> contents = sliceContent(commandContent);
 				String index = contents.get(0);
 				String date = contents.get(1);
 				String time = contents.get(2);
-				return new CommandRemind(Integer.parseInt(index),date,time);
-			}catch (Exception e){
+				return new CommandRemind(Integer.parseInt(index), date, time);
+			} catch (Exception e) {
 				parserLogger.log(Level.INFO, "make invalid Command instead");
 				return new CommandInvalid();
 			}

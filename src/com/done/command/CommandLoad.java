@@ -22,10 +22,10 @@ public class CommandLoad extends Command {
 	public void execute() {
 		JSONStorage jsonPref = JSONStorage.getInstance();
 		InMemStorage inMemStorage = InMemStorage.getInstance();
-		
-		jsonPref.setJsonNameToPref(DIR_TASKS+jsonName);
+
+		jsonPref.setJsonNameToPref(DIR_TASKS + jsonName);
 		inMemStorage.loadNew();
-		
+
 	}
 
 	//@author A0111830X-unused

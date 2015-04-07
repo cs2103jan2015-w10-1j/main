@@ -54,7 +54,7 @@ public class InMemStorage {
 	public List<Done> loadSearchResult() {
 		return getWorkingTasks();
 	}
-	
+
 	public boolean store(Done task) {
 		getTasks().add(task);
 		updateTaskID();
@@ -88,14 +88,14 @@ public class InMemStorage {
 
 		return false;
 	}
-	
-	public boolean move(int originIndex, int destinationIndex) throws Exception{
-		if(destinationIndex>= getTasks().size()||destinationIndex<0){
+
+	public boolean move(int originIndex, int destinationIndex) throws Exception {
+		if (destinationIndex >= getTasks().size() || destinationIndex < 0) {
 			throw new Exception("Invalid Destination Index Value");
-		}else{
+		} else {
 			Done movedTask = getTasks().remove(originIndex);
-		    getTasks().add(destinationIndex, movedTask);
-		    updateTaskID();
+			getTasks().add(destinationIndex, movedTask);
+			updateTaskID();
 		}
 		if (jsonStorage.store(getTasks()) == true) {
 			return true;
@@ -103,8 +103,8 @@ public class InMemStorage {
 
 		return false;
 	}
-	
-	public boolean clearDoneTasks(){
+
+	public boolean clearDoneTasks() {
 		List<Done> tasks = getTasks();
 
 		for (int i = 0; i < tasks.size(); i++) {
