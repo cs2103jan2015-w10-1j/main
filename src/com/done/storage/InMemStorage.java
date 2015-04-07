@@ -89,6 +89,21 @@ public class InMemStorage {
 
 		return false;
 	}
+	
+	public boolean move(int originIndex, int destinationIndex) throws Exception{
+		if(destinationIndex>= getTasks().size()||destinationIndex<0){
+			throw new Exception("Invalid Destination Index Value");
+		}else{
+			Done movedTask = getTasks().remove(originIndex);
+		    getTasks().add(destinationIndex, movedTask);
+		    updateTaskID();
+		}
+		if (jsonStorage.store(getTasks()) == true) {
+			return true;
+		}
+
+		return false;
+	}
 
 	public void setCompleted(Done task) {
 		getTasks().get(task.getId() - ARRAY_POSITION_OFFSET).setCompleted(true);
@@ -140,21 +155,6 @@ public class InMemStorage {
 
 	public List<Done> getWorkingTasks() {
 		return workingTasks;
-	}
-	
-	public boolean move(int originIndex, int destinationIndex) throws Exception{
-		if(destinationIndex>= getTasks().size()||destinationIndex<1){
-			throw new InvalidValueException("Invalid Destination Index Value");
-		}else{
-			Done movedTask = getTasks().remove(originIndex);
-		    getTasks().add(destinationIndex, movedTask);
-		    updateTaskID();
-		}
-		if (jsonStorage.store(getTasks()) == true) {
-			return true;
-		}
-
-		return false;
 	}
 
 }
