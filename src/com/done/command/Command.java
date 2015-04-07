@@ -16,13 +16,12 @@ public abstract class Command {
 		ADD, DELETE, LOAD, CLEAR, EDIT, SEARCH, SHOWALL, UNDO, MOVE, DONE, REMIND, RECUR, EXIT, INVALID;
 	}
 
+	//@author A0115777W
 	public Command(CommandType type, boolean undoable) {
 		this.type = type;
 		this.undoable = undoable;
 	}
-
-	// Only getter of CommandType is given as CommandType is not set to be
-	// mutable
+	
 	public CommandType getCommandType() {
 		return this.type;
 	}

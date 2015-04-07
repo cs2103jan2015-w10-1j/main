@@ -8,6 +8,7 @@ public class CommandExit extends Command {
 	private static final int STATUS_NORMAL = 0;
 	private static final int STATUS_ABNORMAL = 1;
 	
+	//@author A0115777W
 	public CommandExit(boolean isNormal){
 		super(CommandType.EXIT,false);
 		this.isNormal = isNormal;

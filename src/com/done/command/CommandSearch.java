@@ -10,6 +10,7 @@ public class CommandSearch extends Command {
 
 	private String searchString;
 
+	//@author A0115777W
 	public CommandSearch(String searchString) {
 		super(CommandType.SEARCH, false);
 		this.searchString = searchString;

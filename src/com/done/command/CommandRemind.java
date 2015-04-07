@@ -15,6 +15,7 @@ public class CommandRemind extends Command {
 	private String time;
 	private TaskReminder reminderTask;
 	
+	//@author A0115777W
 	public CommandRemind(int remindIndex, String date, String time) {
 		super(CommandType.REMIND, false);
 		this.task = InMemStorage.getInstance().getTask(remindIndex);

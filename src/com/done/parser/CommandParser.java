@@ -35,6 +35,7 @@ import com.done.storage.InMemStorage;
 
 public class CommandParser {
 
+	//@author A0115777W
 	private static CommandParser instance = null;
 	private static Logger parserLogger = Logger.getLogger("CommandParser");
 
@@ -257,8 +258,7 @@ public class CommandParser {
 
 	}
 
-	// At current Stage, only slice the content into parts separated by spaces
-	// Might modify in later versions
+	//@author A0115777W
 	private ArrayList<String> sliceContent(String content) {
 		ArrayList<String> slicedContent = new ArrayList<String>();
 		String[] contentPieces = content.split("\\s+");
@@ -267,7 +267,8 @@ public class CommandParser {
 		}
 		return slicedContent;
 	}
-
+	
+	//@author A0115777W
 	private boolean isContentValid(String commandWord, String commandContent) {
 		if (commandWord.equalsIgnoreCase("add")) {
 			parserLogger.log(Level.INFO, "Command Content is Valid");
@@ -282,6 +283,7 @@ public class CommandParser {
 		}
 	}
 
+	//@author A0115777W
 	private boolean isPositiveInt(String content) {
 		try {
 			int i = Integer.parseInt(content);
@@ -292,6 +294,7 @@ public class CommandParser {
 		}
 	}
 
+	//@author A0115777W
 	private boolean isValidPeriod(String content){
 		if(content.equals("hourly")||content.equals("daily")||content.equals("weekly")||content.equals("monthly")||content.equals("yearly")){
 			return true;

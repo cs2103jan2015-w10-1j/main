@@ -10,6 +10,7 @@ public class CommandDelete extends Command {
 	private int deleteIndex;
 	private Done task;
 
+	//@author A0115777W
 	public CommandDelete(int deleteIndex) {
 		super(CommandType.DELETE, true);
 		this.deleteIndex = deleteIndex;

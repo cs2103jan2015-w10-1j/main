@@ -9,7 +9,7 @@ import com.done.model.DoneFloatingTask;
 
 public class TestCommand {
 
-
+	//@author A0115777W
 	@Test
 	public void testCommandAdd() {
 		Command command = new CommandAdd(new DoneFloatingTask("aaa"));
@@ -36,16 +36,14 @@ public class TestCommand {
 
 	@Test
 	public void testCommandRecur() {
-		Command command = new CommandRecur(1,"weekly");
+		Command command = new CommandRecur(1, "weekly");
 		assertEquals(command.getCommandType(), CommandType.RECUR);
 	}
-	
+
 	@Test
 	public void testCommandRemind() {
-		//Command command = new CommandRemind(1,"weekly");
-		//assertEquals(command.getCommandType(), CommandType.REMIND);
+		// Command command = new CommandRemind(1,"weekly");
+		// assertEquals(command.getCommandType(), CommandType.REMIND);
 	}
-	
-	
 
 }

@@ -6,6 +6,7 @@ import com.done.storage.InMemStorage;
 
 public class CommandClear extends Command {
 	
+	//@author A0115777W
 	public CommandClear(){
 		super(CommandType.CLEAR, false);
 		commandLogger.log(Level.INFO, "Clear Command Created");

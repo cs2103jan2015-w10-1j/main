@@ -10,7 +10,8 @@ public class CommandMove extends Command {
 
 	private int origin;
 	private int destination;
-
+	
+	//@author A0115777W
 	public CommandMove(int origin, int destination) {
 		super(CommandType.MOVE, true);
 		this.origin = origin;
