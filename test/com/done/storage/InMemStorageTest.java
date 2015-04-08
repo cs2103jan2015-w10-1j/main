@@ -20,7 +20,6 @@ import com.done.model.DoneTimedTask;
 public class InMemStorageTest {
 
 	InMemStorage inMem = InMemStorage.getInstance();
-	DateTime dateTime = new DateTime();
 	
 	//@author A0111830X
 
@@ -33,10 +32,10 @@ public class InMemStorageTest {
 	@Test
 	public void testStore() {
 		Done doneFT = new DoneFloatingTask("test1");
-		Done doneTT = new DoneTimedTask("test2", dateTime.now().getMillis(),
-				dateTime.now().getMillis() + 88888);
+		Done doneTT = new DoneTimedTask("test2", DateTime.now().getMillis(),
+				DateTime.now().getMillis() + 88888);
 		Done doneDT = new DoneDeadlineTask("test3",
-				dateTime.now().getMillis() + 128000);
+				DateTime.now().getMillis() + 128000);
 		// This is the equivalence partition for the Done ArrayList
 		// whether is it [NULL] or [NOT NULL]
 		assertNotNull(doneFT);
@@ -58,10 +57,10 @@ public class InMemStorageTest {
 	public void testClear() {
 		// add 3 items
 		inMem.store(new DoneFloatingTask("test 1"));
-		inMem.store(new DoneTimedTask("test2", dateTime.now().getMillis(),
-				dateTime.now().getMillis() + 88888));
+		inMem.store(new DoneTimedTask("test2", DateTime.now().getMillis(),
+				DateTime.now().getMillis() + 88888));
 		inMem.store(new DoneDeadlineTask("test3",
-				dateTime.now().getMillis() + 128000));
+				DateTime.now().getMillis() + 128000));
 		assertTrue(inMem.getTasks().size() == 3);
 
 		// boolean true in delete method states that it is clear
