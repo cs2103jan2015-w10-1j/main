@@ -103,7 +103,7 @@ public class CommandRecur extends Command {
 			} else if(frequency == "Weekly"){
 				recurWeekly(task, period);
 			} else if(frequency == "Monthly"){
-				recurMonthly(task,period);
+				recurMonthly(task, period);
 			} else { System.out.println("Invalid Frequency!");
 			}
 		} else {
@@ -117,6 +117,12 @@ public class CommandRecur extends Command {
 		// TODO Auto-generated method stub
 		CommandDelete command = new CommandDelete(task);
 		command.execute();
+	}
+
+	@Override
+	public String getCommandContent() {
+		// TODO Auto-generated method stub
+		return null;
 	}
 
 }
