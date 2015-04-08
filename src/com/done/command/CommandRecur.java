@@ -19,10 +19,10 @@ public class CommandRecur extends Command {
 	
 	//@author A0115635J
 	//for recur
-	private final ScheduledExecutorService scheduler = Executors.newScheduledThreadPool(1);
-
+	
 	private void recurWeekly(Done task, String numberOfWeeksToStop) {
 		
+		final ScheduledExecutorService scheduler = Executors.newScheduledThreadPool(1);
 		final int WEEK = 604800;
 		int weeks = Integer.parseInt(numberOfWeeksToStop);
 		final int STOPTIME = weeks*WEEK;
@@ -41,6 +41,7 @@ public class CommandRecur extends Command {
 	
 	private void recurDaily(Done task, String numberOfDaysToStop) {
 		
+		final ScheduledExecutorService scheduler = Executors.newScheduledThreadPool(1);
 		final int DAY = 86400;
 		int days = Integer.parseInt(numberOfDaysToStop);
 		final int STOPTIME = days*DAY;
@@ -59,6 +60,7 @@ public class CommandRecur extends Command {
 	
 	private void recurMonthly(Done task, String numberOfMonthsToStop) {
 		
+		final ScheduledExecutorService scheduler = Executors.newScheduledThreadPool(1);
 		final int MONTH = 604800*30;
 		int months = Integer.parseInt(numberOfMonthsToStop);
 		final int STOPTIME = months*MONTH;
