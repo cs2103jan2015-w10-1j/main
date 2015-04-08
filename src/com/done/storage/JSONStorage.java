@@ -27,9 +27,9 @@ public class JSONStorage {
 
 	private static JSONStorage instance = null;
 	
-	private static final String DIR_LOG = "log\\";
-	private static final String DIR_PREF = "prefs\\";
-	private static final String DIR_TASKS = "tasks\\";
+	private static final String DIR_LOG = "log//";
+	private static final String DIR_PREF = "prefs//";
+	private static final String DIR_TASKS = "tasks//";
 	private static final String FILE_JSON_EXT = ".json";
 	private static final String FILE_TASKS_JSON = DIR_TASKS + "tasks";
 	private static final String FILE_PREFS_XML = DIR_PREF + "done_prefs.xml";
