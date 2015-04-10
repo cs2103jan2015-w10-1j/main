@@ -17,16 +17,16 @@ public class JSONStorageTest {
 	@Test
 	public void testJsonNameToPrefs() throws FileNotFoundException, IOException {
 
-		assertTrue(test.setJsonNameToPref("tasks.json"));
+		assertTrue(test.setJsonNameToPref("tasks//tasks"));
 
 	}
 	
 	@Test
 	public void testGetJsonName() {
-		test.setJsonNameToPref("testJson");
+		test.setJsonNameToPref("tasks//testJson");
 		// if input to Properties is "testJson.json"
 		// then the output after retrieving should be the same
-		assertThat(new String(test.getJsonNameFromPref()), is("testJson.json"));
+		assertThat(new String(test.getJsonNameFromPref()), is("tasks//testJson.json"));
 	}
 
 }
