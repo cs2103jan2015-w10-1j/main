@@ -66,7 +66,8 @@ public class JSONStorage {
 		logger.log(Level.INFO, "load() method executed");
 		FileReader inFileRead = null;
 		List<Done> tasks = null;
-
+		
+		// isNewJson to check if it's a different filename from preference file
 		if (isNewJson) {
 			jsonName = getJsonNameFromPref();
 		}
@@ -77,6 +78,8 @@ public class JSONStorage {
 			inFileRead = new FileReader(jsonName);
 		} catch (IOException e) {
 			logger.log(Level.WARNING, "File not found!", e);
+			// if IOException occurs while reading file, return empty List of Done
+			return new ArrayList<Done>();
 		}
 
 		// check if the JSON file has objects
@@ -85,6 +88,7 @@ public class JSONStorage {
 			assert inFile.length() <= 0; // assert that the file is indeed empty
 			return new ArrayList<Done>();
 		} else {
+			assert inFile.length() > 0;
 			// else get from JSON object in file into ArrayList
 			Type collectionType = new TypeToken<Done>() {
 			}.getType();
@@ -94,6 +98,7 @@ public class JSONStorage {
 			} catch (JsonIOException e) {
 				logger.log(Level.WARNING,
 						"Unable to read JSON file, creating new empty List", e);
+				// if JSONIOException occurs, return an empty List of Done
 				return new ArrayList<Done>();
 			}
 			return tasks;
@@ -112,6 +117,7 @@ public class JSONStorage {
 			return true;
 		} catch (IOException e) {
 			logger.log(Level.WARNING, "Unable to write file!", e);
+			// if IOException occurs, return false for Logic to set isSuccessful to false;
 			return false;
 		}
 	}
@@ -125,6 +131,7 @@ public class JSONStorage {
 			return true;
 		} catch (Exception e) {
 			logger.log(Level.WARNING, "Unable to write file!", e);
+			// if IOException occurs, return false for Logic to set isSuccessful to false;
 			return false;
 		}
 	}
@@ -137,13 +144,15 @@ public class JSONStorage {
 		} catch (IOException e) {
 			logger.log(Level.WARNING,
 					"Unable to read preference file! Using default.");
+			// If IOException occur, set default preference file name
 			setJsonNameToPref(FILE_TASKS_JSON);
 		}
 
 		return pref.getProperty("jsonName", FILE_TASKS_JSON);
 
 	}
-
+	
+	// Utility Methods
 	private static File openFile(String fileName) {
 		File file = new File(fileName);
 
@@ -184,6 +193,7 @@ public class JSONStorage {
 		}
 
 	}
+	// -- End of utility methods
 
 	//@author generated
 	public boolean isNewJson() {
