@@ -4,6 +4,7 @@ import java.util.Timer;
 import java.util.TimerTask;
 
 import javafx.application.Platform;
+import javafx.util.Duration;
 
 import org.controlsfx.control.Notifications;
 import org.joda.time.DateTime;
@@ -57,6 +58,7 @@ public class TaskReminder {
 				public void run() {
 					Notifications.create().title("Done! Reminder")
 							.text("Reminder for: " + done.getTitle())
+							.hideAfter(Duration.INDEFINITE).darkStyle()
 							.showWarning();
 					timer.cancel();
 				}
@@ -79,6 +81,7 @@ public class TaskReminder {
 				public void run() {
 					Notifications.create().title("Done! Timed Task")
 							.text("Time is up for: " + done.getTitle())
+							.hideAfter(Duration.INDEFINITE).darkStyle()
 							.showWarning();
 					timer.cancel();
 				}
