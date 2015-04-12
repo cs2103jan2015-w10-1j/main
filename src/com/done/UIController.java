@@ -5,7 +5,6 @@ import java.util.Collections;
 import java.util.List;
 
 import javafx.collections.FXCollections;
-import javafx.collections.ListChangeListener;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
 import javafx.scene.control.TableCell;
@@ -14,6 +13,7 @@ import javafx.scene.control.TableRow;
 import javafx.scene.control.TableView;
 import javafx.scene.control.TextField;
 import javafx.scene.control.cell.PropertyValueFactory;
+import javafx.stage.Stage;
 import javafx.util.Callback;
 
 import org.controlsfx.control.Notifications;
@@ -30,6 +30,12 @@ public class UIController implements Observer {
 	
 	@FXML
 	private TableView<Done> tableViewTasks;
+	
+	private Stage primaryStage;
+
+    public void setStage(Stage stage) {
+         this.primaryStage = stage;
+    }
 	
 	private LogicFacade logicFacade;
 	
@@ -48,6 +54,7 @@ public class UIController implements Observer {
 	private static final String SHOWSEARCH_ERROR_MESSAGE = "Error: Search not successful";
 	private static final String SHOWLOAD_SUCCESS_MESSAGE = "%1$s.json loaded";
 	private static final String SHOWLOAD_ERROR_MESSAGE = "Error: File load not successful";
+	private static final String SHOWLOAD_STAGE_TITLE = "Done! (%1$s)";
 	private static final String SHOWSHOWALL_SUCCESS_MESSAGE = "Showing all tasks";
 	private static final String SHOWRECUR_SUCCESS_MESSAGE = "%1$s";
 	private static final String SHOWRECUR_ERROR_MESSAGE = "Error: Recurrence cannot be set for this task";
@@ -209,6 +216,7 @@ public class UIController implements Observer {
 	private void showLoad(boolean isSuccessful, String commandContent){
 		if(isSuccessful){
 			Notifications.create().text(String.format(SHOWLOAD_SUCCESS_MESSAGE, commandContent)).showInformation();
+			primaryStage.setTitle(String.format(SHOWLOAD_STAGE_TITLE, logicFacade.getJsonName().substring(7)));
 		}
 		else{
 			Notifications.create().text(SHOWLOAD_ERROR_MESSAGE).showError();

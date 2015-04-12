@@ -18,21 +18,26 @@ public class DoneUI extends Application {
 	
 	LogicFacade logicFacade = new LogicFacade();
 	
+	private static final String STAGE_TITLE = "Done! (%1$s)";
+	private static final String LOAD_SUCCESS_MESSAGE = "%1$s loaded";
+	
 	@Override
 	public void start(Stage primaryStage) {
 		try {
 			
 			final FXMLLoader loader = new FXMLLoader(getClass().getResource("UILayout.fxml"));
-	        
 	        AnchorPane anchorPane = (AnchorPane) loader.load();
 	        Scene scene = new Scene(anchorPane);
 	        primaryStage.getIcons().add(new Image(getClass().getResourceAsStream("doneicon.png")));
-	        primaryStage.setTitle("Done!");
+	        primaryStage.setTitle(String.format(STAGE_TITLE, logicFacade.getJsonName().substring(7))); 
 	        primaryStage.setScene(scene);
 	        primaryStage.setResizable(false);
 	        primaryStage.show();
 	        
-	        Notifications.create().text(logicFacade.getJsonName().substring(7) + " loaded").showInformation();
+	        UIController controller = loader.getController();
+	        controller.setStage(primaryStage);
+	        
+	        Notifications.create().text(String.format(LOAD_SUCCESS_MESSAGE, logicFacade.getJsonName().substring(7))).showInformation();
 	        
 		} catch(Exception e) {
 			e.printStackTrace();
