@@ -117,8 +117,12 @@ public class CommandParser {
 			 * commandContent as the parameter of a new method
 			 */
 			parserLogger.log(Level.INFO, "make add Command");
-			Done tempTask = defineTask(commandContent);
-			return new CommandAdd(tempTask);
+			try{
+				Done tempTask = defineTask(commandContent);
+				return new CommandAdd(tempTask);
+			}catch (Exception e){
+				return new CommandInvalid();
+			}
 		} else if (commandWord.equalsIgnoreCase("delete")) {
 			parserLogger.log(Level.INFO, "make delete Command");
 			if (isContentValid(commandWord, commandContent)) {
@@ -130,10 +134,14 @@ public class CommandParser {
 		} else if (commandWord.equalsIgnoreCase("edit")) {
 			String indexString = getFirstWord(commandContent);
 			if (isPositiveInt(indexString)) {
-				int index = Integer.parseInt(indexString);
-				Done changedTask = defineTask(removeFirstWord(commandContent));
-				parserLogger.log(Level.INFO, "make edit Command");
-				return new CommandEdit(index, changedTask);
+				try{
+					int index = Integer.parseInt(indexString);
+					Done changedTask = defineTask(removeFirstWord(commandContent));
+					parserLogger.log(Level.INFO, "make edit Command");
+					return new CommandEdit(index, changedTask);
+				}catch (Exception e){
+					return new CommandInvalid();
+				}
 			} else {
 				return new CommandInvalid();
 			}
@@ -283,6 +291,20 @@ public class CommandParser {
 			parserLogger.log(Level.INFO, "Command Content is invalid");
 			return false;
 		}
+	}
+	
+	private boolean isValidTime(String time){
+		if(time.length()>5){
+			return false;
+		}
+		int hour = Integer.parseInt(time.substring(0,2));
+		int minute = Integer.parseInt(time.substring(3, 5));
+        if(hour<0||hour>24){
+			return false;
+		}else if(minute<0||minute>60){
+			return false;
+		}
+        return true;
 	}
 
 	//@author A0115777W
