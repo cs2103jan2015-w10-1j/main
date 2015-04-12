@@ -35,6 +35,9 @@ public class ParserUtility {
 	
 	private static Logger parserLogger = Logger.getLogger("CommandParser");
 	
+	//The methods to make respective Commands. 
+	//May return a CommandInvalid if the content is not correct
+	//@author A0115777W
 	protected static Command makeAdd(String content){
 		try{
 			Done tempTask = defineTask(content);
@@ -180,7 +183,9 @@ public class ParserUtility {
 		parserLogger.log(Level.INFO, "make invalid Command");
 		return new CommandInvalid();
 	}
+	//End of Command Maker Methods
 	
+	//Methods to make Tasks(Floating, Timed and Deadline tasks).
 	//@author A0111830X
 	protected static Done defineTask(String commandContent) {
 		Done task;
@@ -305,8 +310,9 @@ public class ParserUtility {
 		return task;
 
 	}
-
+	//End of Task Maker Methods
 	
+	//Methods to process content Strings, like removing and getting first words
 	//@author A0111830X
 	protected static String removeFirstWord(String userCommand) {
 		String returnStr = getFirstWord(userCommand).trim();
@@ -327,7 +333,9 @@ public class ParserUtility {
 		}
 		return slicedContent;
 	}
+	//End of Content processer methods
 	
+	//Validation methods to detect if a String content piece is as required
 	//@author A0115777W-unused
 	protected static boolean isContentValid(String commandWord, String commandContent) {
 		if (commandWord.equalsIgnoreCase("add")) {
@@ -377,4 +385,5 @@ public class ParserUtility {
 			return false;
 		}
 	}
+	//End of Validation methods
 }
