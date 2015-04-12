@@ -197,7 +197,7 @@ public class ParserUtility {
 		String[] split = commandContent.split("\\s+");
 		for (int i = 0; i < split.length; i++) {
 			if (split[i].equals("..s") || split[i].equals("..e")) {
-				// timedtask
+				// timed task
 				isTimed = true;
 				timeIndex = i + 1;
 				break;
@@ -210,17 +210,17 @@ public class ParserUtility {
 			}
 		}
 		if (isTimed) {
-			// if content contains start time
+			// if content contains end time and/or start time
 			// we generate (new) timedTask
-			// return timedTask
+			// and return timedTask
 			parserLogger.log(Level.INFO, "make Timed Task");
 			task = addTimed(split, timeIndex);
 			return task;
 
 		} else if (isDeadline) {
-			// if content has deadline (time) at
-			// we generate new deadlinedTask
-			// return deadlinedTask
+			// if content has date and time
+			// we generate new deadlineTask
+			// and return deadlineTask
 			parserLogger.log(Level.INFO, "make Deadline Task");
 			task = addDeadline(split, timeIndex, dateIndex);
 			return task;
@@ -240,13 +240,18 @@ public class ParserUtility {
 
 	//@author A0111830X
 	protected static Done addTimed(String[] content, int timeIndex) {
-		Done task = null;
-		DateTimeFormatter dtf = DateTimeFormat.forPattern("HH:mm");
+		String startTime = "";
+		String endTime = "";
 		long startTimeValue = 0;
 		long endTimeValue = 0;
+		
+		Done task = null;
+		DateTimeFormatter dtf = DateTimeFormat.forPattern("HH:mm");
+		
 		LocalDate localStartDate = LocalDate.now();
 		LocalDate localEndDate = LocalDate.now();
-
+		
+		// obtain title of task from input
 		StringBuilder taskTitleBuilder = new StringBuilder();
 		for (int i = 0; i < timeIndex - 1; i++) {
 			if (i == timeIndex - 2) {
@@ -256,8 +261,8 @@ public class ParserUtility {
 			}
 		}
 		String taskTitle = taskTitleBuilder.toString();
-		String startTime = "";
-		String endTime = "";
+		
+		// check for parameters ..s and ..e
 		if (content[timeIndex - 1].equalsIgnoreCase("..s")) {
 			startTime = content[timeIndex];
 			try {
@@ -267,6 +272,8 @@ public class ParserUtility {
 			} catch (NullPointerException e) {
 				System.out.println("Missing time information");
 			}
+			
+			// obtain time from input
 			LocalTime localStartTime = dtf.parseLocalTime(startTime);
 			LocalTime localEndTime = dtf.parseLocalTime(endTime);
 
@@ -277,7 +284,8 @@ public class ParserUtility {
 
 		} else if (content[timeIndex - 1].equalsIgnoreCase("..e")) {
 			endTime = content[timeIndex];
-
+			
+			// obtain date and time from now() and input
 			DateTime localStartDateTime = DateTime.now();
 			LocalTime localEndTime = dtf.parseLocalTime(endTime);
 
@@ -293,6 +301,8 @@ public class ParserUtility {
 	//@author A0111830X
 	protected static Done addDeadline(String[] content, int timeIndex, int dateIndex) {
 		Done task = null;
+		
+		// obtain title of task
 		StringBuilder sb = new StringBuilder();
 		for (int i = 0; i < dateIndex - 1; i++) {
 			if (i == dateIndex - 2) {
@@ -303,6 +313,8 @@ public class ParserUtility {
 
 		}
 		String taskTitle = sb.toString();
+		
+		// obtain date time and format it to long milliseconds
 		DateTimeFormatter dtf = DateTimeFormat.forPattern("ddMMyyyy HH:mm");
 		DateTime date = dtf.parseDateTime(content[dateIndex] + " "
 				+ content[timeIndex]);
