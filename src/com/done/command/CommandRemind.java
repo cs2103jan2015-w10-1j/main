@@ -17,7 +17,7 @@ public class CommandRemind extends Command {
 	
 	//@author A0115777W
 	public CommandRemind(int remindIndex, String date, String time) {
-		super(CommandType.REMIND, false);
+		super(CommandType.REMIND, true);
 		this.task = InMemStorage.getInstance().getTask(remindIndex);
 		this.remindIndex = remindIndex;
 		this.date = date;
@@ -37,6 +37,7 @@ public class CommandRemind extends Command {
 		//Currently not undoable
 		//commandLogger.log(Level.INFO, "undo Remind Command called");
 		//commandLogger.log(Level.INFO, "undo Remind Command successfully executed");
+		reminderTask.stopTimer();
 	}
 	
 	//@author A0088821X

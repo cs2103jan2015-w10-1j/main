@@ -15,7 +15,7 @@ public class DoneTimedTask extends Done {
 		super.setType(TaskType.TIMED);
 		this.setStartTime(startTime);
 		this.setEndTime(endTime);
-		new TaskReminder(this);
+		//new TaskReminder(this);
 	}
 
 	public DoneTimedTask(String title, String tag, long startTime, long endTime) {

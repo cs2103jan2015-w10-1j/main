@@ -3,16 +3,25 @@ package com.done.command;
 import java.util.logging.Level;
 
 import com.done.model.Done;
+import com.done.model.Done.TaskType;
+import com.done.model.DoneTimedTask;
 import com.done.storage.InMemStorage;
+import com.done.task.TaskReminder;
 
 public class CommandAdd extends Command {
 
 	private Done task;
+	private TaskReminder reminderTask;
 
 	//@author A0115777W
 	public CommandAdd(Done task) {
 		super(CommandType.ADD, true);
 		this.task = task;
+		
+		if(task.getType().equals(TaskType.TIMED)){
+			this.reminderTask = new TaskReminder((DoneTimedTask) task);
+		}
+		
 		commandLogger.log(Level.INFO, "Add Command Created");
 	}
 
@@ -38,8 +47,14 @@ public class CommandAdd extends Command {
 
 	@Override
 	public void undo() {
-		CommandDelete command = new CommandDelete(task);
-		command.execute();
+		if(task.getType().equals(TaskType.TIMED)){
+			reminderTask.stopTimer();
+			CommandDelete command = new CommandDelete(task);
+			command.execute();
+		}else{
+			CommandDelete command = new CommandDelete(task);
+			command.execute();
+		}
 	}
 	
 	//@author A0088821X

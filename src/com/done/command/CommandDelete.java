@@ -28,7 +28,7 @@ public class CommandDelete extends Command {
 	public void execute() {
 		InMemStorage memory = InMemStorage.getInstance();
 		if (task == null) {
-			this.task = InMemStorage.getInstance().getTask(deleteIndex);
+			this.task = memory.getTask(deleteIndex);
 			memory.delete(task, false);
 		} else {
 			memory.delete(task, false);

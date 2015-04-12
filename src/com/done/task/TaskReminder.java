@@ -38,6 +38,10 @@ public class TaskReminder {
 		timer = new Timer();
 		timer.schedule(new DoneReminder(done), (endTimeValue - currentTime));
 	}
+	
+	public void stopTimer(){
+		timer.cancel();
+	}
 
 	class DoneReminder extends TimerTask {
 

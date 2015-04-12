@@ -100,11 +100,11 @@ public class CommandRecur extends Command {
 	public void execute() throws Exception {
 		// TODO Auto-generated method stub
 		if (this.task != null) {
-			if(frequency == "Daily"){
+			if(frequency.equalsIgnoreCase("daily")){
 				recurDaily(task, period);
-			} else if(frequency == "Weekly"){
+			} else if(frequency.equalsIgnoreCase("weekly")){
 				recurWeekly(task, period);
-			} else if(frequency == "Monthly"){
+			} else if(frequency.equalsIgnoreCase("monthly")){
 				recurMonthly(task, period);
 			} else { System.out.println("Invalid Frequency!");
 			}
