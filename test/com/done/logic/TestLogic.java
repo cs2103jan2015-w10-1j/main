@@ -34,10 +34,11 @@ public class TestLogic {
 		CommandMove cmd = null;
 		try {
 			cmd = new CommandMove(0, 10000);
+			testLogic.executeCommand(cmd);
 		} catch (Exception e) {
-			e.printStackTrace();
+			assertFalse(testLogic.isSuccessful());
 		}
-		testLogic.executeCommand(cmd);
-		assertFalse(testLogic.isSuccessful());
+		
+		
 	}
 }

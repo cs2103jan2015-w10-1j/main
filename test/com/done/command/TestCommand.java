@@ -17,7 +17,7 @@ public class TestCommand {
 	}
 
 	@Test
-	public void testCommandDelete() {
+	public void testCommandDelete() throws Exception {
 		Command command = new CommandDelete(1);
 		assertEquals(command.getCommandType(), CommandType.DELETE);
 	}
@@ -35,7 +35,7 @@ public class TestCommand {
 	}
 
 	@Test
-	public void testCommandRecur() {
+	public void testCommandRecur() throws Exception {
 		Command command = new CommandRecur(1, "weekly");
 		assertEquals(command.getCommandType(), CommandType.RECUR);
 	}
