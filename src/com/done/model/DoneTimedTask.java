@@ -28,7 +28,7 @@ public class DoneTimedTask extends Done {
 	//@author A0111830X
 	public String getStartTime() {
 		// SimpleDateFormat sdf = new SimpleDateFormat("d MMM yyyy HH:mm");
-		SimpleDateFormat sdf = new SimpleDateFormat("HH:mm");
+		SimpleDateFormat sdf = new SimpleDateFormat("d MMM HH:mm");
 		return sdf.format(startTime);
 	}
 
@@ -44,7 +44,7 @@ public class DoneTimedTask extends Done {
 
 	//@author A0111830X
 	public String getEndTime() {
-		SimpleDateFormat sdf = new SimpleDateFormat("HH:mm");
+		SimpleDateFormat sdf = new SimpleDateFormat("d MMM HH:mm");
 		return sdf.format(endTime);
 	}
 
