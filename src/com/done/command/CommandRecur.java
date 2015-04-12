@@ -16,6 +16,7 @@ public class CommandRecur extends Command {
 	private Done task;
 	private String frequency;
 	private int numberToStop;
+	private static final String RECUR_COMMAND_CONTENT = "Set %1$s to recur %2$s for %3$s times";
 	//private String frequency;
 	
 	//@author A0115635J
@@ -153,11 +154,12 @@ public class CommandRecur extends Command {
 		CommandDelete command = new CommandDelete(task);
 		command.execute();
 	}
-
+	
+	//@author A0088821X
 	@Override
 	public String getCommandContent() {
 		// TODO Auto-generated method stub
-		return null;
+		return String.format(RECUR_COMMAND_CONTENT, task.getTitle(), frequency.toLowerCase(), numberToStop);
 	}
 
 }

@@ -46,9 +46,11 @@ public class UIController implements Observer {
 	private static final String SHOWMOVE_ERROR_MESSAGE = "Error: Moving task not successful";
 	private static final String SHOWSEARCH_SUCCESS_MESSAGE = "Showing search for: %1$s";
 	private static final String SHOWSEARCH_ERROR_MESSAGE = "Error: Search not successful";
-	private static final String SHOWLOAD_SUCCESS_MESSAGE = "%1$s loaded";
+	private static final String SHOWLOAD_SUCCESS_MESSAGE = "%1$s.json loaded";
 	private static final String SHOWLOAD_ERROR_MESSAGE = "Error: File load not successful";
 	private static final String SHOWSHOWALL_SUCCESS_MESSAGE = "Showing all tasks";
+	private static final String SHOWRECUR_SUCCESS_MESSAGE = "%1$s";
+	private static final String SHOWRECUR_ERROR_MESSAGE = "Error: Recurrence cannot be set for this task";
 	private static final String SHOWREMIND_SUCCESS_MESSAGE = "Set reminder for %1$s";
 	private static final String SHOWREMIND_ERROR_MESSAGE = "Error: Reminder cannot be set for this task";
 	private static final String SHOWUNDO_ERROR_MESSAGE = "Error: No recent command available";
@@ -113,6 +115,9 @@ public class UIController implements Observer {
 				break;
 			case SHOWALL:
 				showShowAll();
+				break;
+			case RECUR:
+				showRecur(executionResult.isSuccessful(), commandContent);
 				break;
 			case REMIND:
 				showRemind(executionResult.isSuccessful(), commandContent);
@@ -203,7 +208,7 @@ public class UIController implements Observer {
 	
 	private void showLoad(boolean isSuccessful, String commandContent){
 		if(isSuccessful){
-			Notifications.create().text(String.format(SHOWLOAD_SUCCESS_MESSAGE, commandContent+".json")).showInformation();
+			Notifications.create().text(String.format(SHOWLOAD_SUCCESS_MESSAGE, commandContent)).showInformation();
 		}
 		else{
 			Notifications.create().text(SHOWLOAD_ERROR_MESSAGE).showError();
@@ -243,6 +248,16 @@ public class UIController implements Observer {
 	
 	private void showShowAll(){
 		Notifications.create().text(SHOWSHOWALL_SUCCESS_MESSAGE).showInformation();
+		display();
+	}
+	
+	private void showRecur(boolean isSuccessful, String commandContent){
+		if(isSuccessful){
+			Notifications.create().text(String.format(SHOWRECUR_SUCCESS_MESSAGE, commandContent)).showInformation();
+		}
+		else{
+			Notifications.create().text(SHOWRECUR_ERROR_MESSAGE).showError();
+		}
 		display();
 	}
 	
@@ -323,7 +338,7 @@ public class UIController implements Observer {
 		titleCol.setResizable(false);
 		TableColumn<Done,String> startTimeCol = new TableColumn<Done,String>("Start");
 		startTimeCol.setCellValueFactory(new PropertyValueFactory("startTime"));
-		startTimeCol.setPrefWidth(70.0);
+		startTimeCol.setPrefWidth(65.0);
 		startTimeCol.setResizable(false);
 		TableColumn<Done,String> endTimeCol = new TableColumn<Done,String>("End");
 		endTimeCol.setCellValueFactory(new PropertyValueFactory("endTime"));
@@ -349,7 +364,7 @@ public class UIController implements Observer {
 		        return cell;
 		    }
 		});
-		endTimeCol.setPrefWidth(70.0);
+		endTimeCol.setPrefWidth(65.0);
 		endTimeCol.setResizable(false);
 		TableColumn<Done,String> deadlineCol = new TableColumn<Done,String>("Deadline");
 		deadlineCol.setCellValueFactory(new PropertyValueFactory("endTime"));
@@ -375,7 +390,7 @@ public class UIController implements Observer {
 		        return cell;
 		    }
 		});
-		deadlineCol.setPrefWidth(120.0);
+		deadlineCol.setPrefWidth(128.0);
 		deadlineCol.setResizable(false);
 		tableViewTasks.getColumns().setAll(idCol, titleCol, startTimeCol, endTimeCol, deadlineCol);
 	}
