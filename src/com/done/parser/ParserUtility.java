@@ -139,9 +139,10 @@ public class ParserUtility {
 		ArrayList<String> contents = sliceContent(content);
 		String index = contents.get(0);
 		String period = contents.get(1);
+		int numberToStop = Integer.parseInt(contents.get(2));
 		if (isPositiveInt(index) && isValidPeriod(period)) {
 			try{
-				return new CommandRecur(Integer.parseInt(index), period);
+				return new CommandRecur(Integer.parseInt(index), period, numberToStop);
 			}catch (Exception e){
 				return new CommandInvalid();
 			}

@@ -36,7 +36,7 @@ public class TestCommand {
 
 	@Test
 	public void testCommandRecur() throws Exception {
-		Command command = new CommandRecur(1, "weekly");
+		Command command = new CommandRecur(1, "weekly", 1);
 		assertEquals(command.getCommandType(), CommandType.RECUR);
 	}
 

@@ -15,17 +15,17 @@ public class CommandRecur extends Command {
 	
 	private Done task;
 	private String frequency;
+	private int numberToStop;
 	//private String frequency;
 	
 	//@author A0115635J
 	//for recur
 	
-	private void recurWeekly(Done task, String numberOfWeeksToStop) {
+	private void recurWeekly(Done task, int numberOfWeeksToStop) {
 		
 		final ScheduledExecutorService scheduler = Executors.newScheduledThreadPool(1);
 		final int WEEK = 604800;
-		int weeks = Integer.parseInt(numberOfWeeksToStop);
-		final int STOPTIME = weeks*WEEK;
+		final int STOPTIME = numberOfWeeksToStop*WEEK;
 		
 		final Runnable recur = new Runnable() {
 			public void run() {
@@ -33,18 +33,17 @@ public class CommandRecur extends Command {
 				inMemStorage.store(task);
 			}
 		};
-		final ScheduledFuture<?> recurHandle = scheduler.scheduleAtFixedRate(recur, 0, WEEK, SECONDS);
+		final ScheduledFuture<?> recurHandle = scheduler.scheduleAtFixedRate(recur, WEEK, WEEK, SECONDS);
 		scheduler.schedule(new Runnable() {
 			public void run() { recurHandle.cancel(true); }
 			}, STOPTIME, SECONDS);
 	}
 	
-	private void recurDaily(Done task, String numberOfDaysToStop) {
+	private void recurDaily(Done task, int numberOfDaysToStop) {
 		
 		final ScheduledExecutorService scheduler = Executors.newScheduledThreadPool(1);
 		final int DAY = 86400;
-		int days = Integer.parseInt(numberOfDaysToStop);
-		final int STOPTIME = days*DAY;
+		final int STOPTIME = numberOfDaysToStop*DAY;
 		
 		final Runnable recur = new Runnable() {
 			public void run() {
@@ -52,18 +51,17 @@ public class CommandRecur extends Command {
 				inMemStorage.store(task);
 			}
 		};
-		final ScheduledFuture<?> recurHandle = scheduler.scheduleAtFixedRate(recur, 0, DAY, SECONDS);
+		final ScheduledFuture<?> recurHandle = scheduler.scheduleAtFixedRate(recur, DAY, DAY, SECONDS);
 		scheduler.schedule(new Runnable() {
 			public void run() { recurHandle.cancel(true); }
 			}, STOPTIME, SECONDS);
 	}
 	
-	private void recurMonthly(Done task, String numberOfMonthsToStop) {
+	private void recurMonthly(Done task, int numberOfMonthsToStop) {
 		
 		final ScheduledExecutorService scheduler = Executors.newScheduledThreadPool(1);
 		final int MONTH = 604800*30;
-		int months = Integer.parseInt(numberOfMonthsToStop);
-		final int STOPTIME = months*MONTH;
+		final int STOPTIME = numberOfMonthsToStop*MONTH;
 		
 		final Runnable recur = new Runnable() {
 			public void run() {
@@ -71,17 +69,35 @@ public class CommandRecur extends Command {
 				inMemStorage.store(task);
 			}
 		};
-		final ScheduledFuture<?> recurHandle = scheduler.scheduleAtFixedRate(recur, 0, MONTH, SECONDS);
+		final ScheduledFuture<?> recurHandle = scheduler.scheduleAtFixedRate(recur, MONTH, MONTH, SECONDS);
 		scheduler.schedule(new Runnable() {
 			public void run() { recurHandle.cancel(true); }
 			}, STOPTIME, SECONDS);
+	}
+	
+	private void recurTest(Done task, int numberOfMonthsToStop) {
+		
+		final ScheduledExecutorService scheduler = Executors.newScheduledThreadPool(1);
+		final int MONTH = 604800*30;
+		final int STOPTIME = numberOfMonthsToStop*MONTH;
+		
+		final Runnable recur = new Runnable() {
+			public void run() {
+				InMemStorage inMemStorage = InMemStorage.getInstance();
+				inMemStorage.store(task);
+			}
+		};
+		final ScheduledFuture<?> recurHandle = scheduler.scheduleAtFixedRate(recur, 0, 5, SECONDS);
+		scheduler.schedule(new Runnable() {
+			public void run() { recurHandle.cancel(true); }
+			}, 9, SECONDS);
 	}
 	
 	
 
 	//@author A0115777W
 
-	public CommandRecur(int recurIndex, String period) throws Exception{
+	public CommandRecur(int recurIndex, String period, int numberToStop) throws Exception{
 		super(CommandType.RECUR, true);
 		if (recurIndex > InMemStorage.getInstance().getTasks().size()) {
 			commandLogger.log(Level.INFO, "Too large Index");
@@ -89,13 +105,15 @@ public class CommandRecur extends Command {
 		}
 		this.task = InMemStorage.getInstance().getTask(recurIndex);
 		this.frequency = period;
+		this.numberToStop = numberToStop;
 		commandLogger.log(Level.INFO, "Recur Command Created");
 	}
 
-	public CommandRecur(Done task,String period){
+	public CommandRecur(Done task, String period, int numberToStop){
 		super(CommandType.RECUR,true);
 		this.task = task;
 		this.frequency = period;
+		this.numberToStop = numberToStop;
 		commandLogger.log(Level.INFO, "Recur Command Created");
 	}
 	
@@ -108,17 +126,21 @@ public class CommandRecur extends Command {
 			System.out.println(frequency);
 			if(frequency.equalsIgnoreCase("daily")){
 				commandLogger.log(Level.INFO, "Make daily recur");
-				recurDaily(task, frequency);
+				recurDaily(task, numberToStop);
 				commandLogger.log(Level.INFO, "Recur Command Success");
 			} else if(frequency.equalsIgnoreCase("weekly")){
 				commandLogger.log(Level.INFO, "Make weekly recur");
-				recurWeekly(task, frequency);
+				recurWeekly(task, numberToStop);
 				commandLogger.log(Level.INFO, "Recur Command Success");
 			} else if(frequency.equalsIgnoreCase("monthly")){
 				commandLogger.log(Level.INFO, "Make monthly recur");
-				recurMonthly(task, frequency);
+				recurMonthly(task, numberToStop);
 				commandLogger.log(Level.INFO, "Recur Command Success");
-			} else { System.out.println("Invalid Frequency!");
+			} else if(frequency.equalsIgnoreCase("test")){
+				commandLogger.log(Level.INFO, "Make test recur");
+				recurTest(task, numberToStop);
+				commandLogger.log(Level.INFO, "Recur Command Success");
+			}else { System.out.println("Invalid Frequency!");
 			}
 		} else {
 			throw new Exception("TaskNullException");
