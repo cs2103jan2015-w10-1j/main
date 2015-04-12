@@ -197,6 +197,7 @@ public class ParserUtility {
 
 		ArrayList<String> split = sliceContent(commandContent);
 		for (int i = 0; i < split.size(); i++) {
+			// check for ..s and ..e parameters
 			if (split.get(i).equals("..s")) {
 				// timed task
 				isTimed = true;
@@ -211,6 +212,7 @@ public class ParserUtility {
 				}
 				startDateIndex = i + 1;
 				startTimeIndex = i + 2;
+			// if input consist only of ..e, we take the current time as the start
 			} else if (split.get(i).equals("..e")) {
 				isTimed = true;
 				if (isValidTime(split.get(i + 1))
