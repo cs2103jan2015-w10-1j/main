@@ -346,7 +346,7 @@ public class UIController implements Observer {
 		titleCol.setResizable(false);
 		TableColumn<Done,String> startTimeCol = new TableColumn<Done,String>("Start");
 		startTimeCol.setCellValueFactory(new PropertyValueFactory("startTime"));
-		startTimeCol.setPrefWidth(65.0);
+		startTimeCol.setPrefWidth(85.0);
 		startTimeCol.setResizable(false);
 		TableColumn<Done,String> endTimeCol = new TableColumn<Done,String>("End");
 		endTimeCol.setCellValueFactory(new PropertyValueFactory("endTime"));
@@ -361,7 +361,7 @@ public class UIController implements Observer {
 		                if(empty){
 		                	this.setText(EMPTY_STRING);
 		                }else{
-		                	if(item != null && item.length() == 5){
+		                	if(item != null && item.length() == 12){
 		                		this.setText(item); 
 		                	} else{
 		                		this.setText(EMPTY_STRING);
@@ -372,7 +372,7 @@ public class UIController implements Observer {
 		        return cell;
 		    }
 		});
-		endTimeCol.setPrefWidth(65.0);
+		endTimeCol.setPrefWidth(85.0);
 		endTimeCol.setResizable(false);
 		TableColumn<Done,String> deadlineCol = new TableColumn<Done,String>("Deadline");
 		deadlineCol.setCellValueFactory(new PropertyValueFactory("endTime"));
@@ -387,7 +387,7 @@ public class UIController implements Observer {
 		                if(empty){
 		                	this.setText(EMPTY_STRING);
 		                }else{
-		                	if(item != null && item.length() > 5){
+		                	if(item != null && item.length() > 12){
 		                		this.setText(item); 
 		                	} else{
 		                		this.setText(EMPTY_STRING);
