@@ -3,7 +3,7 @@
 
 
 	/**
-	 * origin: C:\Users\Jerry\workspace\CS2103Project\src\com\done\command\CommandClear.java
+	 * origin: C:\Users\Jerry\eclipse_workspace\CS2103Project\src\com\done\command\CommandClear.java
 	 */
 
 	//undo not required in CLEAR
@@ -12,14 +12,14 @@
 		// UNUSED
 		//System.out.printf(MESSAGE_ERROR,"undo",this.getCommandType());
 	}
-	// End of segment: C:\Users\Jerry\workspace\CS2103Project\src\com\done\command\CommandClear.java
+	// End of segment: C:\Users\Jerry\eclipse_workspace\CS2103Project\src\com\done\command\CommandClear.java
 
 
 
 
 
 	/**
-	 * origin: C:\Users\Jerry\workspace\CS2103Project\src\com\done\command\CommandLoad.java
+	 * origin: C:\Users\Jerry\eclipse_workspace\CS2103Project\src\com\done\command\CommandLoad.java
 	 */
 
 	//undo not required in LOAD
@@ -29,14 +29,14 @@
 		
 	}
 	
-	// End of segment: C:\Users\Jerry\workspace\CS2103Project\src\com\done\command\CommandLoad.java
+	// End of segment: C:\Users\Jerry\eclipse_workspace\CS2103Project\src\com\done\command\CommandLoad.java
 
 
 
 
 
 	/**
-	 * origin: C:\Users\Jerry\workspace\CS2103Project\src\com\done\command\CommandSearch.java
+	 * origin: C:\Users\Jerry\eclipse_workspace\CS2103Project\src\com\done\command\CommandSearch.java
 	 */
 
 	//undo not required in SEARCH
@@ -46,14 +46,14 @@
 
 	}
 	
-	// End of segment: C:\Users\Jerry\workspace\CS2103Project\src\com\done\command\CommandSearch.java
+	// End of segment: C:\Users\Jerry\eclipse_workspace\CS2103Project\src\com\done\command\CommandSearch.java
 
 
 
 
 
 	/**
-	 * origin: C:\Users\Jerry\workspace\CS2103Project\src\com\done\command\CommandUndo.java
+	 * origin: C:\Users\Jerry\eclipse_workspace\CS2103Project\src\com\done\command\CommandUndo.java
 	 */
 
 	//redo function not required
@@ -63,7 +63,7 @@
 		//System.out.printf(MESSAGE_ERROR,"undo",this.getCommandType());
 	}
 	
-	// End of segment: C:\Users\Jerry\workspace\CS2103Project\src\com\done\command\CommandUndo.java
+	// End of segment: C:\Users\Jerry\eclipse_workspace\CS2103Project\src\com\done\command\CommandUndo.java
 
 
 

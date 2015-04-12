@@ -3,7 +3,7 @@
 
 
 	/**
-	 * origin: C:\Users\Jerry\workspace\CS2103Project\src\com\done\command\CommandMove.java
+	 * origin: C:\Users\Jerry\eclipse_workspace\CS2103Project\src\com\done\command\CommandMove.java
 	 */
 
 	private void swap(List<Done> tasks, int origin, int destination) {
@@ -11,8 +11,56 @@
 		tasks.set(destination, tasks.get(origin));
 		tasks.set(origin, temp);
 	}
+
+	// End of segment: C:\Users\Jerry\eclipse_workspace\CS2103Project\src\com\done\command\CommandMove.java
+
+
+
+
+
+	/**
+	 * origin: C:\Users\Jerry\eclipse_workspace\CS2103Project\src\com\done\parser\CommandParser.java
+	 */
+
+	private boolean isContentValid(String commandWord, String commandContent) {
+		if (commandWord.equalsIgnoreCase("add")) {
+			parserLogger.log(Level.INFO, "Command Content is Valid");
+			return true;
+		} else if (commandWord.equalsIgnoreCase("delete")
+				|| commandWord.equalsIgnoreCase("done")
+				|| commandWord.equalsIgnoreCase("move")) {
+			return isPositiveInt(commandContent);
+		} else {
+			parserLogger.log(Level.INFO, "Command Content is invalid");
+			return false;
+		}
+	}
 	
-	// End of segment: C:\Users\Jerry\workspace\CS2103Project\src\com\done\command\CommandMove.java
+	// End of segment: C:\Users\Jerry\eclipse_workspace\CS2103Project\src\com\done\parser\CommandParser.java
+
+
+
+
+
+	/**
+	 * origin: C:\Users\Jerry\eclipse_workspace\CS2103Project\src\com\done\parser\CommandParser.java
+	 */
+
+	private boolean isValidTime(String time){
+		if(time.length()>5){
+			return false;
+		}
+		int hour = Integer.parseInt(time.substring(0,2));
+		int minute = Integer.parseInt(time.substring(3, 5));
+        if(hour<0||hour>24){
+			return false;
+		}else if(minute<0||minute>60){
+			return false;
+		}
+        return true;
+	}
+
+	// End of segment: C:\Users\Jerry\eclipse_workspace\CS2103Project\src\com\done\parser\CommandParser.java
 
 
 

@@ -3,7 +3,7 @@
 
 
 	/**
-	 * origin: C:\Users\Jerry\workspace\CS2103Project\src\com\done\command\CommandAdd.java
+	 * origin: C:\Users\Jerry\eclipse_workspace\CS2103Project\src\com\done\command\CommandAdd.java
 	 */
 
 	@Override
@@ -13,14 +13,14 @@
 
 }
 
-	// End of segment: C:\Users\Jerry\workspace\CS2103Project\src\com\done\command\CommandAdd.java
+	// End of segment: C:\Users\Jerry\eclipse_workspace\CS2103Project\src\com\done\command\CommandAdd.java
 
 
 
 
 
 	/**
-	 * origin: C:\Users\Jerry\workspace\CS2103Project\src\com\done\command\CommandClear.java
+	 * origin: C:\Users\Jerry\eclipse_workspace\CS2103Project\src\com\done\command\CommandClear.java
 	 */
 
 	@Override
@@ -29,14 +29,14 @@
 	}
 }
 
-	// End of segment: C:\Users\Jerry\workspace\CS2103Project\src\com\done\command\CommandClear.java
+	// End of segment: C:\Users\Jerry\eclipse_workspace\CS2103Project\src\com\done\command\CommandClear.java
 
 
 
 
 
 	/**
-	 * origin: C:\Users\Jerry\workspace\CS2103Project\src\com\done\command\CommandClearDone.java
+	 * origin: C:\Users\Jerry\eclipse_workspace\CS2103Project\src\com\done\command\CommandClearDone.java
 	 */
 
 	@Override
@@ -46,14 +46,14 @@
 
 }
 
-	// End of segment: C:\Users\Jerry\workspace\CS2103Project\src\com\done\command\CommandClearDone.java
+	// End of segment: C:\Users\Jerry\eclipse_workspace\CS2103Project\src\com\done\command\CommandClearDone.java
 
 
 
 
 
 	/**
-	 * origin: C:\Users\Jerry\workspace\CS2103Project\src\com\done\command\CommandDelete.java
+	 * origin: C:\Users\Jerry\eclipse_workspace\CS2103Project\src\com\done\command\CommandDelete.java
 	 */
 
 	@Override
@@ -63,14 +63,14 @@
 
 }
 
-	// End of segment: C:\Users\Jerry\workspace\CS2103Project\src\com\done\command\CommandDelete.java
+	// End of segment: C:\Users\Jerry\eclipse_workspace\CS2103Project\src\com\done\command\CommandDelete.java
 
 
 
 
 
 	/**
-	 * origin: C:\Users\Jerry\workspace\CS2103Project\src\com\done\command\CommandDone.java
+	 * origin: C:\Users\Jerry\eclipse_workspace\CS2103Project\src\com\done\command\CommandDone.java
 	 */
 
 	@Override
@@ -80,14 +80,14 @@
 
 }
 
-	// End of segment: C:\Users\Jerry\workspace\CS2103Project\src\com\done\command\CommandDone.java
+	// End of segment: C:\Users\Jerry\eclipse_workspace\CS2103Project\src\com\done\command\CommandDone.java
 
 
 
 
 
 	/**
-	 * origin: C:\Users\Jerry\workspace\CS2103Project\src\com\done\command\CommandEdit.java
+	 * origin: C:\Users\Jerry\eclipse_workspace\CS2103Project\src\com\done\command\CommandEdit.java
 	 */
 
 	@Override
@@ -96,14 +96,14 @@
 	}
 }
 
-	// End of segment: C:\Users\Jerry\workspace\CS2103Project\src\com\done\command\CommandEdit.java
+	// End of segment: C:\Users\Jerry\eclipse_workspace\CS2103Project\src\com\done\command\CommandEdit.java
 
 
 
 
 
 	/**
-	 * origin: C:\Users\Jerry\workspace\CS2103Project\src\com\done\command\CommandExit.java
+	 * origin: C:\Users\Jerry\eclipse_workspace\CS2103Project\src\com\done\command\CommandExit.java
 	 */
 
 	@Override
@@ -113,14 +113,14 @@
 
 }
 
-	// End of segment: C:\Users\Jerry\workspace\CS2103Project\src\com\done\command\CommandExit.java
+	// End of segment: C:\Users\Jerry\eclipse_workspace\CS2103Project\src\com\done\command\CommandExit.java
 
 
 
 
 
 	/**
-	 * origin: C:\Users\Jerry\workspace\CS2103Project\src\com\done\command\CommandInvalid.java
+	 * origin: C:\Users\Jerry\eclipse_workspace\CS2103Project\src\com\done\command\CommandInvalid.java
 	 */
 
 	@Override
@@ -130,14 +130,14 @@
 
 }
 
-	// End of segment: C:\Users\Jerry\workspace\CS2103Project\src\com\done\command\CommandInvalid.java
+	// End of segment: C:\Users\Jerry\eclipse_workspace\CS2103Project\src\com\done\command\CommandInvalid.java
 
 
 
 
 
 	/**
-	 * origin: C:\Users\Jerry\workspace\CS2103Project\src\com\done\command\CommandLoad.java
+	 * origin: C:\Users\Jerry\eclipse_workspace\CS2103Project\src\com\done\command\CommandLoad.java
 	 */
 
 	@Override
@@ -147,14 +147,14 @@
 
 }
 
-	// End of segment: C:\Users\Jerry\workspace\CS2103Project\src\com\done\command\CommandLoad.java
+	// End of segment: C:\Users\Jerry\eclipse_workspace\CS2103Project\src\com\done\command\CommandLoad.java
 
 
 
 
 
 	/**
-	 * origin: C:\Users\Jerry\workspace\CS2103Project\src\com\done\command\CommandMove.java
+	 * origin: C:\Users\Jerry\eclipse_workspace\CS2103Project\src\com\done\command\CommandMove.java
 	 */
 
 	@Override
@@ -164,30 +164,14 @@
 
 }
 
-	// End of segment: C:\Users\Jerry\workspace\CS2103Project\src\com\done\command\CommandMove.java
+	// End of segment: C:\Users\Jerry\eclipse_workspace\CS2103Project\src\com\done\command\CommandMove.java
 
 
 
 
 
 	/**
-	 * origin: C:\Users\Jerry\workspace\CS2103Project\src\com\done\command\CommandRecur.java
-	 */
-
-	@Override
-	public String getCommandContent() {
-		return EMPTY_STRING;
-	}
-}
-
-	// End of segment: C:\Users\Jerry\workspace\CS2103Project\src\com\done\command\CommandRecur.java
-
-
-
-
-
-	/**
-	 * origin: C:\Users\Jerry\workspace\CS2103Project\src\com\done\command\CommandRemind.java
+	 * origin: C:\Users\Jerry\eclipse_workspace\CS2103Project\src\com\done\command\CommandRemind.java
 	 */
 
 	@Override
@@ -197,14 +181,14 @@
 
 }
 
-	// End of segment: C:\Users\Jerry\workspace\CS2103Project\src\com\done\command\CommandRemind.java
+	// End of segment: C:\Users\Jerry\eclipse_workspace\CS2103Project\src\com\done\command\CommandRemind.java
 
 
 
 
 
 	/**
-	 * origin: C:\Users\Jerry\workspace\CS2103Project\src\com\done\command\CommandSearch.java
+	 * origin: C:\Users\Jerry\eclipse_workspace\CS2103Project\src\com\done\command\CommandSearch.java
 	 */
 
 	@Override
@@ -214,14 +198,14 @@
 
 }
 
-	// End of segment: C:\Users\Jerry\workspace\CS2103Project\src\com\done\command\CommandSearch.java
+	// End of segment: C:\Users\Jerry\eclipse_workspace\CS2103Project\src\com\done\command\CommandSearch.java
 
 
 
 
 
 	/**
-	 * origin: C:\Users\Jerry\workspace\CS2103Project\src\com\done\command\CommandShowAll.java
+	 * origin: C:\Users\Jerry\eclipse_workspace\CS2103Project\src\com\done\command\CommandShowAll.java
 	 */
 
 	@Override
@@ -231,14 +215,14 @@
 
 }
 
-	// End of segment: C:\Users\Jerry\workspace\CS2103Project\src\com\done\command\CommandShowAll.java
+	// End of segment: C:\Users\Jerry\eclipse_workspace\CS2103Project\src\com\done\command\CommandShowAll.java
 
 
 
 
 
 	/**
-	 * origin: C:\Users\Jerry\workspace\CS2103Project\src\com\done\command\CommandUndo.java
+	 * origin: C:\Users\Jerry\eclipse_workspace\CS2103Project\src\com\done\command\CommandUndo.java
 	 */
 
 	@Override
@@ -248,14 +232,14 @@
 
 }
 
-	// End of segment: C:\Users\Jerry\workspace\CS2103Project\src\com\done\command\CommandUndo.java
+	// End of segment: C:\Users\Jerry\eclipse_workspace\CS2103Project\src\com\done\command\CommandUndo.java
 
 
 
 
 
 	/**
-	 * origin: C:\Users\Jerry\workspace\CS2103Project\src\com\done\DoneUI.java
+	 * origin: C:\Users\Jerry\eclipse_workspace\CS2103Project\src\com\done\DoneUI.java
 	 */
 
 package com.done;
@@ -291,7 +275,7 @@ public class DoneUI extends Application {
 	        primaryStage.setResizable(false);
 	        primaryStage.show();
 	        
-	        Notifications.create().text(logicFacade.getJsonName().substring(6) + " loaded").showInformation();
+	        Notifications.create().text(logicFacade.getJsonName().substring(7) + " loaded").showInformation();
 	        
 		} catch(Exception e) {
 			e.printStackTrace();
@@ -304,14 +288,14 @@ public class DoneUI extends Application {
 	
 }
 
-	// End of segment: C:\Users\Jerry\workspace\CS2103Project\src\com\done\DoneUI.java
+	// End of segment: C:\Users\Jerry\eclipse_workspace\CS2103Project\src\com\done\DoneUI.java
 
 
 
 
 
 	/**
-	 * origin: C:\Users\Jerry\workspace\CS2103Project\src\com\done\observer\Observer.java
+	 * origin: C:\Users\Jerry\eclipse_workspace\CS2103Project\src\com\done\observer\Observer.java
 	 */
 
 package com.done.observer;
@@ -320,14 +304,14 @@ public interface Observer {
 	void updateReminder(int taskId);
 }
 
-	// End of segment: C:\Users\Jerry\workspace\CS2103Project\src\com\done\observer\Observer.java
+	// End of segment: C:\Users\Jerry\eclipse_workspace\CS2103Project\src\com\done\observer\Observer.java
 
 
 
 
 
 	/**
-	 * origin: C:\Users\Jerry\workspace\CS2103Project\src\com\done\result\ExecutionResult.java
+	 * origin: C:\Users\Jerry\eclipse_workspace\CS2103Project\src\com\done\result\ExecutionResult.java
 	 */
 
 package com.done.result;
@@ -383,56 +367,14 @@ public class ExecutionResult {
 	}
 }
 
-	// End of segment: C:\Users\Jerry\workspace\CS2103Project\src\com\done\result\ExecutionResult.java
+	// End of segment: C:\Users\Jerry\eclipse_workspace\CS2103Project\src\com\done\result\ExecutionResult.java
 
 
 
 
 
 	/**
-	 * origin: C:\Users\Jerry\workspace\CS2103Project\src\com\done\result\TestExecutionResult.java
-	 */
-
-package com.done.result;
-
-import static org.junit.Assert.*;
-
-import org.junit.Test;
-
-import com.done.result.ExecutionResult;
-import com.done.command.Command.CommandType;
-
-public class TestExecutionResult {
-
-	@Test
-	public void testExecutionResult() {
-		ExecutionResult result = new ExecutionResult(CommandType.ADD, true, "meet John at 6");
-		
-		//test the getters
-		assertEquals(result.getCommandType(), CommandType.ADD);
-		assertEquals(result.isSuccessful(), true);
-		assertEquals(result.getCommandContent(), "meet John at 6");
-		
-		//test the setters
-		result.setCommandType(CommandType.DELETE);
-		assertEquals(result.getCommandType(), CommandType.DELETE);
-		result.setSuccessful(false);
-		assertEquals(result.isSuccessful(),false);
-		assertEquals(result.getCommandContent(), null); //if isSuccessful is false, commandContent must be null
-		result.setSuccessful(true); //set isSuccessful back to true
-		result.setCommandContent("finish CS2103 homework");
-		assertEquals(result.getCommandContent(), "finish CS2103 homework");
-	}
-}
-
-	// End of segment: C:\Users\Jerry\workspace\CS2103Project\src\com\done\result\TestExecutionResult.java
-
-
-
-
-
-	/**
-	 * origin: C:\Users\Jerry\workspace\CS2103Project\src\com\done\UIController.java
+	 * origin: C:\Users\Jerry\eclipse_workspace\CS2103Project\src\com\done\UIController.java
 	 */
 
 package com.done;
@@ -790,7 +732,49 @@ public class UIController implements Observer {
 	}
 }
 
-	// End of segment: C:\Users\Jerry\workspace\CS2103Project\src\com\done\UIController.java
+	// End of segment: C:\Users\Jerry\eclipse_workspace\CS2103Project\src\com\done\UIController.java
+
+
+
+
+
+	/**
+	 * origin: C:\Users\Jerry\eclipse_workspace\CS2103Project\test\com\done\result\TestExecutionResult.java
+	 */
+
+package com.done.result;
+
+import static org.junit.Assert.*;
+
+import org.junit.Test;
+
+import com.done.result.ExecutionResult;
+import com.done.command.Command.CommandType;
+
+public class TestExecutionResult {
+
+	@Test
+	public void testExecutionResult() {
+		ExecutionResult result = new ExecutionResult(CommandType.ADD, true, "meet John at 6");
+		
+		//test the getters
+		assertEquals(result.getCommandType(), CommandType.ADD);
+		assertEquals(result.isSuccessful(), true);
+		assertEquals(result.getCommandContent(), "meet John at 6");
+		
+		//test the setters
+		result.setCommandType(CommandType.DELETE);
+		assertEquals(result.getCommandType(), CommandType.DELETE);
+		result.setSuccessful(false);
+		assertEquals(result.isSuccessful(),false);
+		assertEquals(result.getCommandContent(), null); //if isSuccessful is false, commandContent must be null
+		result.setSuccessful(true); //set isSuccessful back to true
+		result.setCommandContent("finish CS2103 homework");
+		assertEquals(result.getCommandContent(), "finish CS2103 homework");
+	}
+}
+
+	// End of segment: C:\Users\Jerry\eclipse_workspace\CS2103Project\test\com\done\result\TestExecutionResult.java
 
 
 

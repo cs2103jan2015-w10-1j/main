@@ -3,7 +3,7 @@
 
 
 	/**
-	 * origin: C:\Users\Jerry\workspace\CS2103Project\src\com\done\model\Done.java
+	 * origin: C:\Users\Jerry\eclipse_workspace\CS2103Project\src\com\done\model\Done.java
 	 */
 
 	public String getTitle() {
@@ -48,42 +48,42 @@
 	
 }
 
-	// End of segment: C:\Users\Jerry\workspace\CS2103Project\src\com\done\model\Done.java
+	// End of segment: C:\Users\Jerry\eclipse_workspace\CS2103Project\src\com\done\model\Done.java
 
 
 
 
 
 	/**
-	 * origin: C:\Users\Jerry\workspace\CS2103Project\src\com\done\model\DoneDeadlineTask.java
+	 * origin: C:\Users\Jerry\eclipse_workspace\CS2103Project\src\com\done\model\DoneDeadlineTask.java
 	 */
 
 	public void setEndTime(long endTime) {
 		this.endTime = endTime;
 	}
 	
-	// End of segment: C:\Users\Jerry\workspace\CS2103Project\src\com\done\model\DoneDeadlineTask.java
+	// End of segment: C:\Users\Jerry\eclipse_workspace\CS2103Project\src\com\done\model\DoneDeadlineTask.java
 
 
 
 
 
 	/**
-	 * origin: C:\Users\Jerry\workspace\CS2103Project\src\com\done\model\DoneTimedTask.java
+	 * origin: C:\Users\Jerry\eclipse_workspace\CS2103Project\src\com\done\model\DoneTimedTask.java
 	 */
 
 	public void setStartTime(long startTime) {
 		this.startTime = startTime;
 	}
 
-	// End of segment: C:\Users\Jerry\workspace\CS2103Project\src\com\done\model\DoneTimedTask.java
+	// End of segment: C:\Users\Jerry\eclipse_workspace\CS2103Project\src\com\done\model\DoneTimedTask.java
 
 
 
 
 
 	/**
-	 * origin: C:\Users\Jerry\workspace\CS2103Project\src\com\done\model\DoneTimedTask.java
+	 * origin: C:\Users\Jerry\eclipse_workspace\CS2103Project\src\com\done\model\DoneTimedTask.java
 	 */
 
 	public void setEndTime(long endTime) {
@@ -92,14 +92,14 @@
 
 }
 
-	// End of segment: C:\Users\Jerry\workspace\CS2103Project\src\com\done\model\DoneTimedTask.java
+	// End of segment: C:\Users\Jerry\eclipse_workspace\CS2103Project\src\com\done\model\DoneTimedTask.java
 
 
 
 
 
 	/**
-	 * origin: C:\Users\Jerry\workspace\CS2103Project\src\com\done\storage\InMemStorage.java
+	 * origin: C:\Users\Jerry\eclipse_workspace\CS2103Project\src\com\done\storage\InMemStorage.java
 	 */
 
 	public List<Done> getTasks() {
@@ -107,6 +107,7 @@
 	}
 
 	public void setTasks(List<Done> tasks) {
+		assert tasks != null;
 		this.tasks = tasks;
 	}
 
@@ -116,14 +117,14 @@
 
 }
 
-	// End of segment: C:\Users\Jerry\workspace\CS2103Project\src\com\done\storage\InMemStorage.java
+	// End of segment: C:\Users\Jerry\eclipse_workspace\CS2103Project\src\com\done\storage\InMemStorage.java
 
 
 
 
 
 	/**
-	 * origin: C:\Users\Jerry\workspace\CS2103Project\src\com\done\storage\JSONStorage.java
+	 * origin: C:\Users\Jerry\eclipse_workspace\CS2103Project\src\com\done\storage\JSONStorage.java
 	 */
 
 	public boolean isNewJson() {
@@ -136,7 +137,7 @@
 
 }
 
-	// End of segment: C:\Users\Jerry\workspace\CS2103Project\src\com\done\storage\JSONStorage.java
+	// End of segment: C:\Users\Jerry\eclipse_workspace\CS2103Project\src\com\done\storage\JSONStorage.java
 
 
 

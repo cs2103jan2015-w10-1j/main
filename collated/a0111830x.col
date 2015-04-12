@@ -3,7 +3,7 @@
 
 
 	/**
-	 * origin: C:\Users\Jerry\workspace\CS2103Project\src\com\done\command\CommandAdd.java
+	 * origin: C:\Users\Jerry\eclipse_workspace\CS2103Project\src\com\done\command\CommandAdd.java
 	 */
 
 	@Override
@@ -19,18 +19,24 @@
 
 	@Override
 	public void undo() {
-		CommandDelete command = new CommandDelete(task);
-		command.execute();
+		if(task.getType().equals(TaskType.TIMED)){
+			reminderTask.stopTimer();
+			CommandDelete command = new CommandDelete(task);
+			command.execute();
+		}else{
+			CommandDelete command = new CommandDelete(task);
+			command.execute();
+		}
 	}
 	
-	// End of segment: C:\Users\Jerry\workspace\CS2103Project\src\com\done\command\CommandAdd.java
+	// End of segment: C:\Users\Jerry\eclipse_workspace\CS2103Project\src\com\done\command\CommandAdd.java
 
 
 
 
 
 	/**
-	 * origin: C:\Users\Jerry\workspace\CS2103Project\src\com\done\command\CommandClear.java
+	 * origin: C:\Users\Jerry\eclipse_workspace\CS2103Project\src\com\done\command\CommandClear.java
 	 */
 
 	@Override
@@ -39,21 +45,21 @@
 
 	}
 	
-	// End of segment: C:\Users\Jerry\workspace\CS2103Project\src\com\done\command\CommandClear.java
+	// End of segment: C:\Users\Jerry\eclipse_workspace\CS2103Project\src\com\done\command\CommandClear.java
 
 
 
 
 
 	/**
-	 * origin: C:\Users\Jerry\workspace\CS2103Project\src\com\done\command\CommandDelete.java
+	 * origin: C:\Users\Jerry\eclipse_workspace\CS2103Project\src\com\done\command\CommandDelete.java
 	 */
 
 	@Override
 	public void execute() {
 		InMemStorage memory = InMemStorage.getInstance();
 		if (task == null) {
-			this.task = InMemStorage.getInstance().getTask(deleteIndex);
+			this.task = memory.getTask(deleteIndex);
 			memory.delete(task, false);
 		} else {
 			memory.delete(task, false);
@@ -72,14 +78,14 @@
 
 	}
 	
-	// End of segment: C:\Users\Jerry\workspace\CS2103Project\src\com\done\command\CommandDelete.java
+	// End of segment: C:\Users\Jerry\eclipse_workspace\CS2103Project\src\com\done\command\CommandDelete.java
 
 
 
 
 
 	/**
-	 * origin: C:\Users\Jerry\workspace\CS2103Project\src\com\done\command\CommandLoad.java
+	 * origin: C:\Users\Jerry\eclipse_workspace\CS2103Project\src\com\done\command\CommandLoad.java
 	 */
 
 	@Override
@@ -92,14 +98,14 @@
 
 	}
 
-	// End of segment: C:\Users\Jerry\workspace\CS2103Project\src\com\done\command\CommandLoad.java
+	// End of segment: C:\Users\Jerry\eclipse_workspace\CS2103Project\src\com\done\command\CommandLoad.java
 
 
 
 
 
 	/**
-	 * origin: C:\Users\Jerry\workspace\CS2103Project\src\com\done\command\CommandSearch.java
+	 * origin: C:\Users\Jerry\eclipse_workspace\CS2103Project\src\com\done\command\CommandSearch.java
 	 */
 
 	@Override
@@ -116,14 +122,14 @@
 
 	}
 	
-	// End of segment: C:\Users\Jerry\workspace\CS2103Project\src\com\done\command\CommandSearch.java
+	// End of segment: C:\Users\Jerry\eclipse_workspace\CS2103Project\src\com\done\command\CommandSearch.java
 
 
 
 
 
 	/**
-	 * origin: C:\Users\Jerry\workspace\CS2103Project\src\com\done\command\CommandUndo.java
+	 * origin: C:\Users\Jerry\eclipse_workspace\CS2103Project\src\com\done\command\CommandUndo.java
 	 */
 
 	@Override
@@ -132,14 +138,14 @@
 		command.undo();
 	}
 	
-	// End of segment: C:\Users\Jerry\workspace\CS2103Project\src\com\done\command\CommandUndo.java
+	// End of segment: C:\Users\Jerry\eclipse_workspace\CS2103Project\src\com\done\command\CommandUndo.java
 
 
 
 
 
 	/**
-	 * origin: C:\Users\Jerry\workspace\CS2103Project\src\com\done\model\Done.java
+	 * origin: C:\Users\Jerry\eclipse_workspace\CS2103Project\src\com\done\model\Done.java
 	 */
 
 	public static enum TaskType {
@@ -159,14 +165,14 @@
 		this.setCompleted(false);
 	}
 
-	// End of segment: C:\Users\Jerry\workspace\CS2103Project\src\com\done\model\Done.java
+	// End of segment: C:\Users\Jerry\eclipse_workspace\CS2103Project\src\com\done\model\Done.java
 
 
 
 
 
 	/**
-	 * origin: C:\Users\Jerry\workspace\CS2103Project\src\com\done\model\DoneDeadlineTask.java
+	 * origin: C:\Users\Jerry\eclipse_workspace\CS2103Project\src\com\done\model\DoneDeadlineTask.java
 	 */
 
 	public String getEndTime(){
@@ -176,14 +182,14 @@
 
 }
 
-	// End of segment: C:\Users\Jerry\workspace\CS2103Project\src\com\done\model\DoneDeadlineTask.java
+	// End of segment: C:\Users\Jerry\eclipse_workspace\CS2103Project\src\com\done\model\DoneDeadlineTask.java
 
 
 
 
 
 	/**
-	 * origin: C:\Users\Jerry\workspace\CS2103Project\src\com\done\model\DoneTimedTask.java
+	 * origin: C:\Users\Jerry\eclipse_workspace\CS2103Project\src\com\done\model\DoneTimedTask.java
 	 */
 
 	public String getStartTime() {
@@ -192,28 +198,28 @@
 		return sdf.format(startTime);
 	}
 
-	// End of segment: C:\Users\Jerry\workspace\CS2103Project\src\com\done\model\DoneTimedTask.java
+	// End of segment: C:\Users\Jerry\eclipse_workspace\CS2103Project\src\com\done\model\DoneTimedTask.java
 
 
 
 
 
 	/**
-	 * origin: C:\Users\Jerry\workspace\CS2103Project\src\com\done\model\DoneTimedTask.java
+	 * origin: C:\Users\Jerry\eclipse_workspace\CS2103Project\src\com\done\model\DoneTimedTask.java
 	 */
 
 	public long getStartTimeLong() {
 		return startTime;
 	}
 
-	// End of segment: C:\Users\Jerry\workspace\CS2103Project\src\com\done\model\DoneTimedTask.java
+	// End of segment: C:\Users\Jerry\eclipse_workspace\CS2103Project\src\com\done\model\DoneTimedTask.java
 
 
 
 
 
 	/**
-	 * origin: C:\Users\Jerry\workspace\CS2103Project\src\com\done\model\DoneTimedTask.java
+	 * origin: C:\Users\Jerry\eclipse_workspace\CS2103Project\src\com\done\model\DoneTimedTask.java
 	 */
 
 	public String getEndTime() {
@@ -225,14 +231,14 @@
 		return endTime;
 	}
 
-	// End of segment: C:\Users\Jerry\workspace\CS2103Project\src\com\done\model\DoneTimedTask.java
+	// End of segment: C:\Users\Jerry\eclipse_workspace\CS2103Project\src\com\done\model\DoneTimedTask.java
 
 
 
 
 
 	/**
-	 * origin: C:\Users\Jerry\workspace\CS2103Project\src\com\done\parser\CommandParser.java
+	 * origin: C:\Users\Jerry\eclipse_workspace\CS2103Project\src\com\done\parser\CommandParser.java
 	 */
 
 	public String removeFirstWord(String userCommand) {
@@ -244,110 +250,15 @@
 	public String getFirstWord(String userCommand) {
 		return userCommand.trim().split("\\s+")[0];
 	}
-
-	private Command makeCommand(String commandWord, String commandContent) {
-		if (commandWord.equalsIgnoreCase("add")) {
-			/*
-			 * after we know that this is a "add" command we should implement a
-			 * definer to differentiate the type of tasks so you should use
-			 * commandContent as the parameter of a new method
-			 */
-			parserLogger.log(Level.INFO, "make add Command");
-			Done tempTask = defineTask(commandContent);
-			return new CommandAdd(tempTask);
-		} else if (commandWord.equalsIgnoreCase("delete")) {
-			parserLogger.log(Level.INFO, "make delete Command");
-			if (isContentValid(commandWord, commandContent)) {
-				return new CommandDelete(Integer.parseInt(commandContent));
-			} else {
-				parserLogger.log(Level.INFO, "make invalid Command instead");
-				return new CommandInvalid();
-			}
-		} else if (commandWord.equalsIgnoreCase("edit")) {
-			String indexString = getFirstWord(commandContent);
-			if (isPositiveInt(indexString)) {
-				int index = Integer.parseInt(indexString);
-				Done changedTask = defineTask(removeFirstWord(commandContent));
-				parserLogger.log(Level.INFO, "make edit Command");
-				return new CommandEdit(index, changedTask);
-			} else {
-				return new CommandInvalid();
-			}
-		} else if (commandWord.equalsIgnoreCase("load")) {
-			parserLogger.log(Level.INFO, "make load Command");
-			return new CommandLoad(commandContent);
-		} else if (commandWord.equalsIgnoreCase("clear")) {
-			parserLogger.log(Level.INFO, "make clear Command");
-			return new CommandClear();
-		} else if (commandWord.equalsIgnoreCase("move")) {
-			parserLogger.log(Level.INFO, "make move Command");
-			ArrayList<String> indexes = sliceContent(commandContent);
-			if ((isContentValid(commandWord, indexes.get(0)))
-					&& (isContentValid(commandWord, indexes.get(1)))) {
-				int origin = Integer.parseInt(indexes.get(0));
-				int destination = Integer.parseInt(indexes.get(1));
-				return new CommandMove(origin, destination);
-			} else {
-				return new CommandInvalid();
-			}
-		} else if (commandWord.equalsIgnoreCase("search")) {
-			parserLogger.log(Level.INFO, "make search Command");
-			return new CommandSearch(commandContent);
-		} else if (commandWord.equalsIgnoreCase("showall")) {
-			parserLogger.log(Level.INFO, "make showall Command");
-			return new CommandShowAll();
-		} else if (commandWord.equalsIgnoreCase("undo")) {
-			parserLogger.log(Level.INFO, "make undo Command");
-			return new CommandUndo();
-		} else if (commandWord.equalsIgnoreCase("done")) {
-			parserLogger.log(Level.INFO, "make done Command");
-			if (isContentValid(commandWord, commandContent)) {
-				return new CommandDone(Integer.parseInt(commandContent));
-			} else {
-				return new CommandInvalid();
-			}
-		} else if (commandWord.equalsIgnoreCase("cleardone")) {
-			parserLogger.log(Level.INFO, "make cleardone Command");
-			return new CommandClearDone();
-		} else if (commandWord.equalsIgnoreCase("recur")) {
-			parserLogger.log(Level.INFO, "make recur Command");
-			ArrayList<String> contents = sliceContent(commandContent);
-			String index = contents.get(0);
-			String period = contents.get(1);
-			if (isPositiveInt(index) && isValidPeriod(period)) {
-				return new CommandRecur(Integer.parseInt(index), period);
-			} else {
-				return new CommandInvalid();
-			}
-		} else if (commandWord.equalsIgnoreCase("remind")) {
-			parserLogger.log(Level.INFO, "make remind Command");
-			try {
-				ArrayList<String> contents = sliceContent(commandContent);
-				String index = contents.get(0);
-				String date = contents.get(1);
-				String time = contents.get(2);
-				return new CommandRemind(Integer.parseInt(index), date, time);
-			} catch (Exception e) {
-				parserLogger.log(Level.INFO, "make invalid Command instead");
-				return new CommandInvalid();
-			}
-		} else if (commandWord.equalsIgnoreCase("exit")) {
-			parserLogger.log(Level.INFO, "make exit Command");
-			return new CommandExit(true);
-		} else {
-			parserLogger.log(Level.INFO, "make invalid Command");
-			return new CommandInvalid();
-		}
-	}
 	
-	// End of segment: C:\Users\Jerry\workspace\CS2103Project\src\com\done\parser\CommandParser.java
+	// End of segment: C:\Users\Jerry\eclipse_workspace\CS2103Project\src\com\done\parser\CommandParser.java
 
 
 
 
 
 	/**
-	 * origin: C:\Users\Jerry\workspace\CS2103Project\src\com\done\parser\CommandParser.java
+	 * origin: C:\Users\Jerry\eclipse_workspace\CS2103Project\src\com\done\parser\CommandParser.java
 	 */
 
 	private Done defineTask(String commandContent) {
@@ -405,14 +316,14 @@
 
 	}
 
-	// End of segment: C:\Users\Jerry\workspace\CS2103Project\src\com\done\parser\CommandParser.java
+	// End of segment: C:\Users\Jerry\eclipse_workspace\CS2103Project\src\com\done\parser\CommandParser.java
 
 
 
 
 
 	/**
-	 * origin: C:\Users\Jerry\workspace\CS2103Project\src\com\done\parser\CommandParser.java
+	 * origin: C:\Users\Jerry\eclipse_workspace\CS2103Project\src\com\done\parser\CommandParser.java
 	 */
 
 	private Done addTimed(String[] content, int timeIndex) {
@@ -466,14 +377,14 @@
 		return task;
 	}
 
-	// End of segment: C:\Users\Jerry\workspace\CS2103Project\src\com\done\parser\CommandParser.java
+	// End of segment: C:\Users\Jerry\eclipse_workspace\CS2103Project\src\com\done\parser\CommandParser.java
 
 
 
 
 
 	/**
-	 * origin: C:\Users\Jerry\workspace\CS2103Project\src\com\done\parser\CommandParser.java
+	 * origin: C:\Users\Jerry\eclipse_workspace\CS2103Project\src\com\done\parser\CommandParser.java
 	 */
 
 	private Done addDeadline(String[] content, int timeIndex, int dateIndex) {
@@ -498,14 +409,14 @@
 
 }
 
-	// End of segment: C:\Users\Jerry\workspace\CS2103Project\src\com\done\parser\CommandParser.java
+	// End of segment: C:\Users\Jerry\eclipse_workspace\CS2103Project\src\com\done\parser\CommandParser.java
 
 
 
 
 
 	/**
-	 * origin: C:\Users\Jerry\workspace\CS2103Project\src\com\done\storage\DoneAdapter.java
+	 * origin: C:\Users\Jerry\eclipse_workspace\CS2103Project\src\com\done\storage\DoneAdapter.java
 	 */
 
 	@Override
@@ -549,14 +460,14 @@
 
 }
 
-	// End of segment: C:\Users\Jerry\workspace\CS2103Project\src\com\done\storage\DoneAdapter.java
+	// End of segment: C:\Users\Jerry\eclipse_workspace\CS2103Project\src\com\done\storage\DoneAdapter.java
 
 
 
 
 
 	/**
-	 * origin: C:\Users\Jerry\workspace\CS2103Project\src\com\done\storage\InMemStorage.java
+	 * origin: C:\Users\Jerry\eclipse_workspace\CS2103Project\src\com\done\storage\InMemStorage.java
 	 */
 
 	public Done getTask(int id) {
@@ -578,6 +489,7 @@
 	}
 
 	public boolean store(Done task) {
+		assert task != null;
 		getTasks().add(task);
 		updateTaskID();
 		if (jsonStorage.store(getTasks()) == true) {
@@ -588,6 +500,11 @@
 	}
 
 	public boolean delete(Done task, boolean isDeleteAll) {
+		assert task != null;
+		
+		// isDeleteAll used for clear command
+		// if true is a clear
+		// else is a normal delete
 		if (isDeleteAll) {
 			getTasks().clear();
 		} else {
@@ -602,6 +519,8 @@
 	}
 
 	public boolean edit(Done task, int editIndex) {
+		assert task != null;
+		
 		getTasks().set(editIndex, task);
 		updateTaskID();
 		if (jsonStorage.store(getTasks()) == true) {
@@ -610,49 +529,33 @@
 
 		return false;
 	}
+	
+	// End of segment: C:\Users\Jerry\eclipse_workspace\CS2103Project\src\com\done\storage\InMemStorage.java
 
-	public boolean move(int originIndex, int destinationIndex) throws Exception {
-		if (destinationIndex >= getTasks().size() || destinationIndex < 0) {
-			throw new Exception("Invalid Destination Index Value");
-		} else {
-			Done movedTask = getTasks().remove(originIndex);
-			getTasks().add(destinationIndex, movedTask);
-			updateTaskID();
-		}
-		if (jsonStorage.store(getTasks()) == true) {
-			return true;
-		}
 
-		return false;
-	}
 
-	public boolean clearDoneTasks() {
-		List<Done> tasks = getTasks();
 
-		for (int i = 0; i < tasks.size(); i++) {
-			if (tasks.get(i).isCompleted()) {
-				tasks.remove(i);
-			}
-		}
 
-		if (jsonStorage.store(getTasks()) == true) {
-			return true;
-		}
-
-		return false;
-	}
+	/**
+	 * origin: C:\Users\Jerry\eclipse_workspace\CS2103Project\src\com\done\storage\InMemStorage.java
+	 */
 
 	public void setCompleted(Done task) {
+		assert task != null;
+		
 		getTasks().get(task.getId() - ARRAY_POSITION_OFFSET).setCompleted(true);
 		jsonStorage.store(getTasks());
 	}
 
 	public void setIncomplete(Done task) {
+		assert task != null;
+		
 		getTasks().get(task.getId() - ARRAY_POSITION_OFFSET)
 				.setCompleted(false);
 		jsonStorage.store(getTasks());
 	}
-
+	
+	// Stack used for Undo
 	public void pushToUndoStack(Command command) {
 		this.undoStack.push(command);
 	}
@@ -669,9 +572,12 @@
 	}
 
 	public void addIntoWorkingTask(Done task) {
+		assert task != null;
+		
 		this.workingTasks.add(task);
 	}
-
+	
+	// For updating ID to be always in increasing order 1 ... n
 	private void updateTaskID() {
 		Iterator<Done> listIterator = getTasks().iterator();
 		int i = 1;
@@ -681,14 +587,14 @@
 		}
 	}
 	
-	// End of segment: C:\Users\Jerry\workspace\CS2103Project\src\com\done\storage\InMemStorage.java
+	// End of segment: C:\Users\Jerry\eclipse_workspace\CS2103Project\src\com\done\storage\InMemStorage.java
 
 
 
 
 
 	/**
-	 * origin: C:\Users\Jerry\workspace\CS2103Project\src\com\done\storage\JSONStorage.java
+	 * origin: C:\Users\Jerry\eclipse_workspace\CS2103Project\src\com\done\storage\JSONStorage.java
 	 */
 
 	public List<Done> load() {
@@ -814,14 +720,14 @@
 
 	}
 
-	// End of segment: C:\Users\Jerry\workspace\CS2103Project\src\com\done\storage\JSONStorage.java
+	// End of segment: C:\Users\Jerry\eclipse_workspace\CS2103Project\src\com\done\storage\JSONStorage.java
 
 
 
 
 
 	/**
-	 * origin: C:\Users\Jerry\workspace\CS2103Project\src\com\done\task\TaskReminder.java
+	 * origin: C:\Users\Jerry\eclipse_workspace\CS2103Project\src\com\done\task\TaskReminder.java
 	 */
 
 	public TaskReminder(DoneTimedTask done) {
@@ -843,6 +749,10 @@
 
 		timer = new Timer();
 		timer.schedule(new DoneReminder(done), (endTimeValue - currentTime));
+	}
+	
+	public void stopTimer(){
+		timer.cancel();
 	}
 
 	class DoneReminder extends TimerTask {
@@ -891,14 +801,14 @@
 
 }
 
-	// End of segment: C:\Users\Jerry\workspace\CS2103Project\src\com\done\task\TaskReminder.java
+	// End of segment: C:\Users\Jerry\eclipse_workspace\CS2103Project\src\com\done\task\TaskReminder.java
 
 
 
 
 
 	/**
-	 * origin: C:\Users\Jerry\workspace\CS2103Project\test\com\done\DoneProgram.java
+	 * origin: C:\Users\Jerry\eclipse_workspace\CS2103Project\test\com\done\DoneProgram.java
 	 */
 
 	// Integration test
@@ -995,14 +905,14 @@
 
 }
 
-	// End of segment: C:\Users\Jerry\workspace\CS2103Project\test\com\done\DoneProgram.java
+	// End of segment: C:\Users\Jerry\eclipse_workspace\CS2103Project\test\com\done\DoneProgram.java
 
 
 
 
 
 	/**
-	 * origin: C:\Users\Jerry\workspace\CS2103Project\test\com\done\model\DoneTest.java
+	 * origin: C:\Users\Jerry\eclipse_workspace\CS2103Project\test\com\done\model\DoneTest.java
 	 */
 
 	
@@ -1039,14 +949,14 @@
 
 }
 
-	// End of segment: C:\Users\Jerry\workspace\CS2103Project\test\com\done\model\DoneTest.java
+	// End of segment: C:\Users\Jerry\eclipse_workspace\CS2103Project\test\com\done\model\DoneTest.java
 
 
 
 
 
 	/**
-	 * origin: C:\Users\Jerry\workspace\CS2103Project\test\com\done\storage\InMemStorageTest.java
+	 * origin: C:\Users\Jerry\eclipse_workspace\CS2103Project\test\com\done\storage\InMemStorageTest.java
 	 */
 
 
@@ -1059,10 +969,10 @@
 	@Test
 	public void testStore() {
 		Done doneFT = new DoneFloatingTask("test1");
-		Done doneTT = new DoneTimedTask("test2", dateTime.now().getMillis(),
-				dateTime.now().getMillis() + 88888);
+		Done doneTT = new DoneTimedTask("test2", DateTime.now().getMillis(),
+				DateTime.now().getMillis() + 88888);
 		Done doneDT = new DoneDeadlineTask("test3",
-				dateTime.now().getMillis() + 128000);
+				DateTime.now().getMillis() + 128000);
 		// This is the equivalence partition for the Done ArrayList
 		// whether is it [NULL] or [NOT NULL]
 		assertNotNull(doneFT);
@@ -1084,10 +994,10 @@
 	public void testClear() {
 		// add 3 items
 		inMem.store(new DoneFloatingTask("test 1"));
-		inMem.store(new DoneTimedTask("test2", dateTime.now().getMillis(),
-				dateTime.now().getMillis() + 88888));
+		inMem.store(new DoneTimedTask("test2", DateTime.now().getMillis(),
+				DateTime.now().getMillis() + 88888));
 		inMem.store(new DoneDeadlineTask("test3",
-				dateTime.now().getMillis() + 128000));
+				DateTime.now().getMillis() + 128000));
 		assertTrue(inMem.getTasks().size() == 3);
 
 		// boolean true in delete method states that it is clear
@@ -1112,34 +1022,34 @@
 
 }
 
-	// End of segment: C:\Users\Jerry\workspace\CS2103Project\test\com\done\storage\InMemStorageTest.java
+	// End of segment: C:\Users\Jerry\eclipse_workspace\CS2103Project\test\com\done\storage\InMemStorageTest.java
 
 
 
 
 
 	/**
-	 * origin: C:\Users\Jerry\workspace\CS2103Project\test\com\done\storage\JSONStorageTest.java
+	 * origin: C:\Users\Jerry\eclipse_workspace\CS2103Project\test\com\done\storage\JSONStorageTest.java
 	 */
 
 	@Test
 	public void testJsonNameToPrefs() throws FileNotFoundException, IOException {
 
-		assertTrue(test.setJsonNameToPref("tasks.json"));
+		assertTrue(test.setJsonNameToPref("tasks//tasks"));
 
 	}
 	
 	@Test
 	public void testGetJsonName() {
-		test.setJsonNameToPref("testJson");
+		test.setJsonNameToPref("tasks//testJson");
 		// if input to Properties is "testJson.json"
 		// then the output after retrieving should be the same
-		assertThat(new String(test.getJsonNameFromPref()), is("testJson.json"));
+		assertThat(new String(test.getJsonNameFromPref()), is("tasks//testJson.json"));
 	}
 
 }
 
-	// End of segment: C:\Users\Jerry\workspace\CS2103Project\test\com\done\storage\JSONStorageTest.java
+	// End of segment: C:\Users\Jerry\eclipse_workspace\CS2103Project\test\com\done\storage\JSONStorageTest.java
 
 
 
