@@ -321,9 +321,10 @@ public class ParserUtility {
 	}
 
 	//@author A0111830X
-	protected static Done addDeadline(ArrayList<String> content, int timeIndex, int dateIndex) {
+	protected static Done addDeadline(ArrayList<String> content, int timeIndex,
+			int dateIndex) {
 		Done task = null;
-		
+
 		// obtain title of task
 		StringBuilder sb = new StringBuilder();
 		for (int i = 0; i < dateIndex - 1; i++) {
@@ -335,7 +336,7 @@ public class ParserUtility {
 
 		}
 		String taskTitle = sb.toString();
-		
+
 		// obtain date time and format it to long milliseconds
 		DateTimeFormatter dtf = DateTimeFormat.forPattern("ddMMyyyy HHmm");
 		DateTime date = dtf.parseDateTime(content.get(dateIndex) + " "

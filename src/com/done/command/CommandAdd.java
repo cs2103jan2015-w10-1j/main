@@ -47,11 +47,11 @@ public class CommandAdd extends Command {
 
 	@Override
 	public void undo() {
-		if(task.getType().equals(TaskType.TIMED)){
+		if (task.getType().equals(TaskType.TIMED)) {
 			reminderTask.stopTimer();
 			CommandDelete command = new CommandDelete(task);
 			command.execute();
-		}else{
+		} else {
 			CommandDelete command = new CommandDelete(task);
 			command.execute();
 		}

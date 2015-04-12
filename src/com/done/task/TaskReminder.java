@@ -39,8 +39,8 @@ public class TaskReminder {
 		timer = new Timer();
 		timer.schedule(new DoneReminder(done), (endTimeValue - currentTime));
 	}
-	
-	public void stopTimer(){
+
+	public void stopTimer() {
 		timer.cancel();
 	}
 

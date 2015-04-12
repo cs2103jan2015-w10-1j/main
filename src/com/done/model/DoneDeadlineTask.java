@@ -24,7 +24,7 @@ public class DoneDeadlineTask extends Done {
 	}
 	
 	//@author A0111830X
-	public String getEndTime(){
+	public String getEndTime() {
 		SimpleDateFormat sdf = new SimpleDateFormat("d MMM yyyy HH:mm");
 		return sdf.format(endTime);
 	}
