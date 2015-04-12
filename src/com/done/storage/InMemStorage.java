@@ -56,6 +56,7 @@ public class InMemStorage {
 	}
 
 	public boolean store(Done task) {
+		assert task != null;
 		getTasks().add(task);
 		updateTaskID();
 		if (jsonStorage.store(getTasks()) == true) {
@@ -66,6 +67,11 @@ public class InMemStorage {
 	}
 
 	public boolean delete(Done task, boolean isDeleteAll) {
+		assert task != null;
+		
+		// isDeleteAll used for clear command
+		// if true is a clear
+		// else is a normal delete
 		if (isDeleteAll) {
 			getTasks().clear();
 		} else {
@@ -80,6 +86,8 @@ public class InMemStorage {
 	}
 
 	public boolean edit(Done task, int editIndex) {
+		assert task != null;
+		
 		getTasks().set(editIndex, task);
 		updateTaskID();
 		if (jsonStorage.store(getTasks()) == true) {
@@ -122,16 +130,21 @@ public class InMemStorage {
 	
 	//@author A0111830X
 	public void setCompleted(Done task) {
+		assert task != null;
+		
 		getTasks().get(task.getId() - ARRAY_POSITION_OFFSET).setCompleted(true);
 		jsonStorage.store(getTasks());
 	}
 
 	public void setIncomplete(Done task) {
+		assert task != null;
+		
 		getTasks().get(task.getId() - ARRAY_POSITION_OFFSET)
 				.setCompleted(false);
 		jsonStorage.store(getTasks());
 	}
-
+	
+	// Stack used for Undo
 	public void pushToUndoStack(Command command) {
 		this.undoStack.push(command);
 	}
@@ -148,9 +161,12 @@ public class InMemStorage {
 	}
 
 	public void addIntoWorkingTask(Done task) {
+		assert task != null;
+		
 		this.workingTasks.add(task);
 	}
-
+	
+	// For updating ID to be always in increasing order 1 ... n
 	private void updateTaskID() {
 		Iterator<Done> listIterator = getTasks().iterator();
 		int i = 1;
@@ -166,6 +182,7 @@ public class InMemStorage {
 	}
 
 	public void setTasks(List<Done> tasks) {
+		assert tasks != null;
 		this.tasks = tasks;
 	}
 

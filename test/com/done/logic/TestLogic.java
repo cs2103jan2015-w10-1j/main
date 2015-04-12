@@ -31,7 +31,12 @@ public class TestLogic {
 	@Test
 	public void testFail() {
 		// move task to location that does not exist
-		CommandMove cmd = new CommandMove(0, 10000);
+		CommandMove cmd = null;
+		try {
+			cmd = new CommandMove(0, 10000);
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
 		testLogic.executeCommand(cmd);
 		assertFalse(testLogic.isSuccessful());
 	}
