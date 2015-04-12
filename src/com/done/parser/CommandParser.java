@@ -152,12 +152,13 @@ public class CommandParser {
 				parserLogger.log(Level.INFO, "make invalid Command instead");
 				return new CommandInvalid();
 			}
-		} else if (commandWord.equalsIgnoreCase("load")) {
-			parserLogger.log(Level.INFO, "make load Command");
-			return new CommandLoad(commandContent);
 		} else if (commandWord.equalsIgnoreCase("clear")) {
 			parserLogger.log(Level.INFO, "make clear Command");
-			return new CommandClear();
+			if(commandContent.equals("")){
+				return new CommandClear();
+			}else{
+				return new CommandInvalid();
+			}
 		} else if (commandWord.equalsIgnoreCase("move")) {
 			parserLogger.log(Level.INFO, "make move Command");
 			ArrayList<String> indexes = sliceContent(commandContent);
@@ -180,9 +181,6 @@ public class CommandParser {
 		} else if (commandWord.equalsIgnoreCase("showall")) {
 			parserLogger.log(Level.INFO, "make showall Command");
 			return new CommandShowAll();
-		} else if (commandWord.equalsIgnoreCase("undo")) {
-			parserLogger.log(Level.INFO, "make undo Command");
-			return new CommandUndo();
 		} else if (commandWord.equalsIgnoreCase("done")) {
 			parserLogger.log(Level.INFO, "make done Command");
 			if (isPositiveInt(commandContent)) {
@@ -201,7 +199,6 @@ public class CommandParser {
 			parserLogger.log(Level.INFO, "make recur Command");
 			ArrayList<String> contents = sliceContent(commandContent);
 			String index = contents.get(0);
-			System.out.println(index);
 			String period = contents.get(1);
 			if (isPositiveInt(index) && isValidPeriod(period)) {
 				try{
@@ -224,7 +221,13 @@ public class CommandParser {
 				parserLogger.log(Level.INFO, "make invalid Command instead");
 				return new CommandInvalid();
 			}
-		} else if (commandWord.equalsIgnoreCase("exit")) {
+		} else if (commandWord.equalsIgnoreCase("load")) {
+			parserLogger.log(Level.INFO, "make load Command");
+			return new CommandLoad(commandContent);
+		} else if (commandWord.equalsIgnoreCase("undo")) {
+			parserLogger.log(Level.INFO, "make undo Command");
+			return new CommandUndo();
+		}  else if (commandWord.equalsIgnoreCase("exit")) {
 			parserLogger.log(Level.INFO, "make exit Command");
 			return new CommandExit(true);
 		} else {

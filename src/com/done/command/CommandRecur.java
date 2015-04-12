@@ -15,7 +15,7 @@ public class CommandRecur extends Command {
 	
 	private Done task;
 	private String frequency;
-	private String period;
+	//private String frequency;
 	
 	//@author A0115635J
 	//for recur
@@ -88,34 +88,41 @@ public class CommandRecur extends Command {
 			throw new Exception("Too large Destination Index Value");
 		}
 		this.task = InMemStorage.getInstance().getTask(recurIndex);
-		this.period = period;
+		this.frequency = period;
 		commandLogger.log(Level.INFO, "Recur Command Created");
 	}
 
 	public CommandRecur(Done task,String period){
 		super(CommandType.RECUR,true);
 		this.task = task;
-		this.period = period;
+		this.frequency = period;
 		commandLogger.log(Level.INFO, "Recur Command Created");
 	}
 	
 	//@author A0115635J
 	@Override
 	public void execute() throws Exception {
+		commandLogger.log(Level.INFO, "Recur Command Called");
 		// TODO Auto-generated method stub
 		if (this.task != null) {
+			System.out.println(frequency);
 			if(frequency.equalsIgnoreCase("daily")){
-				recurDaily(task, period);
+				commandLogger.log(Level.INFO, "Make daily recur");
+				recurDaily(task, frequency);
+				commandLogger.log(Level.INFO, "Recur Command Success");
 			} else if(frequency.equalsIgnoreCase("weekly")){
-				recurWeekly(task, period);
+				commandLogger.log(Level.INFO, "Make weekly recur");
+				recurWeekly(task, frequency);
+				commandLogger.log(Level.INFO, "Recur Command Success");
 			} else if(frequency.equalsIgnoreCase("monthly")){
-				recurMonthly(task, period);
+				commandLogger.log(Level.INFO, "Make monthly recur");
+				recurMonthly(task, frequency);
+				commandLogger.log(Level.INFO, "Recur Command Success");
 			} else { System.out.println("Invalid Frequency!");
 			}
 		} else {
 			throw new Exception("TaskNullException");
 		}
-
 	}
 
 	@Override
