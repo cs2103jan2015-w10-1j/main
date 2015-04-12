@@ -72,8 +72,10 @@ public class InMemStorage {
 		// if true is a clear
 		// else is a normal delete
 		if (isDeleteAll) {
+			assert task == null;
 			getTasks().clear();
 		} else {
+			assert task != null;
 			getTasks().remove(task);
 			updateTaskID();
 		}
