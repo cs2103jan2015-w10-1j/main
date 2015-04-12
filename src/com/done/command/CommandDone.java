@@ -10,9 +10,13 @@ public class CommandDone extends Command {
 	private Done task;
 
 	//@author A0115777W
-	public CommandDone(int markIndex) {
+	public CommandDone(int doneIndex) throws Exception {
 		super(CommandType.DONE, true);
-		this.task = InMemStorage.getInstance().getTask(markIndex);
+		assert doneIndex > 0;
+		if (doneIndex > InMemStorage.getInstance().getTasks().size()) {
+			throw new Exception("Too large Destination Index Value");
+		}
+		this.task = InMemStorage.getInstance().getTask(doneIndex);
 		commandLogger.log(Level.INFO, "Done Command Created");
 	}
 	

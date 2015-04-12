@@ -81,8 +81,12 @@ public class CommandRecur extends Command {
 
 	//@author A0115777W
 
-	public CommandRecur(int recurIndex, String period){
+	public CommandRecur(int recurIndex, String period) throws Exception{
 		super(CommandType.RECUR, true);
+		if (recurIndex > InMemStorage.getInstance().getTasks().size()) {
+			commandLogger.log(Level.INFO, "Too large Index");
+			throw new Exception("Too large Destination Index Value");
+		}
 		this.task = InMemStorage.getInstance().getTask(recurIndex);
 		this.period = period;
 		commandLogger.log(Level.INFO, "Recur Command Created");

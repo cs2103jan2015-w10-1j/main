@@ -34,10 +34,10 @@ import com.done.model.DoneTimedTask;
 
 public class CommandParser {
 
-	//@author A0115777W
 	private static CommandParser instance = null;
 	private static Logger parserLogger = Logger.getLogger("CommandParser");
-
+	
+	//@author A0115777W
 	private CommandParser() {
 
 	}
@@ -74,12 +74,16 @@ public class CommandParser {
 			return CommandType.LOAD;
 		} else if (command.equalsIgnoreCase("search")) {
 			return CommandType.SEARCH;
+		} else if (command.equalsIgnoreCase("showall")) {
+			return CommandType.SHOWALL;
 		} else if (command.equalsIgnoreCase("undo")) {
 			return CommandType.UNDO;
 		} else if (command.equalsIgnoreCase("move")) {
 			return CommandType.MOVE;
 		} else if (command.equalsIgnoreCase("done")) {
 			return CommandType.DONE;
+		} else if (command.equalsIgnoreCase("cleardone")) {
+			return CommandType.CLEARDONE;
 		} else if (command.equalsIgnoreCase("remind")) {
 			return CommandType.REMIND;
 		} else if (command.equalsIgnoreCase("recur")) {
@@ -108,25 +112,26 @@ public class CommandParser {
 	public String getFirstWord(String userCommand) {
 		return userCommand.trim().split("\\s+")[0];
 	}
-
+	
+	//@author A0115777W
 	private Command makeCommand(String commandWord, String commandContent) {
 		if (commandWord.equalsIgnoreCase("add")) {
-			/*
-			 * after we know that this is a "add" command we should implement a
-			 * definer to differentiate the type of tasks so you should use
-			 * commandContent as the parameter of a new method
-			 */
 			parserLogger.log(Level.INFO, "make add Command");
 			try{
 				Done tempTask = defineTask(commandContent);
 				return new CommandAdd(tempTask);
 			}catch (Exception e){
+				parserLogger.log(Level.INFO, "make invalid Command instead");
 				return new CommandInvalid();
 			}
 		} else if (commandWord.equalsIgnoreCase("delete")) {
 			parserLogger.log(Level.INFO, "make delete Command");
-			if (isContentValid(commandWord, commandContent)) {
-				return new CommandDelete(Integer.parseInt(commandContent));
+			if (isPositiveInt(commandContent)) {
+				try{
+					return new CommandDelete(Integer.parseInt(commandContent));
+				}catch(Exception e){
+					return new CommandInvalid();
+				}
 			} else {
 				parserLogger.log(Level.INFO, "make invalid Command instead");
 				return new CommandInvalid();
@@ -140,9 +145,11 @@ public class CommandParser {
 					parserLogger.log(Level.INFO, "make edit Command");
 					return new CommandEdit(index, changedTask);
 				}catch (Exception e){
+					parserLogger.log(Level.INFO, "make invalid Command instead");
 					return new CommandInvalid();
 				}
 			} else {
+				parserLogger.log(Level.INFO, "make invalid Command instead");
 				return new CommandInvalid();
 			}
 		} else if (commandWord.equalsIgnoreCase("load")) {
@@ -154,12 +161,17 @@ public class CommandParser {
 		} else if (commandWord.equalsIgnoreCase("move")) {
 			parserLogger.log(Level.INFO, "make move Command");
 			ArrayList<String> indexes = sliceContent(commandContent);
-			if ((isContentValid(commandWord, indexes.get(0)))
-					&& (isContentValid(commandWord, indexes.get(1)))) {
-				int origin = Integer.parseInt(indexes.get(0));
-				int destination = Integer.parseInt(indexes.get(1));
-				return new CommandMove(origin, destination);
+			if ((isPositiveInt(indexes.get(0)))
+					&& (isPositiveInt(indexes.get(1)))) {
+				try{
+					int origin = Integer.parseInt(indexes.get(0));
+					int destination = Integer.parseInt(indexes.get(1));
+					return new CommandMove(origin, destination);
+				}catch(Exception e){
+					return new CommandInvalid();
+				}
 			} else {
+				parserLogger.log(Level.INFO, "make invalid Command instead");
 				return new CommandInvalid();
 			}
 		} else if (commandWord.equalsIgnoreCase("search")) {
@@ -173,8 +185,12 @@ public class CommandParser {
 			return new CommandUndo();
 		} else if (commandWord.equalsIgnoreCase("done")) {
 			parserLogger.log(Level.INFO, "make done Command");
-			if (isContentValid(commandWord, commandContent)) {
-				return new CommandDone(Integer.parseInt(commandContent));
+			if (isPositiveInt(commandContent)) {
+				try{
+					return new CommandDone(Integer.parseInt(commandContent));
+				}catch (Exception e){
+					return new CommandInvalid();
+				}
 			} else {
 				return new CommandInvalid();
 			}
@@ -185,9 +201,14 @@ public class CommandParser {
 			parserLogger.log(Level.INFO, "make recur Command");
 			ArrayList<String> contents = sliceContent(commandContent);
 			String index = contents.get(0);
+			System.out.println(index);
 			String period = contents.get(1);
 			if (isPositiveInt(index) && isValidPeriod(period)) {
-				return new CommandRecur(Integer.parseInt(index), period);
+				try{
+					return new CommandRecur(Integer.parseInt(index), period);
+				}catch (Exception e){
+					return new CommandInvalid();
+				}
 			} else {
 				return new CommandInvalid();
 			}
@@ -278,7 +299,7 @@ public class CommandParser {
 		return slicedContent;
 	}
 	
-	//@author A0115777W
+	//@author A0115777W-unused
 	private boolean isContentValid(String commandWord, String commandContent) {
 		if (commandWord.equalsIgnoreCase("add")) {
 			parserLogger.log(Level.INFO, "Command Content is Valid");
@@ -293,6 +314,7 @@ public class CommandParser {
 		}
 	}
 	
+	//@author A0115777W-unused
 	private boolean isValidTime(String time){
 		if(time.length()>5){
 			return false;

@@ -16,8 +16,11 @@ public class CommandRemind extends Command {
 	private TaskReminder reminderTask;
 	
 	//@author A0115777W
-	public CommandRemind(int remindIndex, String date, String time) {
+	public CommandRemind(int remindIndex, String date, String time) throws Exception {
 		super(CommandType.REMIND, true);
+		if (remindIndex >= InMemStorage.getInstance().getTasks().size()) {
+			throw new Exception("Too large Destination Index Value");
+		}
 		this.task = InMemStorage.getInstance().getTask(remindIndex);
 		this.remindIndex = remindIndex;
 		this.date = date;

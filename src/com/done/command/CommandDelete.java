@@ -11,8 +11,12 @@ public class CommandDelete extends Command {
 	private Done task;
 
 	//@author A0115777W
-	public CommandDelete(int deleteIndex) {
+	public CommandDelete(int deleteIndex) throws Exception {
 		super(CommandType.DELETE, true);
+		assert deleteIndex > 0;
+		if (deleteIndex > InMemStorage.getInstance().getTasks().size()) {
+			throw new Exception("Too large Destination Index Value");
+		}
 		this.deleteIndex = deleteIndex;
 		commandLogger.log(Level.INFO, "Delete Command Created");
 	}

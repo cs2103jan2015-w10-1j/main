@@ -15,9 +15,13 @@ public class CommandEdit extends Command {
 	private static final String EDIT_COMMAND_CONTENT = "%1$s edited to %2$s";
 
 	//@author A0115777W
-	public CommandEdit(int index, Done task) {
+	public CommandEdit(int editIndex, Done task) throws Exception {
 		super(CommandType.EDIT, true);
-		this.editIndex = index;
+		assert editIndex > 0;
+		if (editIndex > InMemStorage.getInstance().getTasks().size()) {
+			throw new Exception("Too large Destination Index Value");
+		}
+		this.editIndex = editIndex;
 		this.task = task;
 		commandLogger.log(Level.INFO, "Edit Command Created");
 	}
@@ -34,8 +38,10 @@ public class CommandEdit extends Command {
 
 	@Override
 	public void undo() {
+		commandLogger.log(Level.INFO, "Undo Command called");
 		InMemStorage memory = InMemStorage.getInstance();
-		memory.edit(subbedTask, editIndex);
+		memory.edit(subbedTask, editIndex - 1);
+		commandLogger.log(Level.INFO, "Undo Command successfully executed");
 	}
 
 	//@author A0088821X
