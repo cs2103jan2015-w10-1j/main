@@ -24,55 +24,13 @@ public class CommandParser {
 		return instance;
 	}
 
-	public Command parseInputToMakeCommand(String userInput) {
+	public Command parseInputToMakeCommand(String userCommand) {
 
 		parserLogger.log(Level.INFO, "Input passed to make Command");
-		String commandWord = ParserUtility.getFirstWord(userInput);
-		String commandContent = ParserUtility.removeFirstWord(userInput);
+		String commandWord = ParserUtility.getFirstWord(userCommand);
+		String commandContent = ParserUtility.removeFirstWord(userCommand);
 		return makeCommand(commandWord, commandContent);
 
-	}
-
-	public CommandType getCommandType(String commandWord) {
-
-		String command = ParserUtility.getFirstWord(commandWord);
-
-		if (command.equalsIgnoreCase("add")) {
-			return CommandType.ADD;
-		} else if (command.equalsIgnoreCase("delete")) {
-			return CommandType.DELETE;
-		} else if (command.equalsIgnoreCase("clear")) {
-			return CommandType.CLEAR;
-		} else if (command.equalsIgnoreCase("edit")) {
-			return CommandType.EDIT;
-		} else if (command.equalsIgnoreCase("load")) {
-			return CommandType.LOAD;
-		} else if (command.equalsIgnoreCase("search")) {
-			return CommandType.SEARCH;
-		} else if (command.equalsIgnoreCase("showall")) {
-			return CommandType.SHOWALL;
-		} else if (command.equalsIgnoreCase("undo")) {
-			return CommandType.UNDO;
-		} else if (command.equalsIgnoreCase("move")) {
-			return CommandType.MOVE;
-		} else if (command.equalsIgnoreCase("done")) {
-			return CommandType.DONE;
-		} else if (command.equalsIgnoreCase("cleardone")) {
-			return CommandType.CLEARDONE;
-		} else if (command.equalsIgnoreCase("remind")) {
-			return CommandType.REMIND;
-		} else if (command.equalsIgnoreCase("recur")) {
-			return CommandType.RECUR;
-		} else if (command.equalsIgnoreCase("exit")) {
-			return CommandType.EXIT;
-		} else {
-			return CommandType.INVALID;
-		}
-	}
-
-	public String getCommandContent(String userCommand) {
-		String currentContent = ParserUtility.removeFirstWord(userCommand);
-		return currentContent;
 	}
 	
 	//@author A0115777W
@@ -110,6 +68,48 @@ public class CommandParser {
 		} else {
 			return ParserUtility.makeInvalid();
 		}
+	}
+
+	public CommandType getCommandType(String userCommand) {
+
+		String command = ParserUtility.getFirstWord(userCommand);
+
+		if (command.equalsIgnoreCase("add")) {
+			return CommandType.ADD;
+		} else if (command.equalsIgnoreCase("delete")) {
+			return CommandType.DELETE;
+		} else if (command.equalsIgnoreCase("clear")) {
+			return CommandType.CLEAR;
+		} else if (command.equalsIgnoreCase("edit")) {
+			return CommandType.EDIT;
+		} else if (command.equalsIgnoreCase("load")) {
+			return CommandType.LOAD;
+		} else if (command.equalsIgnoreCase("search")) {
+			return CommandType.SEARCH;
+		} else if (command.equalsIgnoreCase("showall")) {
+			return CommandType.SHOWALL;
+		} else if (command.equalsIgnoreCase("undo")) {
+			return CommandType.UNDO;
+		} else if (command.equalsIgnoreCase("move")) {
+			return CommandType.MOVE;
+		} else if (command.equalsIgnoreCase("done")) {
+			return CommandType.DONE;
+		} else if (command.equalsIgnoreCase("cleardone")) {
+			return CommandType.CLEARDONE;
+		} else if (command.equalsIgnoreCase("remind")) {
+			return CommandType.REMIND;
+		} else if (command.equalsIgnoreCase("recur")) {
+			return CommandType.RECUR;
+		} else if (command.equalsIgnoreCase("exit")) {
+			return CommandType.EXIT;
+		} else {
+			return CommandType.INVALID;
+		}
+	}
+
+	public String getCommandContent(String userCommand) {
+		String currentContent = ParserUtility.removeFirstWord(userCommand);
+		return currentContent;
 	}
 	
 }
