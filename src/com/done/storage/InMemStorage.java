@@ -57,7 +57,7 @@ public class InMemStorage {
 
 	public boolean store(Done task) {
 		assert task != null;
-		getTasks().add(task);
+		getTasks().add(0,task);
 		updateTaskID();
 		if (jsonStorage.store(getTasks()) == true) {
 			return true;
@@ -67,7 +67,6 @@ public class InMemStorage {
 	}
 
 	public boolean delete(Done task, boolean isDeleteAll) {
-		assert task != null;
 		
 		// isDeleteAll used for clear command
 		// if true is a clear
