@@ -141,13 +141,13 @@ public class JSONStorage {
 		try {
 			File prefFile = openFile(FILE_PREFS_XML);
 			pref.loadFromXML(new FileInputStream(prefFile));
-			jsonName = pref.getProperty("jsonName", FILE_TASKS_JSON);
 		} catch (IOException e) {
 			StorageLogger.getStorageLogger().log(Level.WARNING,
-					"Unable to read preference file! Using default.");
+					"Unable to read preference file! Creating default.");
 			// If IOException occur, set default preference file name
 			setJsonNameToPref(FILE_TASKS_JSON);
 		}
+		jsonName = pref.getProperty("jsonName", FILE_TASKS_JSON);
 		StorageLogger.getStorageLogger().log(Level.INFO,
 				"Retrieving JSON name: " + jsonName);
 		return jsonName;
