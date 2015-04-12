@@ -20,8 +20,9 @@
         <columns>
         	<TableColumn prefWidth="50.0" text="No." />
         	<TableColumn prefWidth="280.0" text="Task" />
-        	<TableColumn prefWidth="110.0" text="Start" />
-          	<TableColumn prefWidth="110.0" text="Due" />
+        	<TableColumn prefWidth="80.0" text="Start" />
+          	<TableColumn prefWidth="80.0" text="End" />
+          	<TableColumn prefWidth="100.0" text="Deadline" />
         </columns>
       </TableView>
       

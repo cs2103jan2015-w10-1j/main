@@ -8,6 +8,8 @@ import javafx.collections.FXCollections;
 import javafx.collections.ListChangeListener;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
+import javafx.scene.control.TableCell;
+import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableRow;
 import javafx.scene.control.TableView;
 import javafx.scene.control.TextField;
@@ -233,7 +235,7 @@ public class UIController implements Observer {
 		if(isSuccessful){
 			Notifications.create().text(String.format(SHOWSEARCH_SUCCESS_MESSAGE, commandContent)).showInformation();
 		}
-		else{
+		else{	
 			Notifications.create().text(SHOWSEARCH_ERROR_MESSAGE).showError();
 		}
 		displaySearches();
@@ -300,10 +302,82 @@ public class UIController implements Observer {
 		List<Done> tasks = logicFacade.getTasks();
 		ObservableList<Done> tableTasks = FXCollections.observableArrayList(tasks);		
 		tableViewTasks.setItems(tableTasks);
-		tableViewTasks.getColumns().get(0).setCellValueFactory(new PropertyValueFactory<>("id"));
+		buildTableColumns();
+		
+		/*tableViewTasks.getColumns().get(0).setCellValueFactory(new PropertyValueFactory<>("id"));
 		tableViewTasks.getColumns().get(1).setCellValueFactory(new PropertyValueFactory<>("title"));
 		tableViewTasks.getColumns().get(2).setCellValueFactory(new PropertyValueFactory<>("startTime"));
 		tableViewTasks.getColumns().get(3).setCellValueFactory(new PropertyValueFactory<>("endTime"));
+		tableViewTasks.getColumns().get(4).setCellValueFactory(new PropertyValueFactory<>("endTime"));
+		*/
+	}
+
+	private void buildTableColumns() {
+		TableColumn<Done,Integer> idCol = new TableColumn<Done,Integer>("No.");
+		idCol.setCellValueFactory(new PropertyValueFactory("id"));
+		idCol.setPrefWidth(50.0);
+		idCol.setResizable(false);
+		TableColumn<Done,String> titleCol = new TableColumn<Done,String>("Task");
+		titleCol.setCellValueFactory(new PropertyValueFactory("title"));
+		titleCol.setPrefWidth(280.0);
+		titleCol.setResizable(false);
+		TableColumn<Done,String> startTimeCol = new TableColumn<Done,String>("Start");
+		startTimeCol.setCellValueFactory(new PropertyValueFactory("startTime"));
+		startTimeCol.setPrefWidth(70.0);
+		startTimeCol.setResizable(false);
+		TableColumn<Done,String> endTimeCol = new TableColumn<Done,String>("End");
+		endTimeCol.setCellValueFactory(new PropertyValueFactory("endTime"));
+		endTimeCol.setCellFactory(new Callback<TableColumn<Done,String>,TableCell<Done,String>>(){
+			@Override
+		    public TableCell<Done, String> call(TableColumn<Done, String> tableColumn) {
+		        final TableCell<Done, String> cell = new TableCell<Done, String>() {
+		            @Override
+		            protected void updateItem(final String item, boolean empty)
+		            {
+		                super.updateItem(item, empty);
+		                if(empty){
+		                	this.setText(EMPTY_STRING);
+		                }else{
+		                	if(item != null && item.length() == 5){
+		                		this.setText(item); 
+		                	} else{
+		                		this.setText(EMPTY_STRING);
+		                	}
+		                }
+		            }
+		        };
+		        return cell;
+		    }
+		});
+		endTimeCol.setPrefWidth(70.0);
+		endTimeCol.setResizable(false);
+		TableColumn<Done,String> deadlineCol = new TableColumn<Done,String>("Deadline");
+		deadlineCol.setCellValueFactory(new PropertyValueFactory("endTime"));
+		deadlineCol.setCellFactory(new Callback<TableColumn<Done,String>,TableCell<Done,String>>(){
+			@Override
+		    public TableCell<Done, String> call(TableColumn<Done, String> tableColumn) {
+		        final TableCell<Done, String> cell = new TableCell<Done, String>() {
+		            @Override
+		            protected void updateItem(final String item, boolean empty)
+		            {
+		                super.updateItem(item, empty);
+		                if(empty){
+		                	this.setText(EMPTY_STRING);
+		                }else{
+		                	if(item != null && item.length() > 5){
+		                		this.setText(item); 
+		                	} else{
+		                		this.setText(EMPTY_STRING);
+		                	}
+		                }
+		            }
+		        };
+		        return cell;
+		    }
+		});
+		deadlineCol.setPrefWidth(120.0);
+		deadlineCol.setResizable(false);
+		tableViewTasks.getColumns().setAll(idCol, titleCol, startTimeCol, endTimeCol, deadlineCol);
 	}
 	
 	private void displaySearches() {
@@ -315,10 +389,7 @@ public class UIController implements Observer {
 		List<Done> tasks = logicFacade.getSearchResult();
 		ObservableList<Done> tableTasks = FXCollections.observableArrayList(tasks);
 		tableViewTasks.setItems(tableTasks);
-		tableViewTasks.getColumns().get(0).setCellValueFactory(new PropertyValueFactory<>("id"));
-		tableViewTasks.getColumns().get(1).setCellValueFactory(new PropertyValueFactory<>("title"));
-		tableViewTasks.getColumns().get(2).setCellValueFactory(new PropertyValueFactory<>("startTime"));
-		tableViewTasks.getColumns().get(3).setCellValueFactory(new PropertyValueFactory<>("endTime"));
+		buildTableColumns();
 	}
 	
 	private void strikethroughDoneRows() {
