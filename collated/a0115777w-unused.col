@@ -19,10 +19,10 @@
 
 
 	/**
-	 * origin: C:\Users\Jerry\eclipse_workspace\CS2103Project\src\com\done\parser\CommandParser.java
+	 * origin: C:\Users\Jerry\eclipse_workspace\CS2103Project\src\com\done\parser\ParserUtility.java
 	 */
 
-	private boolean isContentValid(String commandWord, String commandContent) {
+	protected static boolean isContentValid(String commandWord, String commandContent) {
 		if (commandWord.equalsIgnoreCase("add")) {
 			parserLogger.log(Level.INFO, "Command Content is Valid");
 			return true;
@@ -36,17 +36,17 @@
 		}
 	}
 	
-	// End of segment: C:\Users\Jerry\eclipse_workspace\CS2103Project\src\com\done\parser\CommandParser.java
+	// End of segment: C:\Users\Jerry\eclipse_workspace\CS2103Project\src\com\done\parser\ParserUtility.java
 
 
 
 
 
 	/**
-	 * origin: C:\Users\Jerry\eclipse_workspace\CS2103Project\src\com\done\parser\CommandParser.java
+	 * origin: C:\Users\Jerry\eclipse_workspace\CS2103Project\src\com\done\parser\ParserUtility.java
 	 */
 
-	private boolean isValidTime(String time){
+	protected static boolean isValidTime(String time){
 		if(time.length()>5){
 			return false;
 		}
@@ -60,7 +60,7 @@
         return true;
 	}
 
-	// End of segment: C:\Users\Jerry\eclipse_workspace\CS2103Project\src\com\done\parser\CommandParser.java
+	// End of segment: C:\Users\Jerry\eclipse_workspace\CS2103Project\src\com\done\parser\ParserUtility.java
 
 
 

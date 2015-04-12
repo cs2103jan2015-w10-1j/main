@@ -304,7 +304,7 @@
 	public CommandMove(int origin, int destination) throws Exception {
 		super(CommandType.MOVE, true);
 		if (origin > (InMemStorage.getInstance().getTasks().size())
-				|| destination >= (InMemStorage.getInstance().getTasks().size())) {
+				|| destination > (InMemStorage.getInstance().getTasks().size())) {
 			throw new Exception("Too large Destination Index Value");
 		}
 		this.origin = origin - 1;
@@ -371,7 +371,7 @@
 
 	public CommandRemind(int remindIndex, String date, String time) throws Exception {
 		super(CommandType.REMIND, true);
-		if (remindIndex >= InMemStorage.getInstance().getTasks().size()) {
+		if (remindIndex > InMemStorage.getInstance().getTasks().size()) {
 			throw new Exception("Too large Destination Index Value");
 		}
 		this.task = InMemStorage.getInstance().getTask(remindIndex);
@@ -488,18 +488,64 @@
 		return instance;
 	}
 
-	public Command parseInputToMakeCommand(String userInput) {
+	public Command parseInputToMakeCommand(String userCommand) {
 
 		parserLogger.log(Level.INFO, "Input passed to make Command");
-		String commandWord = getFirstWord(userInput);
-		String commandContent = removeFirstWord(userInput);
+		String commandWord = ParserUtility.getFirstWord(userCommand);
+		String commandContent = ParserUtility.removeFirstWord(userCommand);
 		return makeCommand(commandWord, commandContent);
 
 	}
+	
+	// End of segment: C:\Users\Jerry\eclipse_workspace\CS2103Project\src\com\done\parser\CommandParser.java
 
-	public CommandType getCommandType(String commandWord) {
 
-		String command = getFirstWord(commandWord);
+
+
+
+	/**
+	 * origin: C:\Users\Jerry\eclipse_workspace\CS2103Project\src\com\done\parser\CommandParser.java
+	 */
+
+	private Command makeCommand(String commandWord, String commandContent) {
+		if (commandWord.equalsIgnoreCase("add")) {
+			parserLogger.log(Level.INFO, "make add Command");
+			return ParserUtility.makeAdd(commandContent);
+		} else if (commandWord.equalsIgnoreCase("delete")) {
+			parserLogger.log(Level.INFO, "make delete Command");
+			return ParserUtility.makeDelete(commandContent);
+		} else if (commandWord.equalsIgnoreCase("edit")) {
+			return ParserUtility.makeEdit(commandContent);
+		} else if (commandWord.equalsIgnoreCase("clear")) {
+			return ParserUtility.makeClear(commandContent);
+		} else if (commandWord.equalsIgnoreCase("move")) {
+			return ParserUtility.makeMove(commandContent);
+		} else if (commandWord.equalsIgnoreCase("search")) {
+			return ParserUtility.makeSearch(commandContent);
+		} else if (commandWord.equalsIgnoreCase("showall")) {
+			return ParserUtility.makeShowAll();
+		} else if (commandWord.equalsIgnoreCase("done")) {
+			return ParserUtility.makeDone(commandContent);
+		} else if (commandWord.equalsIgnoreCase("cleardone")) {
+			return ParserUtility.makeClearDone();
+		} else if (commandWord.equalsIgnoreCase("recur")) {
+			return ParserUtility.makeRecur(commandContent);
+		} else if (commandWord.equalsIgnoreCase("remind")) {
+			return ParserUtility.makeRemind(commandContent);
+		} else if (commandWord.equalsIgnoreCase("load")) {
+			return ParserUtility.makeLoad(commandContent);
+		} else if (commandWord.equalsIgnoreCase("undo")) {
+			return ParserUtility.makeUndo();
+		} else if (commandWord.equalsIgnoreCase("exit")) {
+			return ParserUtility.makeExit();
+		} else {
+			return ParserUtility.makeInvalid();
+		}
+	}
+
+	public CommandType getCommandType(String userCommand) {
+
+		String command = ParserUtility.getFirstWord(userCommand);
 
 		if (command.equalsIgnoreCase("add")) {
 			return CommandType.ADD;
@@ -534,12 +580,12 @@
 		}
 	}
 
-	public ArrayList<String> getCommandContent(String userCommand) {
-		String currentContent = removeFirstWord(userCommand);
-		assert currentContent != null;
-		ArrayList<String> commandContent = sliceContent(currentContent);
-		return commandContent;
+	public String getCommandContent(String userCommand) {
+		String currentContent = ParserUtility.removeFirstWord(userCommand);
+		return currentContent;
 	}
+	
+}
 
 	// End of segment: C:\Users\Jerry\eclipse_workspace\CS2103Project\src\com\done\parser\CommandParser.java
 
@@ -548,142 +594,168 @@
 
 
 	/**
-	 * origin: C:\Users\Jerry\eclipse_workspace\CS2103Project\src\com\done\parser\CommandParser.java
+	 * origin: C:\Users\Jerry\eclipse_workspace\CS2103Project\src\com\done\parser\ParserUtility.java
 	 */
 
-	private Command makeCommand(String commandWord, String commandContent) {
-		if (commandWord.equalsIgnoreCase("add")) {
-			parserLogger.log(Level.INFO, "make add Command");
-			try{
-				Done tempTask = defineTask(commandContent);
-				return new CommandAdd(tempTask);
-			}catch (Exception e){
-				parserLogger.log(Level.INFO, "make invalid Command instead");
-				return new CommandInvalid();
-			}
-		} else if (commandWord.equalsIgnoreCase("delete")) {
-			parserLogger.log(Level.INFO, "make delete Command");
-			if (isPositiveInt(commandContent)) {
-				try{
-					return new CommandDelete(Integer.parseInt(commandContent));
-				}catch(Exception e){
-					return new CommandInvalid();
-				}
-			} else {
-				parserLogger.log(Level.INFO, "make invalid Command instead");
-				return new CommandInvalid();
-			}
-		} else if (commandWord.equalsIgnoreCase("edit")) {
-			String indexString = getFirstWord(commandContent);
-			if (isPositiveInt(indexString)) {
-				try{
-					int index = Integer.parseInt(indexString);
-					Done changedTask = defineTask(removeFirstWord(commandContent));
-					parserLogger.log(Level.INFO, "make edit Command");
-					return new CommandEdit(index, changedTask);
-				}catch (Exception e){
-					parserLogger.log(Level.INFO, "make invalid Command instead");
-					return new CommandInvalid();
-				}
-			} else {
-				parserLogger.log(Level.INFO, "make invalid Command instead");
-				return new CommandInvalid();
-			}
-		} else if (commandWord.equalsIgnoreCase("clear")) {
-			parserLogger.log(Level.INFO, "make clear Command");
-			if(commandContent.equals("")){
-				return new CommandClear();
-			}else{
-				return new CommandInvalid();
-			}
-		} else if (commandWord.equalsIgnoreCase("move")) {
-			parserLogger.log(Level.INFO, "make move Command");
-			ArrayList<String> indexes = sliceContent(commandContent);
-			if ((isPositiveInt(indexes.get(0)))
-					&& (isPositiveInt(indexes.get(1)))) {
-				try{
-					int origin = Integer.parseInt(indexes.get(0));
-					int destination = Integer.parseInt(indexes.get(1));
-					return new CommandMove(origin, destination);
-				}catch(Exception e){
-					return new CommandInvalid();
-				}
-			} else {
-				parserLogger.log(Level.INFO, "make invalid Command instead");
-				return new CommandInvalid();
-			}
-		} else if (commandWord.equalsIgnoreCase("search")) {
-			parserLogger.log(Level.INFO, "make search Command");
-			return new CommandSearch(commandContent);
-		} else if (commandWord.equalsIgnoreCase("showall")) {
-			parserLogger.log(Level.INFO, "make showall Command");
-			return new CommandShowAll();
-		} else if (commandWord.equalsIgnoreCase("done")) {
-			parserLogger.log(Level.INFO, "make done Command");
-			if (isPositiveInt(commandContent)) {
-				try{
-					return new CommandDone(Integer.parseInt(commandContent));
-				}catch (Exception e){
-					return new CommandInvalid();
-				}
-			} else {
-				return new CommandInvalid();
-			}
-		} else if (commandWord.equalsIgnoreCase("cleardone")) {
-			parserLogger.log(Level.INFO, "make cleardone Command");
-			return new CommandClearDone();
-		} else if (commandWord.equalsIgnoreCase("recur")) {
-			parserLogger.log(Level.INFO, "make recur Command");
-			ArrayList<String> contents = sliceContent(commandContent);
-			String index = contents.get(0);
-			String period = contents.get(1);
-			if (isPositiveInt(index) && isValidPeriod(period)) {
-				try{
-					return new CommandRecur(Integer.parseInt(index), period);
-				}catch (Exception e){
-					return new CommandInvalid();
-				}
-			} else {
-				return new CommandInvalid();
-			}
-		} else if (commandWord.equalsIgnoreCase("remind")) {
-			parserLogger.log(Level.INFO, "make remind Command");
-			try {
-				ArrayList<String> contents = sliceContent(commandContent);
-				String index = contents.get(0);
-				String date = contents.get(1);
-				String time = contents.get(2);
-				return new CommandRemind(Integer.parseInt(index), date, time);
-			} catch (Exception e) {
-				parserLogger.log(Level.INFO, "make invalid Command instead");
-				return new CommandInvalid();
-			}
-		} else if (commandWord.equalsIgnoreCase("load")) {
-			parserLogger.log(Level.INFO, "make load Command");
-			return new CommandLoad(commandContent);
-		} else if (commandWord.equalsIgnoreCase("undo")) {
-			parserLogger.log(Level.INFO, "make undo Command");
-			return new CommandUndo();
-		}  else if (commandWord.equalsIgnoreCase("exit")) {
-			parserLogger.log(Level.INFO, "make exit Command");
-			return new CommandExit(true);
-		} else {
-			parserLogger.log(Level.INFO, "make invalid Command");
+	protected static Command makeAdd(String content){
+		try{
+			Done tempTask = defineTask(content);
+			return new CommandAdd(tempTask);
+		}catch (Exception e){
 			return new CommandInvalid();
 		}
 	}
 	
-	// End of segment: C:\Users\Jerry\eclipse_workspace\CS2103Project\src\com\done\parser\CommandParser.java
+	protected static Command makeDelete(String content){
+		if (isPositiveInt(content)) {
+			try{
+				return new CommandDelete(Integer.parseInt(content));
+			}catch(Exception e){
+				return new CommandInvalid();
+			}
+		} else {
+			return new CommandInvalid();
+		}
+	}
+
+	protected static Command makeEdit(String content){
+		String indexString = getFirstWord(content);
+		if (isPositiveInt(indexString)) {
+			try{
+				int index = Integer.parseInt(indexString);
+				Done changedTask = defineTask(removeFirstWord(content));
+				parserLogger.log(Level.INFO, "make edit Command");
+				return new CommandEdit(index, changedTask);
+			}catch (Exception e){
+				parserLogger.log(Level.INFO, "make invalid Command instead");
+				return new CommandInvalid();
+			}
+		} else {
+			parserLogger.log(Level.INFO, "make invalid Command instead");
+			return new CommandInvalid();
+		}
+	}
+	
+	protected static Command makeClear(String content){
+		parserLogger.log(Level.INFO, "make clear Command");
+		if(content.equals("")){
+			return new CommandClear();
+		}else{
+			return new CommandInvalid();
+		}
+	}
+	
+	protected static Command makeMove(String content){
+		parserLogger.log(Level.INFO, "make move Command");
+		ArrayList<String> indexes = sliceContent(content);
+		if ((isPositiveInt(indexes.get(0)))
+				&& (isPositiveInt(indexes.get(1)))) {
+			try{
+				System.out.println(indexes.get(0));
+				System.out.println(indexes.get(1));
+				int origin = Integer.parseInt(indexes.get(0));
+				int destination = Integer.parseInt(indexes.get(1));
+				return new CommandMove(origin, destination);
+			}catch(Exception e){
+				return new CommandInvalid();
+			}
+		} else {
+			parserLogger.log(Level.INFO, "make invalid Command instead");
+			return new CommandInvalid();
+		}
+	}
+	
+	protected static Command makeSearch(String content){
+		parserLogger.log(Level.INFO, "make search Command");
+		return new CommandSearch(content);
+	}
+	
+	protected static Command makeShowAll(){
+		parserLogger.log(Level.INFO, "make showall Command");
+		return new CommandShowAll();
+	}
+	
+	protected static Command makeDone(String content){
+		parserLogger.log(Level.INFO, "make done Command");
+		if (isPositiveInt(content)) {
+			try{
+				return new CommandDone(Integer.parseInt(content));
+			}catch (Exception e){
+				return new CommandInvalid();
+			}
+		} else {
+			return new CommandInvalid();
+		}
+	}
+	
+	protected static Command makeClearDone(){
+		parserLogger.log(Level.INFO, "make cleardone Command");
+		return new CommandClearDone();
+	}
+	
+	protected static Command makeRecur(String content){
+		parserLogger.log(Level.INFO, "make recur Command");
+		ArrayList<String> contents = sliceContent(content);
+		String index = contents.get(0);
+		String period = contents.get(1);
+		if (isPositiveInt(index) && isValidPeriod(period)) {
+			try{
+				return new CommandRecur(Integer.parseInt(index), period);
+			}catch (Exception e){
+				return new CommandInvalid();
+			}
+		} else {
+			return new CommandInvalid();
+		}
+	}
+	
+	protected static Command makeRemind(String content){
+		parserLogger.log(Level.INFO, "make remind Command");
+		try {
+			ArrayList<String> contents = sliceContent(content);
+			String index = contents.get(0);
+			String date = contents.get(1);
+			String time = contents.get(2);
+			return new CommandRemind(Integer.parseInt(index), date, time);
+		} catch (Exception e) {
+			parserLogger.log(Level.INFO, "make invalid Command instead");
+			return new CommandInvalid();
+		}
+	}
+	
+	protected static Command makeLoad(String content){
+		parserLogger.log(Level.INFO, "make load Command");
+		return new CommandLoad(content);
+	}
+	
+	protected static Command makeUndo(){
+		parserLogger.log(Level.INFO, "make undo Command");
+		return new CommandUndo();
+	}
+	
+	protected static Command makeExit(){
+		parserLogger.log(Level.INFO, "make exit Command");
+		return new CommandExit(true);
+	}
+	
+	protected static Command makeInvalid(){
+		parserLogger.log(Level.INFO, "make invalid Command");
+		return new CommandInvalid();
+	}
+	//End of Command Maker Methods
+	
+	//Methods to make Tasks(Floating, Timed and Deadline tasks).
+	// End of segment: C:\Users\Jerry\eclipse_workspace\CS2103Project\src\com\done\parser\ParserUtility.java
 
 
 
 
 
 	/**
-	 * origin: C:\Users\Jerry\eclipse_workspace\CS2103Project\src\com\done\parser\CommandParser.java
+	 * origin: C:\Users\Jerry\eclipse_workspace\CS2103Project\src\com\done\parser\ParserUtility.java
 	 */
 
-	private ArrayList<String> sliceContent(String content) {
+	protected static ArrayList<String> sliceContent(String content) {
 		ArrayList<String> slicedContent = new ArrayList<String>();
 		String[] contentPieces = content.split("\\s+");
 		for (String pieceOfContent : contentPieces) {
@@ -691,18 +763,20 @@
 		}
 		return slicedContent;
 	}
+	//End of Content processer methods
 	
-	// End of segment: C:\Users\Jerry\eclipse_workspace\CS2103Project\src\com\done\parser\CommandParser.java
+	//Validation methods to detect if a String content piece is as required
+	// End of segment: C:\Users\Jerry\eclipse_workspace\CS2103Project\src\com\done\parser\ParserUtility.java
 
 
 
 
 
 	/**
-	 * origin: C:\Users\Jerry\eclipse_workspace\CS2103Project\src\com\done\parser\CommandParser.java
+	 * origin: C:\Users\Jerry\eclipse_workspace\CS2103Project\src\com\done\parser\ParserUtility.java
 	 */
 
-	private boolean isPositiveInt(String content) {
+	protected static boolean isPositiveInt(String content) {
 		try {
 			int i = Integer.parseInt(content);
 			return (i > 0 ? true : false);
@@ -712,25 +786,27 @@
 		}
 	}
 
-	// End of segment: C:\Users\Jerry\eclipse_workspace\CS2103Project\src\com\done\parser\CommandParser.java
+	// End of segment: C:\Users\Jerry\eclipse_workspace\CS2103Project\src\com\done\parser\ParserUtility.java
 
 
 
 
 
 	/**
-	 * origin: C:\Users\Jerry\eclipse_workspace\CS2103Project\src\com\done\parser\CommandParser.java
+	 * origin: C:\Users\Jerry\eclipse_workspace\CS2103Project\src\com\done\parser\ParserUtility.java
 	 */
 
-	private boolean isValidPeriod(String content){
+	protected static boolean isValidPeriod(String content){
 		if(content.equals("hourly")||content.equals("daily")||content.equals("weekly")||content.equals("monthly")||content.equals("yearly")){
 			return true;
 		}else{
 			return false;
 		}
 	}
+	//End of Validation methods
+}
 
-	// End of segment: C:\Users\Jerry\eclipse_workspace\CS2103Project\src\com\done\parser\CommandParser.java
+	// End of segment: C:\Users\Jerry\eclipse_workspace\CS2103Project\src\com\done\parser\ParserUtility.java
 
 
 
