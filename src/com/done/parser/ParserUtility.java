@@ -5,8 +5,6 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 
 import org.joda.time.DateTime;
-import org.joda.time.LocalDate;
-import org.joda.time.LocalTime;
 import org.joda.time.format.DateTimeFormat;
 import org.joda.time.format.DateTimeFormatter;
 
@@ -202,40 +200,43 @@ public class ParserUtility {
 			if (split.get(i).equals("..s")) {
 				// timed task
 				isTimed = true;
-				System.out.println(split.size());
-				if(split.get(i+2).equals("..e")&&isValidTime(split.get(i+1))){
+				if (split.get(i + 2).equals("..e")
+						&& isValidTime(split.get(i + 1))) {
 					String currentDate = DateTime.now().toString("ddMM");
-					split.add(i+1, currentDate);
-				}else if(!isValidDate(split.get(i+1))||!isValidTime(split.get(i+2))){
+					split.add(i + 1, currentDate);
+				} else if (!isValidDate(split.get(i + 1))
+						|| !isValidTime(split.get(i + 2))) {
 					parserLogger.log(Level.INFO, "invalid");
 					throw new Exception("Invalid input");
 				}
 				startDateIndex = i + 1;
 				startTimeIndex = i + 2;
-			}else if(split.get(i).equals("..e")){ 
+			} else if (split.get(i).equals("..e")) {
 				isTimed = true;
-				if(isValidTime(split.get(i+1))&&(i==split.size()-2||!isValidTime(split.get(i+2)))){
+				if (isValidTime(split.get(i + 1))
+						&& (i == split.size() - 2 || !isValidTime(split
+								.get(i + 2)))) {
 					String currentDate = DateTime.now().toString("ddMM");
-					System.out.println(currentDate);
-					split.add(i+1, currentDate);
-				}else if(!isValidDate(split.get(i+1))||!isValidTime(split.get(i+2))){
+					split.add(i + 1, currentDate);
+				} else if (!isValidDate(split.get(i + 1))
+						|| !isValidTime(split.get(i + 2))) {
 					parserLogger.log(Level.INFO, "invalid");
 					throw new Exception("Invalid input");
 				}
 				endDateIndex = i + 1;
 				endTimeIndex = i + 2;
-				if(startDateIndex==0&&startTimeIndex==0){
-					startDateIndex = i+1;
-					startTimeIndex = i+2;
+				if (startDateIndex == 0 && startTimeIndex == 0) {
+					startDateIndex = i + 1;
+					startTimeIndex = i + 2;
 					String currentDate = DateTime.now().toString("ddMM");
 					String currentTime = DateTime.now().toString("HHmm");
-					split.add(startDateIndex,currentDate);
-					split.add(startTimeIndex,currentTime);
+					split.add(startDateIndex, currentDate);
+					split.add(startTimeIndex, currentTime);
 					endDateIndex = i + 3;
 					endTimeIndex = i + 4;
 				}
 				break;
-			}else if (split.get(i).equals("..d")) {
+			} else if (split.get(i).equals("..d")) {
 				// deadline task
 				isDeadline = true;
 				endDateIndex = i + 1;
@@ -248,7 +249,8 @@ public class ParserUtility {
 			// we generate (new) timedTask
 			// and return timedTask
 			parserLogger.log(Level.INFO, "make Timed Task");
-			task = addTimed(split, startDateIndex, startTimeIndex,endDateIndex,endTimeIndex);
+			task = addTimed(split, startDateIndex, startTimeIndex,
+					endDateIndex, endTimeIndex);
 			return task;
 
 		} else if (isDeadline) {
@@ -273,7 +275,9 @@ public class ParserUtility {
 	}
 
 	//@author A0111830X
-	protected static Done addTimed(ArrayList<String> content, int startDateIndex, int startTimeIndex, int endDateIndex, int endTimeIndex) {
+	protected static Done addTimed(ArrayList<String> content,
+			int startDateIndex, int startTimeIndex, int endDateIndex,
+			int endTimeIndex) {
 		String startDate = "";
 		String startTime = "";
 		String endDate = "";
@@ -281,13 +285,10 @@ public class ParserUtility {
 		String currentYear = DateTime.now().toString("yyyy");
 		long startTimeValue = 0;
 		long endTimeValue = 0;
-		
+
 		Done task = null;
 		DateTimeFormatter dtf = DateTimeFormat.forPattern("ddMMyyyy HHmm");
-		
-		//LocalDate localStartDate = LocalDate.now();
-		//LocalDate localEndDate = LocalDate.now();
-		
+
 		// obtain title of task from input
 		StringBuilder taskTitleBuilder = new StringBuilder();
 		for (int i = 0; i < startDateIndex - 1; i++) {
@@ -298,40 +299,20 @@ public class ParserUtility {
 			}
 		}
 		String taskTitle = taskTitleBuilder.toString();
-		
-		
-		// check for parameters ..s and ..e
-		//if (content.get(startDateIndex - 1).equalsIgnoreCase("..s")) {
-			startDate = content.get(startDateIndex);
-			startTime = content.get(startTimeIndex);
-			endDate = content.get(endDateIndex);
-			endTime = content.get(endTimeIndex);
-			System.out.println(startDate + " " + startTime+ " "+endDate+ " "+endTime+ " ");
-			// obtain time from input
-			DateTime startDateTime = dtf.parseDateTime(startDate+currentYear + " " + startTime);
-			DateTime endDateTime = dtf.parseDateTime(endDate+currentYear + " " +endTime);
-			startTimeValue = startDateTime.getMillis();
-			endTimeValue = endDateTime.getMillis();
-			System.out.println(startDateTime.toString()+endDateTime.toString());
 
-			/*startTimeValue = localStartDate.toDate().getTime()
-					+ localStartTime.getMillisOfDay();
-			endTimeValue = localEndDate.toDate().getTime()
-					+ localEndTime.getMillisOfDay();*/
+		// obtain contents of various parameters
+		startDate = content.get(startDateIndex);
+		startTime = content.get(startTimeIndex);
+		endDate = content.get(endDateIndex);
+		endTime = content.get(endTimeIndex);
 
-		/*} else if (content.get(endDateIndex - 1).equalsIgnoreCase("..e")) {
-			endDate = content.get(endDateIndex);
-			endTime = content.get(endTimeIndex);
-			System.out.println(endDate);
-			System.out.println(endTime);
-
-			// obtain date and time from now() and input
-			String startDateTimeString = DateTime.now().toString("ddMM HHmm");
-			DateTime startDateTime = dtf.parseDateTime(startDateTimeString);
-			DateTime endDateTime = dtf.parseDateTime(endDate + " " +endTime);
-			startTimeValue = startDateTime.getMillis();
-			endTimeValue = endDateTime.getMillis();
-		}*/
+		// convert time to milliseconds
+		DateTime startDateTime = dtf.parseDateTime(startDate + currentYear
+				+ " " + startTime);
+		DateTime endDateTime = dtf.parseDateTime(endDate + currentYear + " "
+				+ endTime);
+		startTimeValue = startDateTime.getMillis();
+		endTimeValue = endDateTime.getMillis();
 
 		task = new DoneTimedTask(taskTitle, startTimeValue, endTimeValue);
 		return task;
@@ -431,7 +412,7 @@ public class ParserUtility {
 		}
 		if(date.length()==4){
 			String currentYear = DateTime.now().toString("yyyy");
-			System.out.println(currentYear);
+
 			try{
 				DateTime parsedDate = dtf.parseDateTime(date+currentYear);
 				return true;
