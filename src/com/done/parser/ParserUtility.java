@@ -247,7 +247,7 @@ public class ParserUtility {
 		long endTimeValue = 0;
 		
 		Done task = null;
-		DateTimeFormatter dtf = DateTimeFormat.forPattern("HH:mm");
+		DateTimeFormatter dtf = DateTimeFormat.forPattern("HHmm");
 		
 		LocalDate localStartDate = LocalDate.now();
 		LocalDate localEndDate = LocalDate.now();
@@ -316,7 +316,7 @@ public class ParserUtility {
 		String taskTitle = sb.toString();
 		
 		// obtain date time and format it to long milliseconds
-		DateTimeFormatter dtf = DateTimeFormat.forPattern("ddMMyyyy HH:mm");
+		DateTimeFormatter dtf = DateTimeFormat.forPattern("ddMMyyyy HHmm");
 		DateTime date = dtf.parseDateTime(content[dateIndex] + " "
 				+ content[timeIndex]);
 		task = new DoneDeadlineTask(taskTitle, date.getMillis());
@@ -364,9 +364,9 @@ public class ParserUtility {
 		}
 	}
 	
-	//@author A0115777W-unused
+	//@author A0115777W
 	protected static boolean isValidTime(String time){
-		if(time.length()>5){
+		if(time.length()!=4){
 			return false;
 		}
 		int hour = Integer.parseInt(time.substring(0,2));
@@ -378,6 +378,29 @@ public class ParserUtility {
 		}
         return true;
 	}
+	
+	private boolean isValidDate(String date){
+		DateTimeFormatter dtf = DateTimeFormat.forPattern("ddMMyyyy");
+		if(date.length()==8){
+			try{
+				DateTime parsedDate = dtf.parseDateTime(date);
+				return true;
+			}catch (IllegalArgumentException e){
+				return false;
+			}
+		}
+		if(date.length()==4){
+			String currentYear = DateTime.now().toString("yyyy");
+			System.out.println(currentYear);
+			try{
+				DateTime parsedDate = dtf.parseDateTime(date+currentYear);
+				return true;
+			}catch (IllegalArgumentException e){
+				return false;
+			}
+		}
+        return false;
+	} 
 
 	//@author A0115777W
 	protected static boolean isPositiveInt(String content) {
