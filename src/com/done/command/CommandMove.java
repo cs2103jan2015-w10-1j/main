@@ -16,7 +16,7 @@ public class CommandMove extends Command {
 	public CommandMove(int origin, int destination) throws Exception {
 		super(CommandType.MOVE, true);
 		if (origin > (InMemStorage.getInstance().getTasks().size())
-				|| destination >= (InMemStorage.getInstance().getTasks().size())) {
+				|| destination > (InMemStorage.getInstance().getTasks().size())) {
 			throw new Exception("Too large Destination Index Value");
 		}
 		this.origin = origin - 1;

@@ -42,7 +42,7 @@ public class Logic {
 	}
 	
 	public String getCmdContent(String userCommand){
-		return cmdParser.removeFirstWord(userCommand);
+		return cmdParser.getCommandContent(userCommand);
 	}
 	
 	public boolean isSuccessful(){
