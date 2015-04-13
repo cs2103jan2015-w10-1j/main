@@ -17,6 +17,7 @@ public class CommandParser {
 
 	}
 
+	//get the Singleton CommandParser
 	public static CommandParser getInstance() {
 		if (instance == null) {
 			instance = new CommandParser();
@@ -24,6 +25,7 @@ public class CommandParser {
 		return instance;
 	}
 
+	//parse an input to make a Command
 	public Command parseInputToMakeCommand(String userCommand) {
 
 		parserLogger.log(Level.INFO, "Input passed to make Command");
@@ -34,6 +36,7 @@ public class CommandParser {
 
 	}
 	
+	//given a commandWord and commandContent, determine commandType and make Command
 	//@author A0115777W
 	private Command makeCommand(String commandWord, String commandContent) {
 		if (commandWord.equalsIgnoreCase("add")) {
@@ -69,6 +72,7 @@ public class CommandParser {
 		}
 	}
 
+	//given a line of Command, give the commandType
 	public CommandType getCommandType(String userCommand) {
 
 		String command = ParserUtility.getFirstWord(userCommand);
@@ -106,6 +110,7 @@ public class CommandParser {
 		}
 	}
 
+	//given a line of Command, give the commandContent
 	public String getCommandContent(String userCommand) {
 		String currentContent = ParserUtility.removeFirstWord(userCommand);
 		return currentContent;

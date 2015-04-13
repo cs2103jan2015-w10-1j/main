@@ -7,6 +7,8 @@ import com.done.storage.InMemStorage;
 
 public class CommandDelete extends Command {
 
+	private static final String MESSAGE_CREATION = "Delete Command Created"; 
+
 	private int deleteIndex;
 	private Done task;
 
@@ -18,13 +20,13 @@ public class CommandDelete extends Command {
 			throw new Exception("Too large Destination Index Value");
 		}
 		this.deleteIndex = deleteIndex;
-		commandLogger.log(Level.INFO, "Delete Command Created");
+		commandLogger.log(Level.INFO, MESSAGE_CREATION);
 	}
 
 	public CommandDelete(Done task) {
 		super(CommandType.DELETE, true);
 		this.task = task;
-		commandLogger.log(Level.INFO, "Delete Command Created");
+		commandLogger.log(Level.INFO, MESSAGE_CREATION);
 	}
 
 	//@author A0111830X

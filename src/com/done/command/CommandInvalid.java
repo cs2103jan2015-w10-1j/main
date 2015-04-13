@@ -4,13 +4,13 @@ import java.util.logging.Level;
 
 public class CommandInvalid extends Command {
 	
-	private static final String MESSAGE_INVALID = "The command does not work:(";
+	private static final String MESSAGE_CREATION = "Invalid Command Created"; 
 	private static final String EMPTY_STRING = "";
 	
 	//@author A0115777W
 	public CommandInvalid(){
 		super(CommandType.INVALID, false);
-		commandLogger.log(Level.INFO, "Invalid Command Created");
+		commandLogger.log(Level.INFO, MESSAGE_CREATION);
 
 	}
 

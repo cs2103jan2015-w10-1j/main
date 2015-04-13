@@ -13,6 +13,8 @@ import com.done.storage.InMemStorage;
 
 public class CommandRecur extends Command {
 	
+	private static final String MESSAGE_CREATION = "Recur Command Created"; 
+
 	private Done task;
 	private String frequency;
 	private int numberToStop;
@@ -107,7 +109,7 @@ public class CommandRecur extends Command {
 		this.task = InMemStorage.getInstance().getTask(recurIndex);
 		this.frequency = period;
 		this.numberToStop = numberToStop;
-		commandLogger.log(Level.INFO, "Recur Command Created");
+		commandLogger.log(Level.INFO, MESSAGE_CREATION);
 	}
 
 	public CommandRecur(Done task, String period, int numberToStop){
@@ -115,7 +117,7 @@ public class CommandRecur extends Command {
 		this.task = task;
 		this.frequency = period;
 		this.numberToStop = numberToStop;
-		commandLogger.log(Level.INFO, "Recur Command Created");
+		commandLogger.log(Level.INFO, MESSAGE_CREATION);
 	}
 	
 	//@author A0115635J

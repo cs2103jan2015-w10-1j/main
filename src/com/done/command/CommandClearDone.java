@@ -7,18 +7,17 @@ import com.done.storage.InMemStorage;
 public class CommandClearDone extends Command {
 	
 	private static final String EMPTY_STRING = "";
+	private static final String MESSAGE_CREATION = "ClearDone Command Created"; 
 
 	//@author A0115777W
 	public CommandClearDone(){
 		super(CommandType.CLEARDONE,false);
-		commandLogger.log(Level.INFO, "ClearDone Command Created");
+		commandLogger.log(Level.INFO, MESSAGE_CREATION);
 	}
 
 	@Override
 	public void execute() throws Exception {
-		commandLogger.log(Level.INFO, "Cleardone Command Execution called");
 		InMemStorage.getInstance().clearDoneTasks();
-		commandLogger.log(Level.INFO, "cleardone Command Execution succeeded");
 	}
 
 	//undo not required in CLEARDONE

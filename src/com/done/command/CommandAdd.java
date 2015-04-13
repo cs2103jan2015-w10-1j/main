@@ -12,6 +12,8 @@ public class CommandAdd extends Command {
 
 	private Done task;
 	private TaskReminder reminderTask;
+	
+	private static final String MESSAGE_CREATION = "Add Command Created"; 
 
 	//@author A0115777W
 	public CommandAdd(Done task) {
@@ -22,7 +24,7 @@ public class CommandAdd extends Command {
 			this.reminderTask = new TaskReminder((DoneTimedTask) task);
 		}
 		
-		commandLogger.log(Level.INFO, "Add Command Created");
+		commandLogger.log(Level.INFO, MESSAGE_CREATION);
 	}
 
 	public Done getTask() {

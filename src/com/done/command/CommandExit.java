@@ -4,6 +4,8 @@ import java.util.logging.Level;
 
 public class CommandExit extends Command {
 	
+	private static final String MESSAGE_CREATION = "Exit Command Created"; 
+
 	private boolean isNormal;
 	private static final int STATUS_NORMAL = 0;
 	private static final int STATUS_ABNORMAL = 1;
@@ -13,7 +15,7 @@ public class CommandExit extends Command {
 	public CommandExit(boolean isNormal){
 		super(CommandType.EXIT,false);
 		this.isNormal = isNormal;
-		commandLogger.log(Level.INFO, "Exit Command Created");
+		commandLogger.log(Level.INFO, MESSAGE_CREATION);
 	}
 
 	@Override

@@ -33,6 +33,7 @@ public class DoneUI extends Application {
 		try {
 			final FXMLLoader loader = new FXMLLoader(getClass().getResource(FXML_FILE));
 	        AnchorPane anchorPane = (AnchorPane) loader.load();
+	        assert anchorPane != null;
 	        Scene scene = new Scene(anchorPane);
 	        
 	        primaryStage.getIcons().add(new Image(getClass().getResourceAsStream(ICON_FILE)));
@@ -42,6 +43,7 @@ public class DoneUI extends Application {
 	        primaryStage.show();
 	        
 	        UIController controller = loader.getController();
+	        assert controller != null;
 	        controller.setStage(primaryStage);
 	        
 	        Notifications.create().text(String.format(LOAD_SUCCESS_MESSAGE, logicFacade.getJsonName().substring(7))).showInformation();

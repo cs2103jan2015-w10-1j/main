@@ -9,7 +9,8 @@ import com.done.task.TaskReminder;
 
 public class CommandRemind extends Command {
 	
-	private int remindIndex;
+	private static final String MESSAGE_CREATION = "Remind Command Created"; 
+
 	private Done task;
 	private String date;
 	private String time;
@@ -23,17 +24,14 @@ public class CommandRemind extends Command {
 			throw new Exception("Too large Destination Index Value");
 		}
 		this.task = InMemStorage.getInstance().getTask(remindIndex);
-		this.remindIndex = remindIndex;
 		this.date = date;
 		this.time = time;
-		commandLogger.log(Level.INFO, "Remind Command Created");
+		commandLogger.log(Level.INFO, MESSAGE_CREATION);
 	}
 
 	@Override
 	public void execute() throws Exception {
-		commandLogger.log(Level.INFO, "Remind Command called");
 		this.reminderTask = new TaskReminder(task, date, time);
-		commandLogger.log(Level.INFO, "Remind Command successfully executed");
 	}
 
 	@Override

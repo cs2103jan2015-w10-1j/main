@@ -13,13 +13,15 @@ import com.done.storage.InMemStorage;
 
 public class CommandSearch extends Command {
 
+	private static final String MESSAGE_CREATION = "Search Command Created"; 
+
 	private String searchString;
 
 	//@author A0115777W
 	public CommandSearch(String searchString) {
 		super(CommandType.SEARCH, false);
 		this.searchString = searchString;
-		commandLogger.log(Level.INFO, "Search Command Created");
+		commandLogger.log(Level.INFO, MESSAGE_CREATION);
 	}
 
 	public String getSearchString() {

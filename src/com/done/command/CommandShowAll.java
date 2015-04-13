@@ -8,16 +8,17 @@ import com.done.storage.InMemStorage;
 
 public class CommandShowAll extends Command {
 	
+	private static final String MESSAGE_CREATION = "ShowAll Command Created"; 
 	private static final String EMPTY_STRING = "";
 
 	//@author A0115777W
 	public CommandShowAll() {
 		super(CommandType.SHOWALL, false);
+		commandLogger.log(Level.INFO, MESSAGE_CREATION);
 	}
 
 	@Override
 	public void execute() {
-		commandLogger.log(Level.INFO, "Showall Command called");
 		InMemStorage memory = InMemStorage.getInstance();
 		List<Done> tasks = memory.getTasks();
 		memory.emptyWorkingTasks();
@@ -25,7 +26,6 @@ public class CommandShowAll extends Command {
 		for (int i = 0; i < tasks.size(); i++) {
 			memory.addIntoWorkingTask(tasks.get(i));
 		}
-		commandLogger.log(Level.INFO, "Showall Command successful");
 	}
 
 	@Override

@@ -8,6 +8,8 @@ import com.done.storage.InMemStorage;
 
 public class CommandMove extends Command {
 
+	private static final String MESSAGE_CREATION = "Move Command Created"; 
+
 	private int origin;
 	private int destination;
 	private static final String MOVE_COMMAND_CONTENT = "%1$s to %2$s";
@@ -21,24 +23,18 @@ public class CommandMove extends Command {
 		}
 		this.origin = origin - 1;
 		this.destination = destination - 1;
-		commandLogger.log(Level.INFO, "Move Command Created");
+		commandLogger.log(Level.INFO, MESSAGE_CREATION);
 	}
 
 	@Override
 	public void execute() throws Exception {
-		commandLogger.log(Level.INFO, "Move Command Execution called");
 		InMemStorage memory = InMemStorage.getInstance();
-		// List<Done> tasks = memory.getTasks();
-		// swap(tasks, origin, destination);
 		memory.move(origin, destination);
-		commandLogger.log(Level.INFO, "Move Command Execution Successful");
 	}
 
 	@Override
 	public void undo() throws Exception {
 		InMemStorage memory = InMemStorage.getInstance();
-		// List<Done> tasks = memory.getTasks();
-		// swap(tasks, destination, origin);
 		memory.move(destination, origin);
 	}
 

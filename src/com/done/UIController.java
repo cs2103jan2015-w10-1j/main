@@ -91,6 +91,29 @@ public class UIController {
 	private static final String SHOWINVALIDCOMMAND_ERROR_MESSAGE = "Error: Invalid command";
 	private static final String SHOWINVALIDCOMMAND_LOG_MESSAGE = "Show UI for invalid command";
 	
+	private static final String STYLECLASS_FIRSTCOLUMN = "firstColumn";
+	private static final String STYLECLASS_DONEROW = "doneRow";
+	
+	private static final int ENDTIME_LENGTH = 12;
+	
+	private static final double ID_COL_WIDTH = 50.0;
+	private static final double TITLE_COL_WIDTH = 280.0;
+	private static final double STARTTIME_COL_WIDTH = 85.0;
+	private static final double ENDTIME_COL_WIDTH = 85.0;
+	private static final double DEADLINE_COL_WIDTH = 130.0;
+	
+	private static final String ID_COL_TEXT = "No.";
+	private static final String TITLE_COL_TEXT = "Task";
+	private static final String STARTTIME_COL_TEXT = "Start";
+	private static final String ENDTIME_COL_TEXT = "End";
+	private static final String DEADLINE_COL_TEXT = "Deadline";
+	
+	private static final String ID_COL_VALUEFACT = "id";
+	private static final String TITLE_COL_VALUEFACT = "title";
+	private static final String STARTTIME_COL_VALUEFACT = "startTime";
+	private static final String ENDTIME_COL_VALUEFACT = "endTime";
+	private static final String DEADLINE_COL_VALUEFACT = "endTime";
+	
 	//@author A0088821X
 	public UIController(){
 		logicFacade = new LogicFacade();
@@ -318,31 +341,31 @@ public class UIController {
 	}
 
 	private void buildTableColumns() {
-		TableColumn<Done,Integer> idCol = new TableColumn<Done,Integer>("No.");
-		idCol.setCellValueFactory(new PropertyValueFactory("id"));
-		idCol.setPrefWidth(50.0);
+		TableColumn<Done,Integer> idCol = new TableColumn<Done,Integer>(ID_COL_TEXT);
+		idCol.setCellValueFactory(new PropertyValueFactory(ID_COL_VALUEFACT));
+		idCol.setPrefWidth(ID_COL_WIDTH);
 		idCol.setResizable(false);
 		
-		TableColumn<Done,String> titleCol = new TableColumn<Done,String>("Task");
-		titleCol.setCellValueFactory(new PropertyValueFactory("title"));
-		titleCol.setPrefWidth(280.0);
+		TableColumn<Done,String> titleCol = new TableColumn<Done,String>(TITLE_COL_TEXT);
+		titleCol.setCellValueFactory(new PropertyValueFactory(TITLE_COL_VALUEFACT));
+		titleCol.setPrefWidth(TITLE_COL_WIDTH);
 		titleCol.setResizable(false);
 		
-		TableColumn<Done,String> startTimeCol = new TableColumn<Done,String>("Start");
-		startTimeCol.setCellValueFactory(new PropertyValueFactory("startTime"));
-		startTimeCol.setPrefWidth(85.0);
+		TableColumn<Done,String> startTimeCol = new TableColumn<Done,String>(STARTTIME_COL_TEXT);
+		startTimeCol.setCellValueFactory(new PropertyValueFactory(STARTTIME_COL_VALUEFACT));
+		startTimeCol.setPrefWidth(STARTTIME_COL_WIDTH);
 		startTimeCol.setResizable(false);
 		
-		TableColumn<Done,String> endTimeCol = new TableColumn<Done,String>("End");
-		endTimeCol.setCellValueFactory(new PropertyValueFactory("endTime"));
+		TableColumn<Done,String> endTimeCol = new TableColumn<Done,String>(ENDTIME_COL_TEXT);
+		endTimeCol.setCellValueFactory(new PropertyValueFactory(ENDTIME_COL_VALUEFACT));
 		setCellFactoryEndTimeCol(endTimeCol);
-		endTimeCol.setPrefWidth(85.0);
+		endTimeCol.setPrefWidth(ENDTIME_COL_WIDTH);
 		endTimeCol.setResizable(false);
 		
-		TableColumn<Done,String> deadlineCol = new TableColumn<Done,String>("Deadline");
-		deadlineCol.setCellValueFactory(new PropertyValueFactory("endTime"));
+		TableColumn<Done,String> deadlineCol = new TableColumn<Done,String>(DEADLINE_COL_TEXT);
+		deadlineCol.setCellValueFactory(new PropertyValueFactory(DEADLINE_COL_VALUEFACT));
 		setCellFactoryDeadlineCol(deadlineCol);
-		deadlineCol.setPrefWidth(128.0);
+		deadlineCol.setPrefWidth(DEADLINE_COL_WIDTH);
 		deadlineCol.setResizable(false);
 		
 		tableViewTasks.getColumns().setAll(idCol, titleCol, startTimeCol, endTimeCol, deadlineCol);
@@ -360,7 +383,7 @@ public class UIController {
 		                if(empty){
 		                	this.setText(EMPTY_STRING);
 		                } else{
-		                	if(item != null && item.length() > 12){
+		                	if(item != null && item.length() > ENDTIME_LENGTH){
 		                		this.setText(item); 
 		                	} else{
 		                		this.setText(EMPTY_STRING);
@@ -385,7 +408,7 @@ public class UIController {
 		                if(empty){
 		                	this.setText(EMPTY_STRING);
 		                } else{
-		                	if(item != null && item.length() == 12){
+		                	if(item != null && item.length() == ENDTIME_LENGTH){
 		                		this.setText(item); 
 		                	} else{
 		                		this.setText(EMPTY_STRING);
@@ -407,14 +430,14 @@ public class UIController {
 	                protected void updateItem(Done task, boolean empty){
 	                    super.updateItem(task, empty);
 	                    if(task == null || empty){
-	                    	 getStyleClass().removeAll(Collections.singleton("doneRow"));
+	                    	 getStyleClass().removeAll(Collections.singleton(STYLECLASS_DONEROW));
 	                    } else{
 		                    if(task.isCompleted()){
-		                    	if (!getStyleClass().contains("doneRow")) {
-		                            getStyleClass().add("doneRow");
+		                    	if (!getStyleClass().contains(STYLECLASS_DONEROW)) {
+		                            getStyleClass().add(STYLECLASS_DONEROW);
 		                    	}
 		                    } else{
-		                    	 getStyleClass().removeAll(Collections.singleton("doneRow"));
+		                    	 getStyleClass().removeAll(Collections.singleton(STYLECLASS_DONEROW));
 		                    }
 	                    }
 	                   
@@ -423,8 +446,8 @@ public class UIController {
 	            return row;
 	        }
 	    });
-		if(!tableViewTasks.getColumns().get(0).getStyleClass().contains("firstColumn")){
-			tableViewTasks.getColumns().get(0).getStyleClass().add("firstColumn");
+		if(!tableViewTasks.getColumns().get(0).getStyleClass().contains(STYLECLASS_FIRSTCOLUMN)){
+			tableViewTasks.getColumns().get(0).getStyleClass().add(STYLECLASS_FIRSTCOLUMN);
 		}
 	}
 	
@@ -444,7 +467,7 @@ public class UIController {
 	//Reminder UI is handled directly in TaskReminder class
 	/*public void updateReminder(int taskId){
 		String reminder = logicFacade.getReminder(taskId);
-		Notifications.create().title("Task Reminder").text(String.format(UPDATEREMINDER_MESSAGE, reminder)).showWarning();
+		Notifications.create().title(UPDATEREMINDER_TITLE).text(String.format(UPDATEREMINDER_MESSAGE, reminder)).showWarning();
 		highlightReminderRow(taskId);
 	}
 
@@ -457,8 +480,8 @@ public class UIController {
 	                protected void updateItem(Done task, boolean empty){
 	                    super.updateItem(task, empty);
 		                if(task.getId() == taskId){
-		                	if (!getStyleClass().contains("reminderRow")) {
-		                            getStyleClass().add("reminderRow");
+		                	if (!getStyleClass().contains(STYLECLASS_REMINDERROW)) {
+		                            getStyleClass().add(STYLECLASS_REMINDERROW);
 		                    }
 	                    }
 	                }

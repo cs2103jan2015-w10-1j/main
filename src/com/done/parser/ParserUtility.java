@@ -31,6 +31,7 @@ import com.done.model.DoneTimedTask;
 
 public class ParserUtility {
 	
+	//constants for processing content
 	private static final int FIRST_ARGUMENT_POSITION = 0;
 	private static final int SECOND_ARGUMENT_POSITION = 1;
 	private static final int THIRD_ARGUMENT_POSITION = 2;
@@ -38,13 +39,36 @@ public class ParserUtility {
 	private static final int SHORT_DATE_LENGTH = 4;
 	private static final int TIME_LENGTH = 4;
 	
-	private static Logger parserLogger = Logger.getLogger("CommandParser");
+	//String messages for Logging purposes
+	private static final String MESSAGE_MAKE_ADD = "make add Command";
+	private static final String MESSAGE_MAKE_DELETE = "make delete Command";
+	private static final String MESSAGE_MAKE_EDIT = "make edit Command";
+	private static final String MESSAGE_MAKE_CLEAR = "make clear Command";
+	private static final String MESSAGE_MAKE_MOVE = "make move Command";
+	private static final String MESSAGE_MAKE_SEARCH = "make search Command";
+	private static final String MESSAGE_MAKE_SHOWALL = "make showall Command";
+	private static final String MESSAGE_MAKE_DONE = "make done Command";
+	private static final String MESSAGE_MAKE_CLEARDONE = "make cleardone Command";
+	private static final String MESSAGE_MAKE_RECUR = "make recur Command";
+	private static final String MESSAGE_MAKE_REMIND = "make remind Command";
+	private static final String MESSAGE_MAKE_LOAD = "make load Command";
+	private static final String MESSAGE_MAKE_UNDO = "make undo Command";
+	private static final String MESSAGE_MAKE_EXIT = "make exit Command";
+	private static final String MESSAGE_MAKE_INVALID = "make invalid Command";
+	private static final String MESSAGE_MAKE_TIMED = "make Timed Task";
+	private static final String MESSAGE_MAKE_DEADLINE = "make Deadline Task";
+	private static final String MESSAGE_MAKE_FLOATING = "make Floating Task";
+	private static final String MESSAGE_INVALID_CONTENT = "content is invalid";
+	private static final String MESSAGE_VALID_CONTENT = "content is valid";
+
+
+	private static Logger parserUtilityLogger = Logger.getLogger("CommandParser");
 	
 	//The methods to make respective Commands. 
 	//May return a CommandInvalid if the content is not correct
 	//@author A0115777W
 	protected static Command makeAdd(String content){
-		parserLogger.log(Level.INFO, "make add Command");
+		parserUtilityLogger.log(Level.INFO, MESSAGE_MAKE_ADD);
 		try{
 			Done tempTask = defineTask(content);
 			return new CommandAdd(tempTask);
@@ -54,7 +78,7 @@ public class ParserUtility {
 	}
 	
 	protected static Command makeDelete(String content){
-		parserLogger.log(Level.INFO, "make delete Command");
+		parserUtilityLogger.log(Level.INFO, MESSAGE_MAKE_DELETE);
 		if (isPositiveInt(content)) {
 			try{
 				return new CommandDelete(Integer.parseInt(content));
@@ -67,7 +91,7 @@ public class ParserUtility {
 	}
 
 	protected static Command makeEdit(String content){
-		parserLogger.log(Level.INFO, "make edit Command");
+		parserUtilityLogger.log(Level.INFO, MESSAGE_MAKE_EDIT);
 		String indexString = getFirstWord(content);
 		if (isPositiveInt(indexString)) {
 			try{
@@ -75,17 +99,15 @@ public class ParserUtility {
 				Done changedTask = defineTask(removeFirstWord(content));
 				return new CommandEdit(index, changedTask);
 			}catch (Exception e){
-				parserLogger.log(Level.INFO, "make invalid Command instead");
 				return new CommandInvalid();
 			}
 		} else {
-			parserLogger.log(Level.INFO, "make invalid Command instead");
 			return new CommandInvalid();
 		}
 	}
 	
 	protected static Command makeClear(String content){
-		parserLogger.log(Level.INFO, "make clear Command");
+		parserUtilityLogger.log(Level.INFO, MESSAGE_MAKE_CLEAR);
 		if(content.equals("")){
 			return new CommandClear();
 		}else{
@@ -94,7 +116,7 @@ public class ParserUtility {
 	}
 	
 	protected static Command makeMove(String content){
-		parserLogger.log(Level.INFO, "make move Command");
+		parserUtilityLogger.log(Level.INFO, MESSAGE_MAKE_MOVE);
 		ArrayList<String> indexes = sliceContent(content);
 		if ((isPositiveInt(indexes.get(FIRST_ARGUMENT_POSITION)))
 				&& (isPositiveInt(indexes.get(SECOND_ARGUMENT_POSITION)))) {
@@ -106,23 +128,22 @@ public class ParserUtility {
 				return new CommandInvalid();
 			}
 		} else {
-			parserLogger.log(Level.INFO, "make invalid Command instead");
 			return new CommandInvalid();
 		}
 	}
 	
 	protected static Command makeSearch(String content){
-		parserLogger.log(Level.INFO, "make search Command");
+		parserUtilityLogger.log(Level.INFO, MESSAGE_MAKE_SEARCH);
 		return new CommandSearch(content);
 	}
 	
 	protected static Command makeShowAll(){
-		parserLogger.log(Level.INFO, "make showall Command");
+		parserUtilityLogger.log(Level.INFO, MESSAGE_MAKE_SHOWALL);
 		return new CommandShowAll();
 	}
 	
 	protected static Command makeDone(String content){
-		parserLogger.log(Level.INFO, "make done Command");
+		parserUtilityLogger.log(Level.INFO, MESSAGE_MAKE_DONE);
 		if (isPositiveInt(content)) {
 			try{
 				return new CommandDone(Integer.parseInt(content));
@@ -135,12 +156,12 @@ public class ParserUtility {
 	}
 	
 	protected static Command makeClearDone(){
-		parserLogger.log(Level.INFO, "make cleardone Command");
+		parserUtilityLogger.log(Level.INFO, MESSAGE_MAKE_CLEARDONE);
 		return new CommandClearDone();
 	}
 	
 	protected static Command makeRecur(String content){
-		parserLogger.log(Level.INFO, "make recur Command");
+		parserUtilityLogger.log(Level.INFO, MESSAGE_MAKE_RECUR);
 		ArrayList<String> contents = sliceContent(content);
 		String index = contents.get(FIRST_ARGUMENT_POSITION);
 		String period = contents.get(SECOND_ARGUMENT_POSITION);
@@ -157,7 +178,7 @@ public class ParserUtility {
 	}
 	
 	protected static Command makeRemind(String content){
-		parserLogger.log(Level.INFO, "make remind Command");
+		parserUtilityLogger.log(Level.INFO, MESSAGE_MAKE_REMIND);
 		try {
 			ArrayList<String> contents = sliceContent(content);
 			String index = contents.get(FIRST_ARGUMENT_POSITION);
@@ -169,28 +190,27 @@ public class ParserUtility {
 				return new CommandInvalid();
 			}
 		} catch (Exception e) {
-			parserLogger.log(Level.INFO, "make invalid Command instead");
 			return new CommandInvalid();
 		}
 	}
 	
 	protected static Command makeLoad(String content){
-		parserLogger.log(Level.INFO, "make load Command");
+		parserUtilityLogger.log(Level.INFO, MESSAGE_MAKE_LOAD);
 		return new CommandLoad(content);
 	}
 	
 	protected static Command makeUndo(){
-		parserLogger.log(Level.INFO, "make undo Command");
+		parserUtilityLogger.log(Level.INFO, MESSAGE_MAKE_UNDO);
 		return new CommandUndo();
 	}
 	
 	protected static Command makeExit(){
-		parserLogger.log(Level.INFO, "make exit Command");
+		parserUtilityLogger.log(Level.INFO, MESSAGE_MAKE_EXIT);
 		return new CommandExit(true);
 	}
 	
 	protected static Command makeInvalid(){				
-		parserLogger.log(Level.INFO, "make invalid Command");
+		parserUtilityLogger.log(Level.INFO, MESSAGE_MAKE_INVALID);
 		return new CommandInvalid();
 	}
 	//End of Command Maker Methods
@@ -218,8 +238,7 @@ public class ParserUtility {
 					split.add(i + 1, currentDate);
 				} else if (!isValidDate(split.get(i + 1))
 						|| !isValidTime(split.get(i + 2))) {
-					parserLogger.log(Level.INFO, "invalid");
-					throw new Exception("Invalid input");
+					throw new Exception("Invalid Input");
 				}
 				startDateIndex = i + 1;
 				startTimeIndex = i + 2;
@@ -233,8 +252,7 @@ public class ParserUtility {
 					split.add(i + 1, currentDate);
 				} else if (!isValidDate(split.get(i + 1))
 						|| !isValidTime(split.get(i + 2))) {
-					parserLogger.log(Level.INFO, "invalid");
-					throw new Exception("Invalid input");
+					throw new Exception("Invalid Input");
 				}
 				endDateIndex = i + 1;
 				endTimeIndex = i + 2;
@@ -261,7 +279,7 @@ public class ParserUtility {
 			// if content contains end time and/or start time
 			// we generate (new) timedTask
 			// and return timedTask
-			parserLogger.log(Level.INFO, "make Timed Task");
+			parserUtilityLogger.log(Level.INFO, MESSAGE_MAKE_TIMED);
 			task = addTimed(split, startDateIndex, startTimeIndex,
 					endDateIndex, endTimeIndex);
 			return task;
@@ -270,7 +288,7 @@ public class ParserUtility {
 			// if content has date and time
 			// we generate new deadlineTask
 			// and return deadlineTask
-			parserLogger.log(Level.INFO, "make Deadline Task");
+			parserUtilityLogger.log(Level.INFO, MESSAGE_MAKE_DEADLINE);
 			task = addDeadline(split, endTimeIndex, endDateIndex);
 			return task;
 		}
@@ -278,7 +296,7 @@ public class ParserUtility {
 			// if content isn't null or ""
 			// we generate new floatingTask
 			// we return floatingTask
-			parserLogger.log(Level.INFO, "make Floating Task");
+			parserUtilityLogger.log(Level.INFO, MESSAGE_MAKE_FLOATING);
 			task = new DoneFloatingTask(commandContent);
 			return task;
 		}
@@ -386,42 +404,44 @@ public class ParserUtility {
 	//@author A0115777W-unused
 	protected static boolean isContentValid(String commandWord, String commandContent) {
 		if (commandWord.equalsIgnoreCase("add")) {
-			parserLogger.log(Level.INFO, "Command Content is Valid");
 			return true;
 		} else if (commandWord.equalsIgnoreCase("delete")
 				|| commandWord.equalsIgnoreCase("done")
 				|| commandWord.equalsIgnoreCase("move")) {
 			return isPositiveInt(commandContent);
 		} else {
-			parserLogger.log(Level.INFO, "Command Content is invalid");
 			return false;
 		}
 	}
 	
 	//@author A0115777W
 	protected static boolean isValidTime(String time){
-		parserLogger.log(Level.INFO, "test Valid Time");
 		if(time.length()!=TIME_LENGTH){
+			parserUtilityLogger.log(Level.INFO, MESSAGE_INVALID_CONTENT);
 			return false;
 		}
 		int hour = Integer.parseInt(time.substring(0,2));
 		int minute = Integer.parseInt(time.substring(2, 4));
         if(hour<0||hour>24){
+			parserUtilityLogger.log(Level.INFO, MESSAGE_INVALID_CONTENT);
 			return false;
 		}else if(minute<0||minute>60){
+			parserUtilityLogger.log(Level.INFO, MESSAGE_INVALID_CONTENT);
 			return false;
 		}
+		parserUtilityLogger.log(Level.INFO, MESSAGE_VALID_CONTENT);
         return true;
 	}
 	
 	private static boolean isValidDate(String date){
-		parserLogger.log(Level.INFO, "test Valid Date");
 		DateTimeFormatter dtf = DateTimeFormat.forPattern("ddMMyyyy");
 		if(date.length()==LONG_DATE_LENGTH){
 			try{
 				DateTime parsedDate = dtf.parseDateTime(date);
+				parserUtilityLogger.log(Level.INFO, MESSAGE_VALID_CONTENT);
 				return true;
 			}catch (IllegalArgumentException e){
+				parserUtilityLogger.log(Level.INFO, MESSAGE_INVALID_CONTENT);
 				return false;
 			}
 		}
@@ -430,8 +450,10 @@ public class ParserUtility {
 
 			try{
 				DateTime parsedDate = dtf.parseDateTime(date+currentYear);
+				parserUtilityLogger.log(Level.INFO, MESSAGE_VALID_CONTENT);
 				return true;
 			}catch (IllegalArgumentException e){
+				parserUtilityLogger.log(Level.INFO, MESSAGE_INVALID_CONTENT);
 				return false;
 			}
 		}
@@ -444,7 +466,7 @@ public class ParserUtility {
 			int i = Integer.parseInt(content);
 			return (i > 0 ? true : false);
 		} catch (NumberFormatException nfe) {
-			parserLogger.log(Level.INFO, "Command Content is invalid");
+			parserUtilityLogger.log(Level.INFO, MESSAGE_INVALID_CONTENT);
 			return false;
 		}
 	}
