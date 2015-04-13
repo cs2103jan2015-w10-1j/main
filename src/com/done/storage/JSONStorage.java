@@ -18,8 +18,8 @@ import com.google.gson.GsonBuilder;
 import com.google.gson.JsonIOException;
 import com.google.gson.reflect.TypeToken;
 
-public class JSONStorage {
-	private static JSONStorage instance = null;
+public class JsonStorage {
+	private static JsonStorage instance = null;
 
 	private static final String DIR_PREF = "prefs//";
 	private static final String DIR_TASKS = "tasks//";
@@ -40,7 +40,7 @@ public class JSONStorage {
 	private String jsonName;
 	private boolean isNewJson;
 
-	private JSONStorage() {
+	private JsonStorage() {
 		setUpDirectories();
 		this.gson = new GsonBuilder()
 				.registerTypeAdapter(Done.class, new DoneAdapter())
@@ -50,9 +50,9 @@ public class JSONStorage {
 		isNewJson = false;
 	}
 
-	public static synchronized JSONStorage getInstance() {
+	public static synchronized JsonStorage getInstance() {
 		if (instance == null) {
-			instance = new JSONStorage();
+			instance = new JsonStorage();
 		}
 
 		return instance;
@@ -98,7 +98,7 @@ public class JSONStorage {
 			} catch (JsonIOException e) {
 				StorageLogger.getStorageLogger().log(Level.WARNING,
 						ERROR_READ_JSON_FILE, e);
-				// if JSONIOException occurs, return an empty List of Done
+				// if JsonIOException occurs, return an empty List of Done
 				return new ArrayList<Done>();
 			}
 			return tasks;

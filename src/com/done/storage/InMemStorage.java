@@ -31,11 +31,11 @@ public class InMemStorage {
 	private List<Done> workingTasks;
 	private Stack<Command> undoStack;
 
-	private JSONStorage jsonStorage;
+	private JsonStorage jsonStorage;
 
 	private InMemStorage() {
 		StorageLogger.setUpLogger();
-		jsonStorage = JSONStorage.getInstance();
+		jsonStorage = JsonStorage.getInstance();
 		this.setTasks(jsonStorage.load());
 		this.undoStack = new Stack<Command>();
 		workingTasks = tasks;

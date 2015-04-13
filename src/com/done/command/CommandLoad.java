@@ -3,7 +3,7 @@ package com.done.command;
 import java.util.logging.Level;
 
 import com.done.storage.InMemStorage;
-import com.done.storage.JSONStorage;
+import com.done.storage.JsonStorage;
 
 public class CommandLoad extends Command {
 	
@@ -22,7 +22,7 @@ public class CommandLoad extends Command {
 	//@author A0111830X
 	@Override
 	public void execute() {
-		JSONStorage jsonPref = JSONStorage.getInstance();
+		JsonStorage jsonPref = JsonStorage.getInstance();
 		InMemStorage inMemStorage = InMemStorage.getInstance();
 
 		jsonPref.setJsonNameToPref(DIR_TASKS + jsonName);

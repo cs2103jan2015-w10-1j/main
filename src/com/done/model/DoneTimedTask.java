@@ -31,6 +31,12 @@ public class DoneTimedTask extends Done {
 		SimpleDateFormat sdf = new SimpleDateFormat("d MMM HH:mm");
 		return sdf.format(startTime);
 	}
+	// This method returns you a ddMMyy
+	public String getDateString(){
+		SimpleDateFormat sdf = new SimpleDateFormat("ddMMyyyy");
+		return sdf.format(startTime);
+		
+	}
 
 	//@author A0111830X
 	public long getStartTimeLong() {

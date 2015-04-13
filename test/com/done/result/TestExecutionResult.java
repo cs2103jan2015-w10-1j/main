@@ -1,4 +1,3 @@
-//@author A0088821X
 package com.done.result;
 
 import static org.junit.Assert.*;
@@ -9,7 +8,8 @@ import com.done.result.ExecutionResult;
 import com.done.command.Command.CommandType;
 
 public class TestExecutionResult {
-
+	
+	//@author A0088821X
 	@Test
 	public void testExecutionResult() {
 		ExecutionResult result = new ExecutionResult(CommandType.ADD, true, "meet John at 6");
