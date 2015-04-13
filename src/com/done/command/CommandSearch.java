@@ -43,39 +43,37 @@ public class CommandSearch extends Command {
 				memory.addIntoWorkingTask(task);
 			}
 			// check if this is a timedTask
-			else if (task.getType().equals(TaskType.TIMED)){
+			else if (task.getType().equals(TaskType.TIMED)) {
 				// check the event date is equal to searchString
 				DoneTimedTask dtt = (DoneTimedTask) task;
-				if ( dtt.getDateString().equals(searchString)){
-					// memory.addIntoWorkingTask
+				if (dtt.getDateString().equals(searchString)) {
 					memory.addIntoWorkingTask(task);
 				}
 			}
-			
+
 			// check if this is a deadlineTask
-			else if (task.getType().equals(TaskType.DEADLINE)){
-				// check the deadlne date is equal to searchString
+			else if (task.getType().equals(TaskType.DEADLINE)) {
+				// check the deadline date is equal to searchString
 				DoneDeadlineTask ddt = (DoneDeadlineTask) task;
-				if (ddt.getDateString().equals(searchString)){
-					// memory.addIntoWorkingTask
+				if (ddt.getDateString().equals(searchString)) {
 					memory.addIntoWorkingTask(task);
 				}
 			}
 		}
-		
+
 	}
-	
+
 	//@author A0111830X-unused
-	//undo not required in SEARCH
+	// undo not required in SEARCH
 	@Override
 	public void undo() {
 		// UNUSED
 
 	}
-	
+
 	//@author A0088821X
 	@Override
-	public String getCommandContent(){
+	public String getCommandContent() {
 		return searchString;
 	}
 

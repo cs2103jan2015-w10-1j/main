@@ -1,3 +1,4 @@
+//@author A0111830X
 package com.done.storage;
 
 import java.io.File;
@@ -58,7 +59,12 @@ public class JsonStorage {
 		return instance;
 	}
 
-	//@author A0111830X
+	/**
+	 * Return the List of tasks as Done object from JSON file. If file is not
+	 * found, returns an empty list.
+	 * 
+	 * @return List<Done>
+	 */
 	public List<Done> load() {
 		StorageLogger.getStorageLogger().log(Level.INFO, "Load from JSON");
 		FileReader inFileRead = null;
@@ -106,6 +112,13 @@ public class JsonStorage {
 
 	}
 
+	/**
+	 * Stores the List of tasks from memory to JSON file.
+	 * 
+	 * @param task
+	 *            task from memory
+	 * @return whether it is successful in boolean
+	 */
 	public boolean store(List<Done> task) {
 		StorageLogger.getStorageLogger().log(Level.INFO, MESSAGE_STORE_JSON);
 
@@ -124,6 +137,13 @@ public class JsonStorage {
 		}
 	}
 
+	/**
+	 * Set the JSON name to preference file
+	 * 
+	 * @param jsonName
+	 *            JSON name that is to be set
+	 * @return whether it is successful in boolean
+	 */
 	public boolean setJsonNameToPref(String jsonName) {
 		StorageLogger.getStorageLogger().log(Level.INFO,
 				String.format(MESSAGE_SET_JSON_NAME, jsonName));
@@ -141,6 +161,12 @@ public class JsonStorage {
 		}
 	}
 
+	/**
+	 * Retrieve JSON name from preference file If the preference file does not
+	 * exist, create preference file with default JSON filename "tasks.json".
+	 * 
+	 * @return JSON file name
+	 */
 	public String getJsonNameFromPref() {
 
 		try {
