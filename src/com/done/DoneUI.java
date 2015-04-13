@@ -1,4 +1,3 @@
-//@author A0088821X
 package com.done;
 
 
@@ -20,15 +19,18 @@ public class DoneUI extends Application {
 	
 	private static final String STAGE_TITLE = "Done! (%1$s)";
 	private static final String LOAD_SUCCESS_MESSAGE = "%1$s loaded";
+	private static final String FXML_FILE = "UILayout.fxml";
+	private static final String ICON_FILE = "doneicon.png";
 	
+	//@author A0088821X
 	@Override
 	public void start(Stage primaryStage) {
 		try {
-			
-			final FXMLLoader loader = new FXMLLoader(getClass().getResource("UILayout.fxml"));
+			final FXMLLoader loader = new FXMLLoader(getClass().getResource(FXML_FILE));
 	        AnchorPane anchorPane = (AnchorPane) loader.load();
 	        Scene scene = new Scene(anchorPane);
-	        primaryStage.getIcons().add(new Image(getClass().getResourceAsStream("doneicon.png")));
+	        
+	        primaryStage.getIcons().add(new Image(getClass().getResourceAsStream(ICON_FILE)));
 	        primaryStage.setTitle(String.format(STAGE_TITLE, logicFacade.getJsonName().substring(7))); 
 	        primaryStage.setScene(scene);
 	        primaryStage.setResizable(false);

@@ -1,4 +1,3 @@
-//@author A0088821X
 package com.done;
 
 import java.util.Collections;
@@ -22,9 +21,8 @@ import com.done.logic.LogicFacade;
 import com.done.model.Done;
 import com.done.command.Command.CommandType;
 import com.done.result.ExecutionResult;
-import com.done.observer.Observer;
 
-public class UIController implements Observer {
+public class UIController {
 	@FXML 
 	private TextField commandField;
 	
@@ -69,6 +67,7 @@ public class UIController implements Observer {
 	private static final String SHOWINVALIDCOMMAND_ERROR_MESSAGE = "Error: Invalid command";
 	private static final String UPDATEREMINDER_MESSAGE = "Reminder for %1$s";
 	
+	//@author A0088821X
 	public UIController(){
 		logicFacade = new LogicFacade();
 	}
@@ -76,8 +75,6 @@ public class UIController implements Observer {
 	@FXML
 	public void initialize() {
 		display();
-		UIController uiController = new UIController();
-		logicFacade.addUI(uiController);
 		commandField.setOnAction((event) -> {
 			processInput();
 		});
@@ -96,7 +93,6 @@ public class UIController implements Observer {
 		ExecutionResult executionResult = logicFacade.getExecutionResult(userCommand);
 		CommandType currCommandType = executionResult.getCommandType();
 		String commandContent = executionResult.getCommandContent();
-		
 		
 		switch(currCommandType){
 			case ADD:				
@@ -148,41 +144,6 @@ public class UIController implements Observer {
 		commandField.clear();
 	}
 	
-	public void updateReminder(int taskId){
-		String reminder = logicFacade.getReminder(taskId);
-		Notifications.create().title("Task Reminder").text(String.format(UPDATEREMINDER_MESSAGE, reminder)).showWarning();
-		highlightReminderRow(taskId);
-	}
-
-	private void highlightReminderRow(int taskId) {
-		tableViewTasks.setRowFactory(new Callback<TableView<Done>, TableRow<Done>>() {
-	        @Override
-	        public TableRow<Done> call(TableView<Done> tableView) {
-	            final TableRow<Done> row = new TableRow<Done>() {
-	                @Override
-	                protected void updateItem(Done task, boolean empty){
-	                    super.updateItem(task, empty);
-	                    /*if(task == null || empty){
-	                    	 getStyleClass().removeAll(Collections.singleton("reminderRow"));
-	                    }*/
-	                    //else{
-		                    if(task.getId() == taskId){
-		                    	if (!getStyleClass().contains("reminderRow")) {
-		                            getStyleClass().add("reminderRow");
-		                    	}
-		                //    }
-		                    /*else{
-		                    	 getStyleClass().removeAll(Collections.singleton("reminderRow"));
-		                    }*/
-	                    }
-	                   
-	                }
-	            };
-	            return row;
-	        }
-	    });
-	}
-
 	private void showAdd(boolean isSuccessful, String commandContent) {
 		if(isSuccessful){
 			Notifications.create().text(String.format(SHOWADD_SUCCESS_MESSAGE, commandContent)).showInformation();
@@ -196,8 +157,7 @@ public class UIController implements Observer {
 	private void showDelete(boolean isSuccessful, String commandContent) {
 		if(isSuccessful){
 			Notifications.create().text(String.format(SHOWDELETE_SUCCESS_MESSAGE, commandContent)).showInformation();
-		}
-		else{
+		} else{
 			Notifications.create().text(SHOWDELETE_ERROR_MESSAGE).showError();
 		}
 		display();
@@ -206,8 +166,7 @@ public class UIController implements Observer {
 	private void showEdit(boolean isSuccessful, String commandContent) {
 		if(isSuccessful){
 			Notifications.create().text(String.format(SHOWEDIT_SUCCESS_MESSAGE, commandContent)).showInformation();
-		}
-		else{
+		} else{
 			Notifications.create().text(SHOWEDIT_ERROR_MESSAGE).showError();
 		}
 		display();
@@ -217,8 +176,7 @@ public class UIController implements Observer {
 		if(isSuccessful){
 			Notifications.create().text(String.format(SHOWLOAD_SUCCESS_MESSAGE, commandContent)).showInformation();
 			primaryStage.setTitle(String.format(SHOWLOAD_STAGE_TITLE, logicFacade.getJsonName().substring(7)));
-		}
-		else{
+		} else{
 			Notifications.create().text(SHOWLOAD_ERROR_MESSAGE).showError();
 		}
 		display();
@@ -227,8 +185,7 @@ public class UIController implements Observer {
 	private void showClear(boolean isSuccessful) {
 		if(isSuccessful){
 			Notifications.create().text(SHOWCLEAR_SUCCESS_MESSAGE).showInformation();
-		}
-		else{
+		} else{
 			Notifications.create().text(SHOWCLEAR_ERROR_MESSAGE).showError();
 		}
 		display();
@@ -237,8 +194,7 @@ public class UIController implements Observer {
 	private void showMove(boolean isSuccessful, String commandContent){
 		if(isSuccessful){
 			Notifications.create().text(String.format(SHOWMOVE_SUCCESS_MESSAGE, commandContent)).showInformation();
-		}
-		else{
+		} else{
 			Notifications.create().text(SHOWMOVE_ERROR_MESSAGE).showError();
 		}
 		display();
@@ -247,8 +203,7 @@ public class UIController implements Observer {
 	private void showSearch(boolean isSuccessful, String commandContent){
 		if(isSuccessful){
 			Notifications.create().text(String.format(SHOWSEARCH_SUCCESS_MESSAGE, commandContent)).showInformation();
-		}
-		else{	
+		} else{	
 			Notifications.create().text(SHOWSEARCH_ERROR_MESSAGE).showError();
 		}
 		displaySearches();
@@ -262,8 +217,7 @@ public class UIController implements Observer {
 	private void showRecur(boolean isSuccessful, String commandContent){
 		if(isSuccessful){
 			Notifications.create().text(String.format(SHOWRECUR_SUCCESS_MESSAGE, commandContent)).showInformation();
-		}
-		else{
+		} else{
 			Notifications.create().text(SHOWRECUR_ERROR_MESSAGE).showError();
 		}
 		display();
@@ -272,8 +226,7 @@ public class UIController implements Observer {
 	private void showRemind(boolean isSuccessful, String commandContent){
 		if(isSuccessful){
 			Notifications.create().text(String.format(SHOWREMIND_SUCCESS_MESSAGE, commandContent)).showInformation();
-		}
-		else{
+		} else{
 			Notifications.create().text(SHOWREMIND_ERROR_MESSAGE).showError();
 		}
 		display();
@@ -282,8 +235,7 @@ public class UIController implements Observer {
 	private void showUndo(boolean isSuccessful, String commandContent)  {
 		if(isSuccessful){
 			Notifications.create().text(String.format(SHOWUNDO_SUCCESS_MESSAGE, commandContent)).showInformation();
-		}
-		else{
+		} else{
 			Notifications.create().text(SHOWUNDO_ERROR_MESSAGE).showError();
 		}
 		display();
@@ -293,8 +245,7 @@ public class UIController implements Observer {
 	private void showDone(boolean isSuccessful, String commandContent) {
 		if(isSuccessful){
 			Notifications.create().text(String.format(SHOWDONE_SUCCESS_MESSAGE, commandContent)).showInformation();
-		}
-		else{
+		} else{
 			Notifications.create().text(SHOWDONE_ERROR_MESSAGE).showError();
 		}
 		display();
@@ -303,11 +254,9 @@ public class UIController implements Observer {
 	private void showClearDone(boolean isSuccessful) {
 		if(isSuccessful){
 			Notifications.create().text(SHOWCLEARDONE_SUCCESS_MESSAGE).showInformation();
-		}
-		else{
+		} else{
 			Notifications.create().text(SHOWCLEARDONE_ERROR_MESSAGE).showError();
 		}
-		
 		display();
 	}
 
@@ -326,13 +275,6 @@ public class UIController implements Observer {
 		ObservableList<Done> tableTasks = FXCollections.observableArrayList(tasks);		
 		tableViewTasks.setItems(tableTasks);
 		buildTableColumns();
-		
-		/*tableViewTasks.getColumns().get(0).setCellValueFactory(new PropertyValueFactory<>("id"));
-		tableViewTasks.getColumns().get(1).setCellValueFactory(new PropertyValueFactory<>("title"));
-		tableViewTasks.getColumns().get(2).setCellValueFactory(new PropertyValueFactory<>("startTime"));
-		tableViewTasks.getColumns().get(3).setCellValueFactory(new PropertyValueFactory<>("endTime"));
-		tableViewTasks.getColumns().get(4).setCellValueFactory(new PropertyValueFactory<>("endTime"));
-		*/
 	}
 
 	private void buildTableColumns() {
@@ -340,42 +282,33 @@ public class UIController implements Observer {
 		idCol.setCellValueFactory(new PropertyValueFactory("id"));
 		idCol.setPrefWidth(50.0);
 		idCol.setResizable(false);
+		
 		TableColumn<Done,String> titleCol = new TableColumn<Done,String>("Task");
 		titleCol.setCellValueFactory(new PropertyValueFactory("title"));
 		titleCol.setPrefWidth(280.0);
 		titleCol.setResizable(false);
+		
 		TableColumn<Done,String> startTimeCol = new TableColumn<Done,String>("Start");
 		startTimeCol.setCellValueFactory(new PropertyValueFactory("startTime"));
 		startTimeCol.setPrefWidth(85.0);
 		startTimeCol.setResizable(false);
+		
 		TableColumn<Done,String> endTimeCol = new TableColumn<Done,String>("End");
 		endTimeCol.setCellValueFactory(new PropertyValueFactory("endTime"));
-		endTimeCol.setCellFactory(new Callback<TableColumn<Done,String>,TableCell<Done,String>>(){
-			@Override
-		    public TableCell<Done, String> call(TableColumn<Done, String> tableColumn) {
-		        final TableCell<Done, String> cell = new TableCell<Done, String>() {
-		            @Override
-		            protected void updateItem(final String item, boolean empty)
-		            {
-		                super.updateItem(item, empty);
-		                if(empty){
-		                	this.setText(EMPTY_STRING);
-		                }else{
-		                	if(item != null && item.length() == 12){
-		                		this.setText(item); 
-		                	} else{
-		                		this.setText(EMPTY_STRING);
-		                	}
-		                }
-		            }
-		        };
-		        return cell;
-		    }
-		});
+		setCellFactoryEndTimeCol(endTimeCol);
 		endTimeCol.setPrefWidth(85.0);
 		endTimeCol.setResizable(false);
+		
 		TableColumn<Done,String> deadlineCol = new TableColumn<Done,String>("Deadline");
 		deadlineCol.setCellValueFactory(new PropertyValueFactory("endTime"));
+		setCellFactoryDeadlineCol(deadlineCol);
+		deadlineCol.setPrefWidth(128.0);
+		deadlineCol.setResizable(false);
+		
+		tableViewTasks.getColumns().setAll(idCol, titleCol, startTimeCol, endTimeCol, deadlineCol);
+	}
+
+	private void setCellFactoryDeadlineCol(TableColumn<Done, String> deadlineCol) {
 		deadlineCol.setCellFactory(new Callback<TableColumn<Done,String>,TableCell<Done,String>>(){
 			@Override
 		    public TableCell<Done, String> call(TableColumn<Done, String> tableColumn) {
@@ -398,9 +331,31 @@ public class UIController implements Observer {
 		        return cell;
 		    }
 		});
-		deadlineCol.setPrefWidth(128.0);
-		deadlineCol.setResizable(false);
-		tableViewTasks.getColumns().setAll(idCol, titleCol, startTimeCol, endTimeCol, deadlineCol);
+	}
+
+	private void setCellFactoryEndTimeCol(TableColumn<Done, String> endTimeCol) {
+		endTimeCol.setCellFactory(new Callback<TableColumn<Done,String>,TableCell<Done,String>>(){
+			@Override
+		    public TableCell<Done, String> call(TableColumn<Done, String> tableColumn) {
+		        final TableCell<Done, String> cell = new TableCell<Done, String>() {
+		            @Override
+		            protected void updateItem(final String item, boolean empty)
+		            {
+		                super.updateItem(item, empty);
+		                if(empty){
+		                	this.setText(EMPTY_STRING);
+		                }else{
+		                	if(item != null && item.length() == 12){
+		                		this.setText(item); 
+		                	} else{
+		                		this.setText(EMPTY_STRING);
+		                	}
+		                }
+		            }
+		        };
+		        return cell;
+		    }
+		});
 	}
 	
 	private void displaySearches() {
@@ -446,4 +401,32 @@ public class UIController implements Observer {
 			tableViewTasks.getColumns().get(0).getStyleClass().add("firstColumn");
 		}
 	}
+	
+	//@author A0088821X-unused
+	//Reminder UI is handled directly in TaskReminder class
+	/*public void updateReminder(int taskId){
+		String reminder = logicFacade.getReminder(taskId);
+		Notifications.create().title("Task Reminder").text(String.format(UPDATEREMINDER_MESSAGE, reminder)).showWarning();
+		highlightReminderRow(taskId);
+	}
+
+	private void highlightReminderRow(int taskId) {
+		tableViewTasks.setRowFactory(new Callback<TableView<Done>, TableRow<Done>>() {
+	        @Override
+	        public TableRow<Done> call(TableView<Done> tableView) {
+	            final TableRow<Done> row = new TableRow<Done>() {
+	                @Override
+	                protected void updateItem(Done task, boolean empty){
+	                    super.updateItem(task, empty);
+		                if(task.getId() == taskId){
+		                	if (!getStyleClass().contains("reminderRow")) {
+		                            getStyleClass().add("reminderRow");
+		                    }
+	                    }
+	                }
+	            };
+	            return row;
+	        }
+	    });
+	}*/
 }
