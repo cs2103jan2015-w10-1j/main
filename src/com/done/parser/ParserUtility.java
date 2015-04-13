@@ -37,6 +37,7 @@ public class ParserUtility {
 	//May return a CommandInvalid if the content is not correct
 	//@author A0115777W
 	protected static Command makeAdd(String content){
+		parserLogger.log(Level.INFO, "make add Command");
 		try{
 			Done tempTask = defineTask(content);
 			return new CommandAdd(tempTask);
@@ -46,6 +47,7 @@ public class ParserUtility {
 	}
 	
 	protected static Command makeDelete(String content){
+		parserLogger.log(Level.INFO, "make delete Command");
 		if (isPositiveInt(content)) {
 			try{
 				return new CommandDelete(Integer.parseInt(content));
@@ -360,9 +362,10 @@ public class ParserUtility {
 	}
 
 	//@author A0115777W
+	
 	protected static ArrayList<String> sliceContent(String content) {
 		ArrayList<String> slicedContent = new ArrayList<String>();
-		String[] contentPieces = content.split("\\s+");
+		String[] contentPieces = content.trim().split("\\s+");
 		for (String pieceOfContent : contentPieces) {
 			slicedContent.add(pieceOfContent);
 		}

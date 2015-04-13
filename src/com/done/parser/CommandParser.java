@@ -27,8 +27,9 @@ public class CommandParser {
 	public Command parseInputToMakeCommand(String userCommand) {
 
 		parserLogger.log(Level.INFO, "Input passed to make Command");
-		String commandWord = ParserUtility.getFirstWord(userCommand);
-		String commandContent = ParserUtility.removeFirstWord(userCommand);
+		String command = userCommand.trim();
+		String commandWord = ParserUtility.getFirstWord(command);
+		String commandContent = ParserUtility.removeFirstWord(command);
 		return makeCommand(commandWord, commandContent);
 
 	}
@@ -36,10 +37,8 @@ public class CommandParser {
 	//@author A0115777W
 	private Command makeCommand(String commandWord, String commandContent) {
 		if (commandWord.equalsIgnoreCase("add")) {
-			parserLogger.log(Level.INFO, "make add Command");
 			return ParserUtility.makeAdd(commandContent);
 		} else if (commandWord.equalsIgnoreCase("delete")) {
-			parserLogger.log(Level.INFO, "make delete Command");
 			return ParserUtility.makeDelete(commandContent);
 		} else if (commandWord.equalsIgnoreCase("edit")) {
 			return ParserUtility.makeEdit(commandContent);
