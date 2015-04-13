@@ -54,12 +54,8 @@ public class Logic {
 		return inMemStorage.load();
 	}
 	
-	public List<Done> getSearchResultForUI(){
-		return inMemStorage.loadSearchResult();
-	}
-	
 	public List<Done> getSearchedTasksForUI() {
-		return inMemStorage.getWorkingTasks();
+		return inMemStorage.loadSearchResult();
 	}
 	
 	

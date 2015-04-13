@@ -1,3 +1,4 @@
+//@author A0111830X
 package com.done.model;
 
 import static org.junit.Assert.*;
@@ -9,7 +10,7 @@ import com.done.model.Done.TaskType;
 
 public class DoneTest {
 	
-	//@author A0111830X
+
 	
 	@Test
 	public void testFloatingTask() {

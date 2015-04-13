@@ -1,3 +1,5 @@
+//@author A0111830X
+// System tests
 package com.done;
 
 import static org.hamcrest.CoreMatchers.is;
@@ -17,8 +19,6 @@ import com.done.storage.InMemStorage;
 
 public class DoneProgram {
 
-	//@author A0111830X
-	// Integration test
 	@Test
 	public void testAddFloatingFromFacade() {
 		String input = "add facade test";

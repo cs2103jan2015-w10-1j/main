@@ -1,3 +1,4 @@
+//@author A0111830X
 package com.done.storage;
 
 import static org.junit.Assert.assertFalse;
@@ -20,11 +21,12 @@ import com.done.model.DoneTimedTask;
 public class InMemStorageTest {
 
 	InMemStorage inMem = InMemStorage.getInstance();
+	JsonStorage jsonStore = JsonStorage.getInstance(); 
 	
-	//@author A0111830X
-
 	@Before
 	public void setUp() {
+		// use "testJson.json" file for testing
+		jsonStore.setJsonNameToPref("tasks//testJson");
 		// delete all tasks from memory and JSON first before performing tests
 		inMem.delete(null, true);
 	}

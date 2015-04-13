@@ -1,3 +1,4 @@
+//@author A0111830X
 package com.done.storage;
 
 import static org.hamcrest.CoreMatchers.*;
@@ -13,7 +14,6 @@ public class JsonStorageTest {
 
 	JsonStorage test = JsonStorage.getInstance();
 
-	//@author A0111830X
 	@Test
 	public void testJsonNameToPrefs() throws FileNotFoundException, IOException {
 
