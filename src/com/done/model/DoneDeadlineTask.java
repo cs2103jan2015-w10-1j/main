@@ -28,5 +28,10 @@ public class DoneDeadlineTask extends Done {
 		SimpleDateFormat sdf = new SimpleDateFormat("d MMM yyyy HH:mm");
 		return sdf.format(endTime);
 	}
+	
+	public String getDateString(){
+		SimpleDateFormat sdf = new SimpleDateFormat("ddMMyyyy");
+		return sdf.format(endTime);
+	}
 
 }

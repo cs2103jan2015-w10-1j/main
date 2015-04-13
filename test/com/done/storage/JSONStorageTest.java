@@ -9,9 +9,9 @@ import java.io.IOException;
 
 import org.junit.Test;
 
-public class JSONStorageTest {
+public class JsonStorageTest {
 
-	JSONStorage test = JSONStorage.getInstance();
+	JsonStorage test = JsonStorage.getInstance();
 
 	//@author A0111830X
 	@Test
