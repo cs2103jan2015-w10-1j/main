@@ -17,7 +17,6 @@ public class CommandRecur extends Command {
 	private String frequency;
 	private int numberToStop;
 	private static final String RECUR_COMMAND_CONTENT = "Set %1$s to recur %2$s for %3$s times";
-	//private String frequency;
 	
 	//@author A0115635J
 	//for recur
@@ -100,6 +99,7 @@ public class CommandRecur extends Command {
 
 	public CommandRecur(int recurIndex, String period, int numberToStop) throws Exception{
 		super(CommandType.RECUR, true);
+		assert recurIndex > 0;
 		if (recurIndex > InMemStorage.getInstance().getTasks().size()) {
 			commandLogger.log(Level.INFO, "Too large Index");
 			throw new Exception("Too large Destination Index Value");

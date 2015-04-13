@@ -144,10 +144,10 @@ public class ParserUtility {
 		ArrayList<String> contents = sliceContent(content);
 		String index = contents.get(FIRST_ARGUMENT_POSITION);
 		String period = contents.get(SECOND_ARGUMENT_POSITION);
-		int numberToStop = Integer.parseInt(contents.get(THIRD_ARGUMENT_POSITION));
-		if (isPositiveInt(index) && isValidPeriod(period)) {
+		String numberToStop = contents.get(THIRD_ARGUMENT_POSITION);
+		if (isPositiveInt(index) && isValidPeriod(period) && isPositiveInt(numberToStop)) {
 			try{
-				return new CommandRecur(Integer.parseInt(index), period, numberToStop);
+				return new CommandRecur(Integer.parseInt(index), period, Integer.parseInt(numberToStop));
 			}catch (Exception e){
 				return new CommandInvalid();
 			}
@@ -163,7 +163,11 @@ public class ParserUtility {
 			String index = contents.get(FIRST_ARGUMENT_POSITION);
 			String date = contents.get(SECOND_ARGUMENT_POSITION);
 			String time = contents.get(THIRD_ARGUMENT_POSITION);
-			return new CommandRemind(Integer.parseInt(index), date, time);
+			if(isPositiveInt(index)&&isValidDate(date)&&isValidTime(time)){
+				return new CommandRemind(Integer.parseInt(index), date, time);
+			}else{
+				return new CommandInvalid();
+			}
 		} catch (Exception e) {
 			parserLogger.log(Level.INFO, "make invalid Command instead");
 			return new CommandInvalid();
@@ -322,7 +326,7 @@ public class ParserUtility {
 				+ endTime);
 		startTimeValue = startDateTime.getMillis();
 		endTimeValue = endDateTime.getMillis();
-
+		
 		task = new DoneTimedTask(taskTitle, startTimeValue, endTimeValue);
 		return task;
 	}
