@@ -162,10 +162,10 @@ public class ParserUtility {
 	
 	protected static Command makeRecur(String content){
 		parserUtilityLogger.log(Level.INFO, MESSAGE_MAKE_RECUR);
-		ArrayList<String> contents = sliceContent(content);
-		String index = contents.get(FIRST_ARGUMENT_POSITION);
-		String period = contents.get(SECOND_ARGUMENT_POSITION);
-		String numberToStop = contents.get(THIRD_ARGUMENT_POSITION);
+		ArrayList<String> contentParts = sliceContent(content);
+		String index = contentParts.get(FIRST_ARGUMENT_POSITION);
+		String period = contentParts.get(SECOND_ARGUMENT_POSITION);
+		String numberToStop = contentParts.get(THIRD_ARGUMENT_POSITION);
 		if (isPositiveInt(index) && isValidPeriod(period) && isPositiveInt(numberToStop)) {
 			try{
 				return new CommandRecur(Integer.parseInt(index), period, Integer.parseInt(numberToStop));
@@ -180,10 +180,10 @@ public class ParserUtility {
 	protected static Command makeRemind(String content){
 		parserUtilityLogger.log(Level.INFO, MESSAGE_MAKE_REMIND);
 		try {
-			ArrayList<String> contents = sliceContent(content);
-			String index = contents.get(FIRST_ARGUMENT_POSITION);
-			String date = contents.get(SECOND_ARGUMENT_POSITION);
-			String time = contents.get(THIRD_ARGUMENT_POSITION);
+			ArrayList<String> contentParts = sliceContent(content);
+			String index = contentParts.get(FIRST_ARGUMENT_POSITION);
+			String date = contentParts.get(SECOND_ARGUMENT_POSITION);
+			String time = contentParts.get(THIRD_ARGUMENT_POSITION);
 			if(isPositiveInt(index)&&isValidDate(date)&&isValidTime(time)){
 				return new CommandRemind(Integer.parseInt(index), date, time);
 			}else{
@@ -226,32 +226,32 @@ public class ParserUtility {
 		int endDateIndex = 0;
 		int endTimeIndex = 0;
 
-		ArrayList<String> split = sliceContent(commandContent);
-		for (int i = 0; i < split.size(); i++) {
+		ArrayList<String> contentParts = sliceContent(commandContent);
+		for (int i = 0; i < contentParts.size(); i++) {
 			// check for ..s and ..e parameters
-			if (split.get(i).equals("..s")) {
+			if (contentParts.get(i).equals("..s")) {
 				// timed task
 				isTimed = true;
-				if (split.get(i + 2).equals("..e")
-						&& isValidTime(split.get(i + 1))) {
+				if (contentParts.get(i + 2).equals("..e")
+						&& isValidTime(contentParts.get(i + 1))) {
 					String currentDate = DateTime.now().toString("ddMM");
-					split.add(i + 1, currentDate);
-				} else if (!isValidDate(split.get(i + 1))
-						|| !isValidTime(split.get(i + 2))) {
+					contentParts.add(i + 1, currentDate);
+				} else if (!isValidDate(contentParts.get(i + 1))
+						|| !isValidTime(contentParts.get(i + 2))) {
 					throw new Exception("Invalid Input");
 				}
 				startDateIndex = i + 1;
 				startTimeIndex = i + 2;
 			// if input consist only of ..e, we take the current time as the start
-			} else if (split.get(i).equals("..e")) {
+			} else if (contentParts.get(i).equals("..e")) {
 				isTimed = true;
-				if (isValidTime(split.get(i + 1))
-						&& (i == split.size() - 2 || !isValidTime(split
+				if (isValidTime(contentParts.get(i + 1))
+						&& (i == contentParts.size() - 2 || !isValidTime(contentParts
 								.get(i + 2)))) {
 					String currentDate = DateTime.now().toString("ddMM");
-					split.add(i + 1, currentDate);
-				} else if (!isValidDate(split.get(i + 1))
-						|| !isValidTime(split.get(i + 2))) {
+					contentParts.add(i + 1, currentDate);
+				} else if (!isValidDate(contentParts.get(i + 1))
+						|| !isValidTime(contentParts.get(i + 2))) {
 					throw new Exception("Invalid Input");
 				}
 				endDateIndex = i + 1;
@@ -261,13 +261,13 @@ public class ParserUtility {
 					startTimeIndex = i + 2;
 					String currentDate = DateTime.now().toString("ddMM");
 					String currentTime = DateTime.now().toString("HHmm");
-					split.add(startDateIndex, currentDate);
-					split.add(startTimeIndex, currentTime);
+					contentParts.add(startDateIndex, currentDate);
+					contentParts.add(startTimeIndex, currentTime);
 					endDateIndex = i + 3;
 					endTimeIndex = i + 4;
 				}
 				break;
-			} else if (split.get(i).equals("..d")) {
+			} else if (contentParts.get(i).equals("..d")) {
 				// deadline task
 				isDeadline = true;
 				endDateIndex = i + 1;
@@ -280,7 +280,7 @@ public class ParserUtility {
 			// we generate (new) timedTask
 			// and return timedTask
 			parserUtilityLogger.log(Level.INFO, MESSAGE_MAKE_TIMED);
-			task = addTimed(split, startDateIndex, startTimeIndex,
+			task = addTimed(contentParts, startDateIndex, startTimeIndex,
 					endDateIndex, endTimeIndex);
 			return task;
 
@@ -289,7 +289,7 @@ public class ParserUtility {
 			// we generate new deadlineTask
 			// and return deadlineTask
 			parserUtilityLogger.log(Level.INFO, MESSAGE_MAKE_DEADLINE);
-			task = addDeadline(split, endTimeIndex, endDateIndex);
+			task = addDeadline(contentParts, endTimeIndex, endDateIndex);
 			return task;
 		}
 		if (!commandContent.equals(null) && !commandContent.equals("")) {
@@ -306,7 +306,7 @@ public class ParserUtility {
 	}
 
 	//@author A0111830X
-	protected static Done addTimed(ArrayList<String> content,
+	protected static Done addTimed(ArrayList<String> contentParts,
 			int startDateIndex, int startTimeIndex, int endDateIndex,
 			int endTimeIndex) {
 		String startDate = "";
@@ -324,18 +324,18 @@ public class ParserUtility {
 		StringBuilder taskTitleBuilder = new StringBuilder();
 		for (int i = 0; i < startDateIndex - 1; i++) {
 			if (i == startDateIndex - 2) {
-				taskTitleBuilder.append(content.get(i));
+				taskTitleBuilder.append(contentParts.get(i));
 			} else {
-				taskTitleBuilder.append(content.get(i) + " ");
+				taskTitleBuilder.append(contentParts.get(i) + " ");
 			}
 		}
 		String taskTitle = taskTitleBuilder.toString();
 
 		// obtain contents of various parameters
-		startDate = content.get(startDateIndex);
-		startTime = content.get(startTimeIndex);
-		endDate = content.get(endDateIndex);
-		endTime = content.get(endTimeIndex);
+		startDate = contentParts.get(startDateIndex);
+		startTime = contentParts.get(startTimeIndex);
+		endDate = contentParts.get(endDateIndex);
+		endTime = contentParts.get(endTimeIndex);
 
 		// convert time to milliseconds
 		DateTime startDateTime = dtf.parseDateTime(startDate + currentYear
@@ -350,7 +350,7 @@ public class ParserUtility {
 	}
 
 	//@author A0111830X
-	protected static Done addDeadline(ArrayList<String> content, int timeIndex,
+	protected static Done addDeadline(ArrayList<String> contentParts, int timeIndex,
 			int dateIndex) {
 		Done task = null;
 
@@ -358,9 +358,9 @@ public class ParserUtility {
 		StringBuilder sb = new StringBuilder();
 		for (int i = 0; i < dateIndex - 1; i++) {
 			if (i == dateIndex - 2) {
-				sb.append(content.get(i));
+				sb.append(contentParts.get(i));
 			} else {
-				sb.append(content.get(i) + " ");
+				sb.append(contentParts.get(i) + " ");
 			}
 
 		}
@@ -368,8 +368,8 @@ public class ParserUtility {
 
 		// obtain date time and format it to long milliseconds
 		DateTimeFormatter dtf = DateTimeFormat.forPattern("ddMMyyyy HHmm");
-		DateTime date = dtf.parseDateTime(content.get(dateIndex) + " "
-				+ content.get(timeIndex));
+		DateTime date = dtf.parseDateTime(contentParts.get(dateIndex) + " "
+				+ contentParts.get(timeIndex));
 		task = new DoneDeadlineTask(taskTitle, date.getMillis());
 		return task;
 
