@@ -124,7 +124,7 @@
 
 
 	/**
-	 * origin: C:\Users\Jerry\eclipse_workspace\CS2103Project\src\com\done\storage\JSONStorage.java
+	 * origin: C:\Users\Jerry\eclipse_workspace\CS2103Project\src\com\done\storage\JsonStorage.java
 	 */
 
 	public boolean isNewJson() {
@@ -137,7 +137,27 @@
 
 }
 
-	// End of segment: C:\Users\Jerry\eclipse_workspace\CS2103Project\src\com\done\storage\JSONStorage.java
+	// End of segment: C:\Users\Jerry\eclipse_workspace\CS2103Project\src\com\done\storage\JsonStorage.java
+
+
+
+
+
+	/**
+	 * origin: C:\Users\Jerry\eclipse_workspace\CS2103Project\src\com\done\storage\StorageLogger.java
+	 */
+
+	public static Logger getStorageLogger() {
+		return storageLogger;
+	}
+	
+	public static void setStorageLogger(Logger storageLogger) {
+		StorageLogger.storageLogger = storageLogger;
+	}
+
+}
+
+	// End of segment: C:\Users\Jerry\eclipse_workspace\CS2103Project\src\com\done\storage\StorageLogger.java
 
 
 

@@ -8,12 +8,11 @@
 
 	//for recur
 	
-	private void recurWeekly(Done task, String numberOfWeeksToStop) {
+	private void recurWeekly(Done task, int numberOfWeeksToStop) {
 		
 		final ScheduledExecutorService scheduler = Executors.newScheduledThreadPool(1);
 		final int WEEK = 604800;
-		int weeks = Integer.parseInt(numberOfWeeksToStop);
-		final int STOPTIME = weeks*WEEK;
+		final int STOPTIME = numberOfWeeksToStop*WEEK;
 		
 		final Runnable recur = new Runnable() {
 			public void run() {
@@ -21,18 +20,17 @@
 				inMemStorage.store(task);
 			}
 		};
-		final ScheduledFuture<?> recurHandle = scheduler.scheduleAtFixedRate(recur, 0, WEEK, SECONDS);
+		final ScheduledFuture<?> recurHandle = scheduler.scheduleAtFixedRate(recur, WEEK, WEEK, SECONDS);
 		scheduler.schedule(new Runnable() {
 			public void run() { recurHandle.cancel(true); }
 			}, STOPTIME, SECONDS);
 	}
 	
-	private void recurDaily(Done task, String numberOfDaysToStop) {
+	private void recurDaily(Done task, int numberOfDaysToStop) {
 		
 		final ScheduledExecutorService scheduler = Executors.newScheduledThreadPool(1);
 		final int DAY = 86400;
-		int days = Integer.parseInt(numberOfDaysToStop);
-		final int STOPTIME = days*DAY;
+		final int STOPTIME = numberOfDaysToStop*DAY;
 		
 		final Runnable recur = new Runnable() {
 			public void run() {
@@ -40,18 +38,17 @@
 				inMemStorage.store(task);
 			}
 		};
-		final ScheduledFuture<?> recurHandle = scheduler.scheduleAtFixedRate(recur, 0, DAY, SECONDS);
+		final ScheduledFuture<?> recurHandle = scheduler.scheduleAtFixedRate(recur, DAY, DAY, SECONDS);
 		scheduler.schedule(new Runnable() {
 			public void run() { recurHandle.cancel(true); }
 			}, STOPTIME, SECONDS);
 	}
 	
-	private void recurMonthly(Done task, String numberOfMonthsToStop) {
+	private void recurMonthly(Done task, int numberOfMonthsToStop) {
 		
 		final ScheduledExecutorService scheduler = Executors.newScheduledThreadPool(1);
 		final int MONTH = 604800*30;
-		int months = Integer.parseInt(numberOfMonthsToStop);
-		final int STOPTIME = months*MONTH;
+		final int STOPTIME = numberOfMonthsToStop*MONTH;
 		
 		final Runnable recur = new Runnable() {
 			public void run() {
@@ -59,14 +56,30 @@
 				inMemStorage.store(task);
 			}
 		};
-		final ScheduledFuture<?> recurHandle = scheduler.scheduleAtFixedRate(recur, 0, MONTH, SECONDS);
+		final ScheduledFuture<?> recurHandle = scheduler.scheduleAtFixedRate(recur, MONTH, MONTH, SECONDS);
 		scheduler.schedule(new Runnable() {
 			public void run() { recurHandle.cancel(true); }
 			}, STOPTIME, SECONDS);
 	}
 	
+	private void recurTest(Done task, int numberOfMonthsToStop) {
+		
+		final ScheduledExecutorService scheduler = Executors.newScheduledThreadPool(1);
+		final int MONTH = 604800*30;
+		final int STOPTIME = numberOfMonthsToStop*MONTH;
+		
+		final Runnable recur = new Runnable() {
+			public void run() {
+				InMemStorage inMemStorage = InMemStorage.getInstance();
+				inMemStorage.store(task);
+			}
+		};
+		final ScheduledFuture<?> recurHandle = scheduler.scheduleAtFixedRate(recur, 0, 5, SECONDS);
+		scheduler.schedule(new Runnable() {
+			public void run() { recurHandle.cancel(true); }
+			}, 9, SECONDS);
+	}
 	
-
 	// End of segment: C:\Users\Jerry\eclipse_workspace\CS2103Project\src\com\done\command\CommandRecur.java
 
 
@@ -85,17 +98,21 @@
 			System.out.println(frequency);
 			if(frequency.equalsIgnoreCase("daily")){
 				commandLogger.log(Level.INFO, "Make daily recur");
-				recurDaily(task, frequency);
+				recurDaily(task, numberToStop);
 				commandLogger.log(Level.INFO, "Recur Command Success");
 			} else if(frequency.equalsIgnoreCase("weekly")){
 				commandLogger.log(Level.INFO, "Make weekly recur");
-				recurWeekly(task, frequency);
+				recurWeekly(task, numberToStop);
 				commandLogger.log(Level.INFO, "Recur Command Success");
 			} else if(frequency.equalsIgnoreCase("monthly")){
 				commandLogger.log(Level.INFO, "Make monthly recur");
-				recurMonthly(task, frequency);
+				recurMonthly(task, numberToStop);
 				commandLogger.log(Level.INFO, "Recur Command Success");
-			} else { System.out.println("Invalid Frequency!");
+			} else if(frequency.equalsIgnoreCase("test")){
+				commandLogger.log(Level.INFO, "Make test recur");
+				recurTest(task, numberToStop);
+				commandLogger.log(Level.INFO, "Recur Command Success");
+			}else { System.out.println("Invalid Frequency!");
 			}
 		} else {
 			throw new Exception("TaskNullException");
@@ -108,16 +125,161 @@
 		CommandDelete command = new CommandDelete(task);
 		command.execute();
 	}
+	
+	// End of segment: C:\Users\Jerry\eclipse_workspace\CS2103Project\src\com\done\command\CommandRecur.java
 
-	@Override
-	public String getCommandContent() {
-		// TODO Auto-generated method stub
-		return null;
+
+
+
+
+	/**
+	 * origin: C:\Users\Jerry\eclipse_workspace\CS2103Project\src\com\done\logic\Logic.java
+	 */
+
+	public Logic(){
+		this.inMemStorage = InMemStorage.getInstance();
+		this.cmdParser = CommandParser.getInstance();
+	}
+ 	
+	public void executeCommand(Command command){
+		try{
+			command.execute();
+			isSuccessful = true;
+			if(command.isUndoable()){
+				inMemStorage.pushToUndoStack(command);
+			}
+		}
+		catch(Exception e){
+			isSuccessful = false;
+		}
+		
+	}
+	
+	
+	public CommandType getCmdType(String userCommand){
+		CommandType command = cmdParser.getCommandType(userCommand);
+		return command;
+	}
+	
+	public String getCmdContent(String userCommand){
+		return cmdParser.getCommandContent(userCommand);
+	}
+	
+	public boolean isSuccessful(){
+		return isSuccessful;
 	}
 
+	/**
+	 * @return the tasks
+	 */
+	public List<Done> getTasksForUI() {
+		return inMemStorage.load();
+	}
+	
+	public List<Done> getSearchedTasksForUI() {
+		return inMemStorage.loadSearchResult();
+	}
+	
+ }
+	// End of segment: C:\Users\Jerry\eclipse_workspace\CS2103Project\src\com\done\logic\Logic.java
+
+
+
+
+
+	/**
+	 * origin: C:\Users\Jerry\eclipse_workspace\CS2103Project\src\com\done\logic\LogicFacade.java
+	 */
+
+	public ExecutionResult getExecutionResult(String userCommand){
+
+		CommandParser parser = CommandParser.getInstance();
+		Command command = parser.parseInputToMakeCommand(userCommand);
+		
+		
+		logic.executeCommand(command);
+		boolean isSuccessful = logic.isSuccessful();
+		ExecutionResult tempExecutionResult;
+		
+		if (isSuccessful){
+			String commandContent = command.getCommandContent();
+			tempExecutionResult = new ExecutionResult(command.getCommandType(), isSuccessful, commandContent);
+		} else {
+			tempExecutionResult = new ExecutionResult(command.getCommandType(), isSuccessful);
+		}
+		return tempExecutionResult;	
+	}
+	
+	/*public String getReminder(int taskId){
+		return null;
+	}*/
+	
+	public List<Done> getTasks(){
+		logic = new Logic();
+		return this.logic.getTasksForUI();
+	}
+	
+	public List<Done> getSearchResult(){
+		logic = new Logic();
+		return this.logic.getSearchedTasksForUI();
+	}
+	
+	
+	public String getJsonName(){
+		JsonStorage jsonStorage = JsonStorage.getInstance();
+		String jsonName = jsonStorage.getJsonNameFromPref();
+		return jsonName;
+	}
+	
+	/*public void addUI(Observer o){
+		observerList.add(o);
+	}
+	
+	public void notifyUIs(){
+	}*/
 }
 
-	// End of segment: C:\Users\Jerry\eclipse_workspace\CS2103Project\src\com\done\command\CommandRecur.java
+	// End of segment: C:\Users\Jerry\eclipse_workspace\CS2103Project\src\com\done\logic\LogicFacade.java
+
+
+
+
+
+	/**
+	 * origin: C:\Users\Jerry\eclipse_workspace\CS2103Project\test\com\done\logic\TestLogic.java
+	 */
+
+	Logic testLogic = new Logic();
+
+	@Test
+	public void testExecuteAdd() {
+		CommandAdd cmd = new CommandAdd(new DoneFloatingTask("hello world!"));
+		testLogic.executeCommand(cmd);
+		assertTrue(testLogic.isSuccessful());
+	}
+
+	@Test
+	public void testExecuteInvalid() {
+		CommandInvalid cmd = new CommandInvalid();
+		testLogic.executeCommand(cmd);
+		assertTrue(testLogic.isSuccessful());
+	}
+	
+	@Test
+	public void testFail() {
+		// move task to location that does not exist
+		CommandMove cmd = null;
+		try {
+			cmd = new CommandMove(0, 10000);
+			testLogic.executeCommand(cmd);
+		} catch (Exception e) {
+			assertFalse(testLogic.isSuccessful());
+		}
+		
+		
+	}
+}
+	// End of segment: C:\Users\Jerry\eclipse_workspace\CS2103Project\test\com\done\logic\TestLogic.java
 
 
 

@@ -1,0 +1,58 @@
+//@author: a0088821x-unused
+
+
+
+	/**
+	 * origin: C:\Users\Jerry\eclipse_workspace\CS2103Project\src\com\done\observer\Observer.java
+	 */
+
+//Reminder UI is handled directly in TaskReminder class
+package com.done.observer;
+
+public interface Observer {
+	void updateReminder(int taskId);
+}
+
+	// End of segment: C:\Users\Jerry\eclipse_workspace\CS2103Project\src\com\done\observer\Observer.java
+
+
+
+
+
+	/**
+	 * origin: C:\Users\Jerry\eclipse_workspace\CS2103Project\src\com\done\UIController.java
+	 */
+
+	//Reminder UI is handled directly in TaskReminder class
+	/*public void updateReminder(int taskId){
+		String reminder = logicFacade.getReminder(taskId);
+		Notifications.create().title(UPDATEREMINDER_TITLE).text(String.format(UPDATEREMINDER_MESSAGE, reminder)).showWarning();
+		highlightReminderRow(taskId);
+	}
+
+	private void highlightReminderRow(int taskId) {
+		tableViewTasks.setRowFactory(new Callback<TableView<Done>, TableRow<Done>>() {
+	        @Override
+	        public TableRow<Done> call(TableView<Done> tableView) {
+	            final TableRow<Done> row = new TableRow<Done>() {
+	                @Override
+	                protected void updateItem(Done task, boolean empty){
+	                    super.updateItem(task, empty);
+		                if(task.getId() == taskId){
+		                	if (!getStyleClass().contains(STYLECLASS_REMINDERROW)) {
+		                            getStyleClass().add(STYLECLASS_REMINDERROW);
+		                    }
+	                    }
+	                }
+	            };
+	            return row;
+	        }
+	    });
+	}*/
+}
+	// End of segment: C:\Users\Jerry\eclipse_workspace\CS2103Project\src\com\done\UIController.java
+
+
+
+
+

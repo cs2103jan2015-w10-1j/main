@@ -9,8 +9,8 @@
 	@Override
 	public void execute() throws Exception {
 		if (this.task != null) {
-			InMemStorage inMemStorage = InMemStorage.getInstance();
-			inMemStorage.store(task);
+			InMemStorage memory = InMemStorage.getInstance();
+			memory.store(task);
 		} else {
 			throw new Exception("TaskNullException");
 		}
@@ -19,11 +19,11 @@
 
 	@Override
 	public void undo() {
-		if(task.getType().equals(TaskType.TIMED)){
+		if (task.getType().equals(TaskType.TIMED)) {
 			reminderTask.stopTimer();
 			CommandDelete command = new CommandDelete(task);
 			command.execute();
-		}else{
+		} else {
 			CommandDelete command = new CommandDelete(task);
 			command.execute();
 		}
@@ -90,10 +90,10 @@
 
 	@Override
 	public void execute() {
-		JSONStorage jsonPref = JSONStorage.getInstance();
+		JsonStorage jsonStorage = JsonStorage.getInstance();
 		InMemStorage inMemStorage = InMemStorage.getInstance();
 
-		jsonPref.setJsonNameToPref(DIR_TASKS + jsonName);
+		jsonStorage.setJsonNameToPref(DIR_TASKS + jsonName);
 		inMemStorage.loadNew();
 
 	}
@@ -115,13 +115,31 @@
 		memory.emptyWorkingTasks();
 
 		for (int i = 0; i < tasks.size(); i++) {
-			if (tasks.get(i).getTitle().contains(searchString)) {
-				memory.addIntoWorkingTask(tasks.get(i));
+			Done task = tasks.get(i);
+			if (task.getTitle().contains(searchString)) {
+				memory.addIntoWorkingTask(task);
+			}
+			// check if this is a timedTask
+			else if (task.getType().equals(TaskType.TIMED)) {
+				// check the event date is equal to searchString
+				DoneTimedTask dtt = (DoneTimedTask) task;
+				if (dtt.getDateString().equals(searchString)) {
+					memory.addIntoWorkingTask(task);
+				}
+			}
+
+			// check if this is a deadlineTask
+			else if (task.getType().equals(TaskType.DEADLINE)) {
+				// check the deadline date is equal to searchString
+				DoneDeadlineTask ddt = (DoneDeadlineTask) task;
+				if (ddt.getDateString().equals(searchString)) {
+					memory.addIntoWorkingTask(task);
+				}
 			}
 		}
 
 	}
-	
+
 	// End of segment: C:\Users\Jerry\eclipse_workspace\CS2103Project\src\com\done\command\CommandSearch.java
 
 
@@ -175,8 +193,14 @@
 	 * origin: C:\Users\Jerry\eclipse_workspace\CS2103Project\src\com\done\model\DoneDeadlineTask.java
 	 */
 
-	public String getEndTime(){
+	public String getEndTime() {
 		SimpleDateFormat sdf = new SimpleDateFormat("d MMM yyyy HH:mm");
+		return sdf.format(endTime);
+	}
+	
+	// This method returns you a ddMMyyyy for search purpose
+	public String getDateString(){
+		SimpleDateFormat sdf = new SimpleDateFormat("ddMMyyyy");
 		return sdf.format(endTime);
 	}
 
@@ -194,8 +218,15 @@
 
 	public String getStartTime() {
 		// SimpleDateFormat sdf = new SimpleDateFormat("d MMM yyyy HH:mm");
-		SimpleDateFormat sdf = new SimpleDateFormat("HH:mm");
+		SimpleDateFormat sdf = new SimpleDateFormat("d MMM HH:mm");
 		return sdf.format(startTime);
+	}
+	
+	// This method returns you a ddMMyyyy for search purpose
+	public String getDateString(){
+		SimpleDateFormat sdf = new SimpleDateFormat("ddMMyyyy");
+		return sdf.format(startTime);
+		
 	}
 
 	// End of segment: C:\Users\Jerry\eclipse_workspace\CS2103Project\src\com\done\model\DoneTimedTask.java
@@ -223,7 +254,7 @@
 	 */
 
 	public String getEndTime() {
-		SimpleDateFormat sdf = new SimpleDateFormat("HH:mm");
+		SimpleDateFormat sdf = new SimpleDateFormat("d MMM HH:mm");
 		return sdf.format(endTime);
 	}
 
@@ -241,25 +272,62 @@
 	 * origin: C:\Users\Jerry\eclipse_workspace\CS2103Project\src\com\done\parser\ParserUtility.java
 	 */
 
-	protected static Done defineTask(String commandContent) {
+	protected static Done defineTask(String commandContent) throws Exception {
 		Done task;
 		boolean isTimed = false;
 		boolean isDeadline = false;
-		int dateIndex = 0;
-		int timeIndex = 0;
+		int startDateIndex = 0;
+		int startTimeIndex = 0;
+		int endDateIndex = 0;
+		int endTimeIndex = 0;
 
-		String[] split = commandContent.split("\\s+");
-		for (int i = 0; i < split.length; i++) {
-			if (split[i].equals("..s") || split[i].equals("..e")) {
+		ArrayList<String> contentParts = sliceContent(commandContent);
+		for (int i = 0; i < contentParts.size(); i++) {
+			// check for ..s and ..e parameters
+			if (contentParts.get(i).equals("..s")) {
 				// timed task
 				isTimed = true;
-				timeIndex = i + 1;
+				if (contentParts.get(i + 2).equals("..e")
+						&& isValidTime(contentParts.get(i + 1))) {
+					String currentDate = DateTime.now().toString("ddMM");
+					contentParts.add(i + 1, currentDate);
+				} else if (!isValidDate(contentParts.get(i + 1))
+						|| !isValidTime(contentParts.get(i + 2))) {
+					throw new Exception("Invalid Input");
+				}
+				startDateIndex = i + 1;
+				startTimeIndex = i + 2;
+				// if input consist only of ..e, we take the current time as the
+				// start
+			} else if (contentParts.get(i).equals("..e")) {
+				isTimed = true;
+				if (isValidTime(contentParts.get(i + 1))
+						&& (i == contentParts.size() - 2 || !isValidTime(contentParts
+								.get(i + 2)))) {
+					String currentDate = DateTime.now().toString("ddMM");
+					contentParts.add(i + 1, currentDate);
+				} else if (!isValidDate(contentParts.get(i + 1))
+						|| !isValidTime(contentParts.get(i + 2))) {
+					throw new Exception("Invalid Input");
+				}
+				endDateIndex = i + 1;
+				endTimeIndex = i + 2;
+				if (startDateIndex == 0 && startTimeIndex == 0) {
+					startDateIndex = i + 1;
+					startTimeIndex = i + 2;
+					String currentDate = DateTime.now().toString("ddMM");
+					String currentTime = DateTime.now().toString("HHmm");
+					contentParts.add(startDateIndex, currentDate);
+					contentParts.add(startTimeIndex, currentTime);
+					endDateIndex = i + 3;
+					endTimeIndex = i + 4;
+				}
 				break;
-			} else if (split[i].equals("..d")) {
+			} else if (contentParts.get(i).equals("..d")) {
 				// deadline task
 				isDeadline = true;
-				timeIndex = i + 2;
-				dateIndex = i + 1;
+				endDateIndex = i + 1;
+				endTimeIndex = i + 2;
 				break;
 			}
 		}
@@ -267,23 +335,24 @@
 			// if content contains end time and/or start time
 			// we generate (new) timedTask
 			// and return timedTask
-			parserLogger.log(Level.INFO, "make Timed Task");
-			task = addTimed(split, timeIndex);
+			parserUtilityLogger.log(Level.INFO, MESSAGE_MAKE_TIMED);
+			task = addTimed(contentParts, startDateIndex, startTimeIndex,
+					endDateIndex, endTimeIndex);
 			return task;
 
 		} else if (isDeadline) {
 			// if content has date and time
 			// we generate new deadlineTask
 			// and return deadlineTask
-			parserLogger.log(Level.INFO, "make Deadline Task");
-			task = addDeadline(split, timeIndex, dateIndex);
+			parserUtilityLogger.log(Level.INFO, MESSAGE_MAKE_DEADLINE);
+			task = addDeadline(contentParts, endTimeIndex, endDateIndex);
 			return task;
 		}
 		if (!commandContent.equals(null) && !commandContent.equals("")) {
 			// if content isn't null or ""
 			// we generate new floatingTask
 			// we return floatingTask
-			parserLogger.log(Level.INFO, "make Floating Task");
+			parserUtilityLogger.log(Level.INFO, MESSAGE_MAKE_FLOATING);
 			task = new DoneFloatingTask(commandContent);
 			return task;
 		}
@@ -302,60 +371,44 @@
 	 * origin: C:\Users\Jerry\eclipse_workspace\CS2103Project\src\com\done\parser\ParserUtility.java
 	 */
 
-	protected static Done addTimed(String[] content, int timeIndex) {
+	protected static Done addTimed(ArrayList<String> contentParts,
+			int startDateIndex, int startTimeIndex, int endDateIndex,
+			int endTimeIndex) {
+		String startDate = "";
 		String startTime = "";
+		String endDate = "";
 		String endTime = "";
+		String currentYear = DateTime.now().toString("yyyy");
 		long startTimeValue = 0;
 		long endTimeValue = 0;
-		
+
 		Done task = null;
-		DateTimeFormatter dtf = DateTimeFormat.forPattern("HH:mm");
-		
-		LocalDate localStartDate = LocalDate.now();
-		LocalDate localEndDate = LocalDate.now();
-		
+		DateTimeFormatter dtf = DateTimeFormat.forPattern("ddMMyyyy HHmm");
+
 		// obtain title of task from input
 		StringBuilder taskTitleBuilder = new StringBuilder();
-		for (int i = 0; i < timeIndex - 1; i++) {
-			if (i == timeIndex - 2) {
-				taskTitleBuilder.append(content[i]);
+		for (int i = 0; i < startDateIndex - 1; i++) {
+			if (i == startDateIndex - 2) {
+				taskTitleBuilder.append(contentParts.get(i));
 			} else {
-				taskTitleBuilder.append(content[i] + " ");
+				taskTitleBuilder.append(contentParts.get(i) + " ");
 			}
 		}
 		String taskTitle = taskTitleBuilder.toString();
-		
-		// check for parameters ..s and ..e
-		if (content[timeIndex - 1].equalsIgnoreCase("..s")) {
-			startTime = content[timeIndex];
-			try {
-				if (content[timeIndex + 1].equalsIgnoreCase("..e")) {
-					endTime = content[timeIndex + 2];
-				}
-			} catch (NullPointerException e) {
-				System.out.println("Missing time information");
-			}
-			
-			// obtain time from input
-			LocalTime localStartTime = dtf.parseLocalTime(startTime);
-			LocalTime localEndTime = dtf.parseLocalTime(endTime);
 
-			startTimeValue = localStartDate.toDate().getTime()
-					+ localStartTime.getMillisOfDay();
-			endTimeValue = localEndDate.toDate().getTime()
-					+ localEndTime.getMillisOfDay();
+		// obtain contents of various parameters
+		startDate = contentParts.get(startDateIndex);
+		startTime = contentParts.get(startTimeIndex);
+		endDate = contentParts.get(endDateIndex);
+		endTime = contentParts.get(endTimeIndex);
 
-		} else if (content[timeIndex - 1].equalsIgnoreCase("..e")) {
-			endTime = content[timeIndex];
-			
-			// obtain date and time from now() and input
-			DateTime localStartDateTime = DateTime.now();
-			LocalTime localEndTime = dtf.parseLocalTime(endTime);
-
-			startTimeValue = localStartDateTime.getMillis();
-			endTimeValue = localEndDate.toDate().getTime()
-					+ localEndTime.getMillisOfDay();
-		}
+		// convert time to milliseconds
+		DateTime startDateTime = dtf.parseDateTime(startDate + currentYear
+				+ " " + startTime);
+		DateTime endDateTime = dtf.parseDateTime(endDate + currentYear + " "
+				+ endTime);
+		startTimeValue = startDateTime.getMillis();
+		endTimeValue = endDateTime.getMillis();
 
 		task = new DoneTimedTask(taskTitle, startTimeValue, endTimeValue);
 		return task;
@@ -371,32 +424,34 @@
 	 * origin: C:\Users\Jerry\eclipse_workspace\CS2103Project\src\com\done\parser\ParserUtility.java
 	 */
 
-	protected static Done addDeadline(String[] content, int timeIndex, int dateIndex) {
+	protected static Done addDeadline(ArrayList<String> contentParts,
+			int timeIndex, int dateIndex) {
 		Done task = null;
-		
+
 		// obtain title of task
 		StringBuilder sb = new StringBuilder();
 		for (int i = 0; i < dateIndex - 1; i++) {
 			if (i == dateIndex - 2) {
-				sb.append(content[i]);
+				sb.append(contentParts.get(i));
 			} else {
-				sb.append(content[i] + " ");
+				sb.append(contentParts.get(i) + " ");
 			}
 
 		}
 		String taskTitle = sb.toString();
-		
+
 		// obtain date time and format it to long milliseconds
-		DateTimeFormatter dtf = DateTimeFormat.forPattern("ddMMyyyy HH:mm");
-		DateTime date = dtf.parseDateTime(content[dateIndex] + " "
-				+ content[timeIndex]);
+		DateTimeFormatter dtf = DateTimeFormat.forPattern("ddMMyyyy HHmm");
+		DateTime date = dtf.parseDateTime(contentParts.get(dateIndex) + " "
+				+ contentParts.get(timeIndex));
 		task = new DoneDeadlineTask(taskTitle, date.getMillis());
 		return task;
 
 	}
-	//End of Task Maker Methods
-	
-	//Methods to process content Strings, like removing and getting first words
+
+	// End of Task Maker Methods
+
+	// Methods to process content Strings, like removing and getting first words
 	// End of segment: C:\Users\Jerry\eclipse_workspace\CS2103Project\src\com\done\parser\ParserUtility.java
 
 
@@ -478,11 +533,66 @@
 	 * origin: C:\Users\Jerry\eclipse_workspace\CS2103Project\src\com\done\storage\InMemStorage.java
 	 */
 
+package com.done.storage;
+
+import java.util.ArrayList;
+import java.util.Iterator;
+import java.util.List;
+import java.util.Stack;
+import java.util.logging.Level;
+
+import com.done.command.Command;
+import com.done.model.Done;
+
+public class InMemStorage {
+	private static InMemStorage instance = null;
+
+	private static final String MESSAGE_SET_INCOMPLETE = "Set Task Incomplete";
+	private static final String MESSAGE_PUSH_UNDO = "Push command to Undo stack";
+	private static final String MESSAGE_RETRIEVE_UNDO = "Retreive command from Undo stack";
+	private static final String MESSAGE_SET_COMPLETED = "Set Task Completed";
+	private static final String MESSAGE_CLEAR_ALL = "Clear all Done tasks";
+	private static final String MESSAGE_MOVE_TASK = "Move task";
+	private static final String MESSAGE_EDIT_TASK = "Edit task";
+	private static final String MESSAGE_DELETE_TASK = "Delete task";
+	private static final String MESSAGE_STORE_MEMORY = "Store to memory";
+	private static final String MESSAGE_SEARCH_RESULT = "Get search result";
+	private static final String MESSAGE_LOAD_NEW = "Load from new JSON";
+	private static final String ERROR_EMPTY_STACK = "Command Stack is empty!";
+
+	private static final int ARRAY_POSITION_OFFSET = 1;
+
+	private List<Done> tasks;
+	private List<Done> workingTasks;
+	private Stack<Command> undoStack;
+
+	private JsonStorage jsonStorage;
+
+	private InMemStorage() {
+		StorageLogger.setUpLogger();
+		jsonStorage = JsonStorage.getInstance();
+		this.setTasks(jsonStorage.load());
+		this.undoStack = new Stack<Command>();
+		workingTasks = tasks;
+	}
+
+	public static synchronized InMemStorage getInstance() {
+		if (instance == null) {
+			instance = new InMemStorage();
+		}
+
+		return instance;
+	}
+
 	public Done getTask(int id) {
 		return getTasks().get(id - ARRAY_POSITION_OFFSET);
 	}
 
+	/**
+	 * Method which loads the new JSON into memory from a different file.
+	 */
 	public void loadNew() {
+		StorageLogger.getStorageLogger().log(Level.INFO, MESSAGE_LOAD_NEW);
 		jsonStorage.setNewJson(true);
 		this.setTasks(jsonStorage.load());
 		jsonStorage.setNewJson(false);
@@ -492,13 +602,27 @@
 		return getTasks();
 	}
 
+	/**
+	 * Retrieve the List of tasks which are filtered by keyword during search.
+	 * 
+	 * @return Filtered list of tasks.
+	 */
 	public List<Done> loadSearchResult() {
+		StorageLogger.getStorageLogger().log(Level.INFO, MESSAGE_SEARCH_RESULT);
 		return getWorkingTasks();
 	}
 
+	/**
+	 * Stores the task into memory.
+	 * 
+	 * @param task
+	 *            Current task being added.
+	 * @return Whether it is successful.
+	 */
 	public boolean store(Done task) {
+		StorageLogger.getStorageLogger().log(Level.INFO, MESSAGE_STORE_MEMORY);
 		assert task != null;
-		getTasks().add(0,task);
+		getTasks().add(0, task);
 		updateTaskID();
 		if (jsonStorage.store(getTasks()) == true) {
 			return true;
@@ -507,8 +631,17 @@
 		return false;
 	}
 
+	/**
+	 * Deletes a task or clear all from memory.
+	 * 
+	 * @param task
+	 *            Current task to be deleted.
+	 * @param isDeleteAll
+	 *            Used to determine if it is clear all.
+	 * @return Whether it is successful.
+	 */
 	public boolean delete(Done task, boolean isDeleteAll) {
-		
+		StorageLogger.getStorageLogger().log(Level.INFO, MESSAGE_DELETE_TASK);
 		// isDeleteAll used for clear command
 		// if true is a clear
 		// else is a normal delete
@@ -527,9 +660,19 @@
 		return false;
 	}
 
+	/**
+	 * Replaces the new input task with the index existing in memory.
+	 * 
+	 * @param task
+	 *            New task to be added.
+	 * @param editIndex
+	 *            Index of the task in memory to be replaced
+	 * @return Whether is it successful.
+	 */
 	public boolean edit(Done task, int editIndex) {
+		StorageLogger.getStorageLogger().log(Level.INFO, MESSAGE_EDIT_TASK);
 		assert task != null;
-		
+
 		getTasks().set(editIndex, task);
 		updateTaskID();
 		if (jsonStorage.store(getTasks()) == true) {
@@ -538,7 +681,7 @@
 
 		return false;
 	}
-	
+
 	// End of segment: C:\Users\Jerry\eclipse_workspace\CS2103Project\src\com\done\storage\InMemStorage.java
 
 
@@ -549,29 +692,59 @@
 	 * origin: C:\Users\Jerry\eclipse_workspace\CS2103Project\src\com\done\storage\InMemStorage.java
 	 */
 
+	/**
+	 * Marks the input task as completed.
+	 * 
+	 * @param task
+	 *            Task to be marked as complete.
+	 */
 	public void setCompleted(Done task) {
+		StorageLogger.getStorageLogger().log(Level.INFO, MESSAGE_SET_COMPLETED);
 		assert task != null;
-		
+
 		getTasks().get(task.getId() - ARRAY_POSITION_OFFSET).setCompleted(true);
 		jsonStorage.store(getTasks());
 	}
 
+	/**
+	 * Marks the input task as incomplete.
+	 * 
+	 * @param task
+	 *            Task to be marked as incomplete.
+	 */
 	public void setIncomplete(Done task) {
+		StorageLogger.getStorageLogger()
+				.log(Level.INFO, MESSAGE_SET_INCOMPLETE);
 		assert task != null;
-		
+
 		getTasks().get(task.getId() - ARRAY_POSITION_OFFSET)
 				.setCompleted(false);
 		jsonStorage.store(getTasks());
 	}
-	
+
 	// Stack used for Undo
+	/**
+	 * Pushes the input command to the Undo stack.
+	 * 
+	 * @param command
+	 *            The current command from the input.
+	 */
 	public void pushToUndoStack(Command command) {
+		StorageLogger.getStorageLogger().log(Level.INFO, MESSAGE_PUSH_UNDO);
 		this.undoStack.push(command);
 	}
 
+	/**
+	 * Remove from the Undo stack.
+	 * 
+	 * @return The last command used for executing undo.
+	 * @throws Exception
+	 *             If stack is empty.
+	 */
 	public Command popFromUndoStack() throws Exception {
+		StorageLogger.getStorageLogger().log(Level.INFO, MESSAGE_RETRIEVE_UNDO);
 		if (undoStack.isEmpty()) {
-			throw new Exception("Command Stack is empty!");
+			throw new Exception(ERROR_EMPTY_STACK);
 		}
 		return this.undoStack.pop();
 	}
@@ -582,10 +755,10 @@
 
 	public void addIntoWorkingTask(Done task) {
 		assert task != null;
-		
+
 		this.workingTasks.add(task);
 	}
-	
+
 	// For updating ID to be always in increasing order 1 ... n
 	private void updateTaskID() {
 		Iterator<Done> listIterator = getTasks().iterator();
@@ -595,7 +768,7 @@
 			i++;
 		}
 	}
-	
+
 	// End of segment: C:\Users\Jerry\eclipse_workspace\CS2103Project\src\com\done\storage\InMemStorage.java
 
 
@@ -603,14 +776,81 @@
 
 
 	/**
-	 * origin: C:\Users\Jerry\eclipse_workspace\CS2103Project\src\com\done\storage\JSONStorage.java
+	 * origin: C:\Users\Jerry\eclipse_workspace\CS2103Project\src\com\done\storage\JsonStorage.java
 	 */
 
+package com.done.storage;
+
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileOutputStream;
+import java.io.FileReader;
+import java.io.FileWriter;
+import java.io.IOException;
+import java.lang.reflect.Type;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Properties;
+import java.util.logging.Level;
+
+import com.done.model.Done;
+import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
+import com.google.gson.JsonIOException;
+import com.google.gson.reflect.TypeToken;
+
+public class JsonStorage {
+	private static JsonStorage instance = null;
+
+	private static final String DIR_PREF = "prefs//";
+	private static final String DIR_TASKS = "tasks//";
+	private static final String FILE_JSON_EXT = ".json";
+	private static final String FILE_TASKS_JSON = DIR_TASKS + "tasks";
+	private static final String FILE_PREFS_XML = DIR_PREF + "done_prefs.xml";
+
+	private static final String MESSAGE_STORE_JSON = "Store to JSON";
+	private static final String MESSAGE_SET_JSON_NAME = "Setting JSON name: %1$s";
+	private static final String MESSAGE_RETRIEVE_JSON = "Retrieving JSON name: %1$s";
+	private static final String ERROR_WRITE_FILE = "Unable to write file!";
+	private static final String ERROR_FILE_NOT_FOUND = "File not found!";
+	private static final String ERROR_READ_PREF_FILE = "Unable to read preference file! Creating default.";
+	private static final String ERROR_READ_JSON_FILE = "Unable to read JSON file, creating new empty List";
+
+	private Gson gson;
+	private Properties pref;
+	private String jsonName;
+	private boolean isNewJson;
+
+	private JsonStorage() {
+		setUpDirectories();
+		this.gson = new GsonBuilder()
+				.registerTypeAdapter(Done.class, new DoneAdapter())
+				.setPrettyPrinting().serializeNulls().create();
+		pref = new Properties();
+		jsonName = getJsonNameFromPref();
+		isNewJson = false;
+	}
+
+	public static synchronized JsonStorage getInstance() {
+		if (instance == null) {
+			instance = new JsonStorage();
+		}
+
+		return instance;
+	}
+
+	/**
+	 * Return the List of tasks as Done object from JSON file. If file is not
+	 * found, returns an empty list.
+	 * 
+	 * @return List of tasks that are loaded from JSON file.
+	 */
 	public List<Done> load() {
-		logger.log(Level.INFO, "load() method executed");
+		StorageLogger.getStorageLogger().log(Level.INFO, "Load from JSON");
 		FileReader inFileRead = null;
 		List<Done> tasks = null;
 
+		// isNewJson to check if it's a different filename from preference file
 		if (isNewJson) {
 			jsonName = getJsonNameFromPref();
 		}
@@ -620,7 +860,11 @@
 		try {
 			inFileRead = new FileReader(jsonName);
 		} catch (IOException e) {
-			logger.log(Level.WARNING, "File not found!", e);
+			StorageLogger.getStorageLogger().log(Level.WARNING,
+					ERROR_FILE_NOT_FOUND, e);
+			// if IOException occurs while reading file, return empty List of
+			// Done
+			return new ArrayList<Done>();
 		}
 
 		// check if the JSON file has objects
@@ -629,15 +873,18 @@
 			assert inFile.length() <= 0; // assert that the file is indeed empty
 			return new ArrayList<Done>();
 		} else {
+			assert inFile.length() > 0;
 			// else get from JSON object in file into ArrayList
 			Type collectionType = new TypeToken<Done>() {
 			}.getType();
 			try {
 				tasks = gson.fromJson(inFileRead, collectionType);
-				assert tasks != null; // assert that the tasks ArrayList is not null
+				assert tasks != null; // assert that the tasks ArrayList is not
+										// null
 			} catch (JsonIOException e) {
-				logger.log(Level.WARNING,
-						"Unable to read JSON file, creating new empty List", e);
+				StorageLogger.getStorageLogger().log(Level.WARNING,
+						ERROR_READ_JSON_FILE, e);
+				// if JsonIOException occurs, return an empty List of Done
 				return new ArrayList<Done>();
 			}
 			return tasks;
@@ -645,8 +892,15 @@
 
 	}
 
+	/**
+	 * Stores the List of tasks from memory to JSON file.
+	 * 
+	 * @param task
+	 *            Task from memory.
+	 * @return Whether it is successful.
+	 */
 	public boolean store(List<Done> task) {
-		logger.log(Level.INFO, "store() method executed");
+		StorageLogger.getStorageLogger().log(Level.INFO, MESSAGE_STORE_JSON);
 
 		try {
 			FileWriter outFile = new FileWriter(jsonName);
@@ -655,39 +909,63 @@
 			outFile.close();
 			return true;
 		} catch (IOException e) {
-			logger.log(Level.WARNING, "Unable to write file!", e);
+			StorageLogger.getStorageLogger().log(Level.WARNING,
+					ERROR_WRITE_FILE, e);
+			// if IOException occurs, return false for Logic to set isSuccessful
+			// to false;
 			return false;
 		}
 	}
 
+	/**
+	 * Set the JSON name to preference file.
+	 * 
+	 * @param jsonName
+	 *            JSON name that is to be set.
+	 * @return Whether it is successful.
+	 */
 	public boolean setJsonNameToPref(String jsonName) {
-		logger.log(Level.INFO, "Setting JSON name");
+		StorageLogger.getStorageLogger().log(Level.INFO,
+				String.format(MESSAGE_SET_JSON_NAME, jsonName));
 		pref.setProperty("jsonName", jsonName + FILE_JSON_EXT);
 		try {
 			File prefFile = openFile(FILE_PREFS_XML);
 			pref.storeToXML(new FileOutputStream(prefFile), "store to XML");
 			return true;
 		} catch (Exception e) {
-			logger.log(Level.WARNING, "Unable to write file!", e);
+			StorageLogger.getStorageLogger().log(Level.WARNING,
+					ERROR_WRITE_FILE, e);
+			// if IOException occurs, return false for Logic to set isSuccessful
+			// to false;
 			return false;
 		}
 	}
 
+	/**
+	 * Retrieve JSON name from preference file. If the preference file does not
+	 * exist, create preference file with default JSON filename "tasks.json".
+	 * 
+	 * @return JSON file name in String.
+	 */
 	public String getJsonNameFromPref() {
-		logger.log(Level.INFO, "Retrieving JSON name");
+
 		try {
 			File prefFile = openFile(FILE_PREFS_XML);
 			pref.loadFromXML(new FileInputStream(prefFile));
 		} catch (IOException e) {
-			logger.log(Level.WARNING,
-					"Unable to read preference file! Using default.");
+			StorageLogger.getStorageLogger().log(Level.WARNING,
+					ERROR_READ_PREF_FILE);
+			// If IOException occur, set default preference file name
 			setJsonNameToPref(FILE_TASKS_JSON);
 		}
-
-		return pref.getProperty("jsonName", FILE_TASKS_JSON);
+		jsonName = pref.getProperty("jsonName", FILE_TASKS_JSON);
+		StorageLogger.getStorageLogger().log(Level.INFO,
+				String.format(MESSAGE_RETRIEVE_JSON, jsonName));
+		return jsonName;
 
 	}
 
+	// Utility Methods
 	private static File openFile(String fileName) {
 		File file = new File(fileName);
 
@@ -699,22 +977,6 @@
 			}
 		}
 		return file;
-	}
-
-	private void setUpLogger() {
-		SimpleFormatter sf = new SimpleFormatter();
-
-		try {
-			String out = new SimpleDateFormat(
-					"'StorageLog-'dd-MM-yyyy HH-mm'.log'").format(new Date());
-			File file = new File(DIR_LOG);
-			file.mkdir();
-			fileHandler = new FileHandler(DIR_LOG + out);
-			logger.addHandler(fileHandler);
-			fileHandler.setFormatter(sf);
-		} catch (SecurityException | IOException e) {
-			logger.log(Level.WARNING, "Unable to read file!", e);
-		}
 	}
 
 	private void setUpDirectories() {
@@ -729,7 +991,33 @@
 
 	}
 
-	// End of segment: C:\Users\Jerry\eclipse_workspace\CS2103Project\src\com\done\storage\JSONStorage.java
+	// End of segment: C:\Users\Jerry\eclipse_workspace\CS2103Project\src\com\done\storage\JsonStorage.java
+
+
+
+
+
+	/**
+	 * origin: C:\Users\Jerry\eclipse_workspace\CS2103Project\src\com\done\storage\StorageLogger.java
+	 */
+
+	public static void setUpLogger() {
+		SimpleFormatter sf = new SimpleFormatter();
+
+		try {
+			String out = new SimpleDateFormat(
+					"'StorageLog-'dd-MM-yyyy HHmm'.log'").format(new Date());
+			File file = new File(DIR_LOG);
+			file.mkdir();
+			fileHandler = new FileHandler(DIR_LOG + out);
+			storageLogger.addHandler(fileHandler);
+			fileHandler.setFormatter(sf);
+		} catch (SecurityException | IOException e) {
+			storageLogger.log(Level.WARNING, "Unable to read file!", e);
+		}
+	}
+
+	// End of segment: C:\Users\Jerry\eclipse_workspace\CS2103Project\src\com\done\storage\StorageLogger.java
 
 
 
@@ -739,19 +1027,38 @@
 	 * origin: C:\Users\Jerry\eclipse_workspace\CS2103Project\src\com\done\task\TaskReminder.java
 	 */
 
+package com.done.task;
+
+import java.util.Timer;
+import java.util.TimerTask;
+
+import javafx.application.Platform;
+import javafx.util.Duration;
+
+import org.controlsfx.control.Notifications;
+import org.joda.time.DateTime;
+import org.joda.time.LocalDateTime;
+import org.joda.time.format.DateTimeFormat;
+import org.joda.time.format.DateTimeFormatter;
+
+import com.done.model.Done;
+import com.done.model.DoneTimedTask;
+
+public class TaskReminder {
+	Timer timer;
+
+
 	public TaskReminder(DoneTimedTask done) {
 
-		long startTimeValue = done.getStartTimeLong();
-		long endTimeValue = done.getEndTimeLong();
+		long timeToRemind = done.getEndTimeLong() - DateTime.now().getMillis();
 
 		timer = new Timer();
 		timer.schedule(new DoneReminderTimedTask(done),
-				(endTimeValue - startTimeValue));
-
+				(timeToRemind));
 	}
 
 	public TaskReminder(Done done, String remindDate, String remindTime) {
-		DateTimeFormatter dtf = DateTimeFormat.forPattern("ddMMyyyy HH:mm");
+		DateTimeFormatter dtf = DateTimeFormat.forPattern("ddMMyyyy HHmm");
 		DateTime dateTime = dtf.parseDateTime(remindDate + " " + remindTime);
 		long currentTime = LocalDateTime.now().getMillisOfDay();
 		long endTimeValue = dateTime.getMillisOfDay();
@@ -759,8 +1066,8 @@
 		timer = new Timer();
 		timer.schedule(new DoneReminder(done), (endTimeValue - currentTime));
 	}
-	
-	public void stopTimer(){
+
+	public void stopTimer() {
 		timer.cancel();
 	}
 
@@ -822,7 +1129,26 @@
 	 * origin: C:\Users\Jerry\eclipse_workspace\CS2103Project\test\com\done\DoneProgram.java
 	 */
 
-	// Integration test
+// System tests
+package com.done;
+
+import static org.hamcrest.CoreMatchers.is;
+import static org.junit.Assert.assertThat;
+import static org.junit.Assert.assertTrue;
+
+import org.junit.Before;
+import org.junit.Test;
+
+import com.done.command.Command;
+import com.done.command.Command.CommandType;
+import com.done.logic.Logic;
+import com.done.logic.LogicFacade;
+import com.done.parser.CommandParser;
+import com.done.result.ExecutionResult;
+import com.done.storage.InMemStorage;
+
+public class DoneProgram {
+
 	@Test
 	public void testAddFloatingFromFacade() {
 		String input = "add facade test";
@@ -923,8 +1249,295 @@
 
 
 	/**
+	 * origin: C:\Users\Jerry\eclipse_workspace\CS2103Project\test\com\done\integration\CommandStorageTest.java
+	 */
+
+package com.done.integration;
+
+import static org.hamcrest.CoreMatchers.is;
+import static org.junit.Assert.assertThat;
+
+import org.junit.After;
+import org.junit.Before;
+import org.junit.Test;
+
+import com.done.command.Command;
+import com.done.command.CommandAdd;
+import com.done.command.CommandClear;
+import com.done.command.CommandLoad;
+import com.done.command.CommandSearch;
+import com.done.model.DoneFloatingTask;
+import com.done.storage.InMemStorage;
+import com.done.storage.JsonStorage;
+
+public class CommandStorageTest {
+
+	InMemStorage inMem = InMemStorage.getInstance();
+	JsonStorage jsonStore = JsonStorage.getInstance();
+
+	@Before
+	public void setUp() {
+		// use "testJson.json" file for testing
+		Command cmd = new CommandLoad("testJson");
+		try {
+			cmd.execute();
+		} catch (Exception e) {
+			System.out.println("Command failed to execute.");
+		}
+		// delete all tasks from memory and JSON first before performing tests
+		inMem.delete(null, true);
+	}
+
+	@Test
+	public void testAdd() {
+		CommandAdd cmd = null;
+		try {
+			cmd = new CommandAdd(new DoneFloatingTask("INTEGRATION TEST"));
+			cmd.execute();
+			// added one task, size of inMemory should be one
+			assertThat(inMem.getTasks().size(), is(1));
+		} catch (Exception e) {
+			System.out.println("Command failed to execute.");
+		}
+	}
+
+	@Test
+	public void testSearch() {
+		Command cmd = null;
+		try {
+			// add 4 tasks with one different
+			cmd = new CommandAdd(new DoneFloatingTask("INTEGRATION TEST"));
+			cmd.execute();
+			cmd = new CommandAdd(new DoneFloatingTask("INTEGRATION TEST2"));
+			cmd.execute();
+			cmd = new CommandAdd(new DoneFloatingTask("INTEGRATION TEST3"));
+			cmd.execute();
+			cmd = new CommandAdd(new DoneFloatingTask("HELLO WORLD!"));
+			cmd.execute();
+
+			// search for "INTEGRATION"
+			cmd = new CommandSearch("INTEGRATION");
+			cmd.execute();
+
+			// memory storage should have size of 4
+			assertThat(inMem.getTasks().size(), is(4));
+
+			// memory workingTasks list should have a size of 3
+			assertThat(inMem.getWorkingTasks().size(), is(3));
+		} catch (Exception e) {
+			System.out.println("Command failed to execute.");
+		}
+	}
+
+	@Test
+	public void testLoad() {
+		Command cmd = null;
+		try {
+			// remove all from memory first
+			inMem.delete(null, true);
+			// add one task into current file
+			cmd = new CommandAdd(new DoneFloatingTask("INTEGRATION TEST"));
+			cmd.execute();
+			// added one task into testJson, size of memory should be 1 
+			assertThat(inMem.getTasks().size(), is(1));
+			cmd = new CommandLoad("testJson2");
+			cmd.execute();
+			
+			// loaded file testJson2, so in preferences the name should be testJson2.json
+			assertThat(jsonStore.getJsonNameFromPref(), is("tasks//testJson2.json"));
+			// remove all from memory first
+			inMem.delete(null, true);
+			
+			// add 2 tasks into new file
+			cmd = new CommandAdd(new DoneFloatingTask("INTEGRATIONLOAD TEST"));
+			cmd.execute();
+			cmd = new CommandAdd(new DoneFloatingTask("INTEGRATIONLOAD TEST2"));
+			cmd.execute();
+			// added 2 tasks into testJson2, size of memory should be 2 (not 3)
+			assertThat(inMem.getTasks().size(), is(2));
+			
+		} catch (Exception e) {
+			System.out.println("Command failed to execute.");
+		}
+
+	}
+	
+	@Test
+	public void testClear() {
+		Command cmd = null;
+		try {
+			cmd = new CommandAdd(new DoneFloatingTask("INTEGRATION TEST"));
+			cmd.execute();
+			cmd = new CommandAdd(new DoneFloatingTask("INTEGRATION TEST"));
+			cmd.execute();
+			cmd = new CommandAdd(new DoneFloatingTask("INTEGRATION TEST"));
+			cmd.execute();
+			// added 3 tasks, size should be 3
+			assertThat(inMem.getTasks().size(), is(3));
+			
+			cmd = new CommandClear();
+			cmd.execute();
+			
+			// clear executed, size should be 0
+			assertThat(inMem.getTasks().size(), is(0));
+			
+		} catch (Exception e) {
+			System.out.println("Command failed to execute.");
+		}
+	}
+
+}
+
+	// End of segment: C:\Users\Jerry\eclipse_workspace\CS2103Project\test\com\done\integration\CommandStorageTest.java
+
+
+
+
+
+	/**
+	 * origin: C:\Users\Jerry\eclipse_workspace\CS2103Project\test\com\done\integration\LogicStorageTest.java
+	 */
+
+package com.done.integration;
+
+import static org.hamcrest.CoreMatchers.is;
+import static org.junit.Assert.*;
+
+import org.junit.Before;
+import org.junit.Test;
+
+import com.done.command.Command;
+import com.done.command.CommandAdd;
+import com.done.command.CommandDone;
+import com.done.command.CommandLoad;
+import com.done.command.CommandSearch;
+import com.done.command.CommandUndo;
+import com.done.logic.Logic;
+import com.done.model.DoneFloatingTask;
+import com.done.storage.InMemStorage;
+import com.done.storage.JsonStorage;
+
+public class LogicStorageTest {
+
+	InMemStorage inMem = InMemStorage.getInstance();
+	JsonStorage jsonStore = JsonStorage.getInstance();
+	Logic logic = new Logic();
+
+	@Before
+	public void setUp() {
+		// use "testJson.json" file for testing
+		Command cmd = new CommandLoad("testJson");
+		logic.executeCommand(cmd);
+		// delete all tasks from memory and JSON first before performing tests
+		inMem.delete(null, true);
+	}
+
+	@Test
+	public void testAdd() {
+		Command cmd = new CommandAdd(new DoneFloatingTask("INTEGRATION TEST"));
+		logic.executeCommand(cmd);
+		// executing command should be successful
+		assertTrue(logic.isSuccessful());
+		// size of memory should be 1
+		assertThat(inMem.getTasks().size(), is(1));
+	}
+	
+	@Test
+	public void testSearch() {
+		Command cmd = new CommandAdd(new DoneFloatingTask("INTEGRATION TEST"));
+		
+		logic.executeCommand(cmd);
+		assertTrue(logic.isSuccessful());
+		
+		cmd = new CommandAdd(new DoneFloatingTask("INTEGRATION TEST2"));
+		logic.executeCommand(cmd);
+		assertTrue(logic.isSuccessful());
+		
+		cmd = new CommandAdd(new DoneFloatingTask("HELLO"));
+		logic.executeCommand(cmd);
+		assertTrue(logic.isSuccessful());
+		
+		cmd = new CommandSearch("HELLO");
+		logic.executeCommand(cmd);
+		assertTrue(logic.isSuccessful());
+		// search for HELLO, size should be 1 of the 3
+		assertThat(inMem.getWorkingTasks().size(), is(1));
+		
+	}
+	
+	@Test
+	public void testSetComplete() {
+		Command cmd = new CommandAdd(new DoneFloatingTask("INTEGRATION TEST"));
+		
+		logic.executeCommand(cmd);
+		assertTrue(logic.isSuccessful());
+		// after adding, it is not a completed task
+		assertFalse(inMem.getTask(1).isCompleted());
+		
+		try {
+			cmd = new CommandDone(1);
+			logic.executeCommand(cmd);
+			assertTrue(logic.isSuccessful());
+			
+			// executed Done on the task, it is a completed task
+			assertTrue(inMem.getTask(1).isCompleted());
+		} catch (Exception e) {
+			System.out.println("Command failed to execute.");
+		}
+	}
+
+	@Test
+	public void testUndo() {
+		Command cmd = new CommandAdd(new DoneFloatingTask("INTEGRATION TEST"));
+		
+		logic.executeCommand(cmd);
+		assertTrue(logic.isSuccessful());
+		// after adding, it is not a completed task
+		assertFalse(inMem.getTask(1).isCompleted());
+		
+		try {
+			cmd = new CommandDone(1);
+			logic.executeCommand(cmd);
+			assertTrue(logic.isSuccessful());
+			
+			// executed Done on the task, it is a completed task
+			assertTrue(inMem.getTask(1).isCompleted());
+			
+			cmd = new CommandUndo();
+			logic.executeCommand(cmd);
+			assertTrue(logic.isSuccessful());
+			
+			// after undo, the completed task should be incomplete
+			assertFalse(inMem.getTask(1).isCompleted());
+			
+		} catch (Exception e) {
+			System.out.println("Command failed to execute.");
+		}
+	}
+
+}
+
+	// End of segment: C:\Users\Jerry\eclipse_workspace\CS2103Project\test\com\done\integration\LogicStorageTest.java
+
+
+
+
+
+	/**
 	 * origin: C:\Users\Jerry\eclipse_workspace\CS2103Project\test\com\done\model\DoneTest.java
 	 */
+
+package com.done.model;
+
+import static org.junit.Assert.*;
+import static org.hamcrest.CoreMatchers.*;
+
+import org.junit.Test;
+
+import com.done.model.Done.TaskType;
+
+public class DoneTest {
+	
 
 	
 	@Test
@@ -970,9 +1583,34 @@
 	 * origin: C:\Users\Jerry\eclipse_workspace\CS2103Project\test\com\done\storage\InMemStorageTest.java
 	 */
 
+package com.done.storage;
 
+import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertNull;
+import static org.junit.Assert.assertTrue;
+
+import java.util.ArrayList;
+import java.util.List;
+
+import org.joda.time.DateTime;
+import org.junit.Before;
+import org.junit.Test;
+
+import com.done.model.Done;
+import com.done.model.DoneDeadlineTask;
+import com.done.model.DoneFloatingTask;
+import com.done.model.DoneTimedTask;
+
+public class InMemStorageTest {
+
+	InMemStorage inMem = InMemStorage.getInstance();
+	JsonStorage jsonStore = JsonStorage.getInstance(); 
+	
 	@Before
 	public void setUp() {
+		// use "testJson.json" file for testing
+		jsonStore.setJsonNameToPref("tasks//testJson");
 		// delete all tasks from memory and JSON first before performing tests
 		inMem.delete(null, true);
 	}
@@ -1040,8 +1678,23 @@
 
 
 	/**
-	 * origin: C:\Users\Jerry\eclipse_workspace\CS2103Project\test\com\done\storage\JSONStorageTest.java
+	 * origin: C:\Users\Jerry\eclipse_workspace\CS2103Project\test\com\done\storage\JsonStorageTest.java
 	 */
+
+package com.done.storage;
+
+import static org.hamcrest.CoreMatchers.*;
+import static org.junit.Assert.assertThat;
+import static org.junit.Assert.assertTrue;
+
+import java.io.FileNotFoundException;
+import java.io.IOException;
+
+import org.junit.Test;
+
+public class JsonStorageTest {
+
+	JsonStorage test = JsonStorage.getInstance();
 
 	@Test
 	public void testJsonNameToPrefs() throws FileNotFoundException, IOException {
@@ -1055,12 +1708,12 @@
 		test.setJsonNameToPref("tasks//testJson");
 		// if input to Properties is "testJson.json"
 		// then the output after retrieving should be the same
-		assertThat(new String(test.getJsonNameFromPref()), is("tasks//testJson.json"));
+		assertThat(test.getJsonNameFromPref(), is("tasks//testJson.json"));
 	}
 
 }
 
-	// End of segment: C:\Users\Jerry\eclipse_workspace\CS2103Project\test\com\done\storage\JSONStorageTest.java
+	// End of segment: C:\Users\Jerry\eclipse_workspace\CS2103Project\test\com\done\storage\JsonStorageTest.java
 
 
 

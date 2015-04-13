@@ -60,7 +60,7 @@
 			this.reminderTask = new TaskReminder((DoneTimedTask) task);
 		}
 		
-		commandLogger.log(Level.INFO, "Add Command Created");
+		commandLogger.log(Level.INFO, MESSAGE_CREATION);
 	}
 
 	public Done getTask() {
@@ -83,7 +83,7 @@
 
 	public CommandClear(){
 		super(CommandType.CLEAR, false);
-		commandLogger.log(Level.INFO, "Clear Command Created");
+		commandLogger.log(Level.INFO, MESSAGE_CREATION);
 	}
 
 	// End of segment: C:\Users\Jerry\eclipse_workspace\CS2103Project\src\com\done\command\CommandClear.java
@@ -98,14 +98,12 @@
 
 	public CommandClearDone(){
 		super(CommandType.CLEARDONE,false);
-		commandLogger.log(Level.INFO, "ClearDone Command Created");
+		commandLogger.log(Level.INFO, MESSAGE_CREATION);
 	}
 
 	@Override
 	public void execute() throws Exception {
-		commandLogger.log(Level.INFO, "Cleardone Command Execution called");
 		InMemStorage.getInstance().clearDoneTasks();
-		commandLogger.log(Level.INFO, "cleardone Command Execution succeeded");
 	}
 
 	//undo not required in CLEARDONE
@@ -132,13 +130,13 @@
 			throw new Exception("Too large Destination Index Value");
 		}
 		this.deleteIndex = deleteIndex;
-		commandLogger.log(Level.INFO, "Delete Command Created");
+		commandLogger.log(Level.INFO, MESSAGE_CREATION);
 	}
 
 	public CommandDelete(Done task) {
 		super(CommandType.DELETE, true);
 		this.task = task;
-		commandLogger.log(Level.INFO, "Delete Command Created");
+		commandLogger.log(Level.INFO, MESSAGE_CREATION);
 	}
 
 	// End of segment: C:\Users\Jerry\eclipse_workspace\CS2103Project\src\com\done\command\CommandDelete.java
@@ -158,19 +156,19 @@
 			throw new Exception("Too large Destination Index Value");
 		}
 		this.task = InMemStorage.getInstance().getTask(doneIndex);
-		commandLogger.log(Level.INFO, "Done Command Created");
+		commandLogger.log(Level.INFO, MESSAGE_CREATION);
 	}
 	
 	public CommandDone(Done task) {
 		super(CommandType.DONE, true);
 		this.task = task;
-		commandLogger.log(Level.INFO, "Done Command Created");
+		commandLogger.log(Level.INFO, MESSAGE_CREATION);
 	}
 	
 	@Override
 	public void execute() throws Exception {
-		InMemStorage inMemStorage = InMemStorage.getInstance();
-		inMemStorage.setCompleted(task);
+		InMemStorage memory = InMemStorage.getInstance();
+		memory.setCompleted(task);
 	}
 
 	@Override
@@ -197,25 +195,21 @@
 		}
 		this.editIndex = editIndex;
 		this.task = task;
-		commandLogger.log(Level.INFO, "Edit Command Created");
+		commandLogger.log(Level.INFO, MESSAGE_CREATION);
 	}
 
 	@Override
 	// This method edits First tasks with the same Title
 	public void execute() throws Exception {
-		commandLogger.log(Level.INFO, "Edit Command called");
 		InMemStorage memory = InMemStorage.getInstance();
 		this.subbedTask = memory.getTask(editIndex);
 		memory.edit(task, editIndex - 1);
-		commandLogger.log(Level.INFO, "Edit Command successfully executed");
 	}
 
 	@Override
 	public void undo() {
-		commandLogger.log(Level.INFO, "Undo Command called");
 		InMemStorage memory = InMemStorage.getInstance();
 		memory.edit(subbedTask, editIndex - 1);
-		commandLogger.log(Level.INFO, "Undo Command successfully executed");
 	}
 
 	// End of segment: C:\Users\Jerry\eclipse_workspace\CS2103Project\src\com\done\command\CommandEdit.java
@@ -231,15 +225,15 @@
 	public CommandExit(boolean isNormal){
 		super(CommandType.EXIT,false);
 		this.isNormal = isNormal;
-		commandLogger.log(Level.INFO, "Exit Command Created");
+		commandLogger.log(Level.INFO, MESSAGE_CREATION);
 	}
 
 	@Override
 	public void execute() throws Exception {
-		if(isNormal){
-			System.exit(STATUS_NORMAL);
+		if(!isNormal){
+			System.exit(STATUS_ABNORMAL);
 		}
-		System.exit(STATUS_ABNORMAL);
+		System.exit(STATUS_NORMAL);
 	}
 
 	@Override
@@ -259,7 +253,7 @@
 
 	public CommandInvalid(){
 		super(CommandType.INVALID, false);
-		commandLogger.log(Level.INFO, "Invalid Command Created");
+		commandLogger.log(Level.INFO, MESSAGE_CREATION);
 
 	}
 
@@ -288,7 +282,7 @@
 	public CommandLoad(String jsonName) {
 		super(CommandType.LOAD, false);
 		this.jsonName = jsonName;
-		commandLogger.log(Level.INFO, "Load Command Created");
+		commandLogger.log(Level.INFO, MESSAGE_CREATION);
 	}
 
 	// End of segment: C:\Users\Jerry\eclipse_workspace\CS2103Project\src\com\done\command\CommandLoad.java
@@ -305,28 +299,22 @@
 		super(CommandType.MOVE, true);
 		if (origin > (InMemStorage.getInstance().getTasks().size())
 				|| destination > (InMemStorage.getInstance().getTasks().size())) {
-			throw new Exception("Too large Destination Index Value");
+			throw new Exception("Too large Index Value");
 		}
 		this.origin = origin - 1;
 		this.destination = destination - 1;
-		commandLogger.log(Level.INFO, "Move Command Created");
+		commandLogger.log(Level.INFO, MESSAGE_CREATION);
 	}
 
 	@Override
 	public void execute() throws Exception {
-		commandLogger.log(Level.INFO, "Move Command Execution called");
 		InMemStorage memory = InMemStorage.getInstance();
-		// List<Done> tasks = memory.getTasks();
-		// swap(tasks, origin, destination);
 		memory.move(origin, destination);
-		commandLogger.log(Level.INFO, "Move Command Execution Successful");
 	}
 
 	@Override
 	public void undo() throws Exception {
 		InMemStorage memory = InMemStorage.getInstance();
-		// List<Done> tasks = memory.getTasks();
-		// swap(tasks, destination, origin);
 		memory.move(destination, origin);
 	}
 
@@ -341,22 +329,25 @@
 	 */
 
 
-	public CommandRecur(int recurIndex, String period) throws Exception{
+	public CommandRecur(int recurIndex, String period, int numberToStop) throws Exception{
 		super(CommandType.RECUR, true);
+		assert recurIndex > 0;
 		if (recurIndex > InMemStorage.getInstance().getTasks().size()) {
 			commandLogger.log(Level.INFO, "Too large Index");
 			throw new Exception("Too large Destination Index Value");
 		}
 		this.task = InMemStorage.getInstance().getTask(recurIndex);
 		this.frequency = period;
-		commandLogger.log(Level.INFO, "Recur Command Created");
+		this.numberToStop = numberToStop;
+		commandLogger.log(Level.INFO, MESSAGE_CREATION);
 	}
 
-	public CommandRecur(Done task,String period){
+	public CommandRecur(Done task, String period, int numberToStop){
 		super(CommandType.RECUR,true);
 		this.task = task;
 		this.frequency = period;
-		commandLogger.log(Level.INFO, "Recur Command Created");
+		this.numberToStop = numberToStop;
+		commandLogger.log(Level.INFO, MESSAGE_CREATION);
 	}
 	
 	// End of segment: C:\Users\Jerry\eclipse_workspace\CS2103Project\src\com\done\command\CommandRecur.java
@@ -371,21 +362,19 @@
 
 	public CommandRemind(int remindIndex, String date, String time) throws Exception {
 		super(CommandType.REMIND, true);
+		assert remindIndex>0;
 		if (remindIndex > InMemStorage.getInstance().getTasks().size()) {
 			throw new Exception("Too large Destination Index Value");
 		}
 		this.task = InMemStorage.getInstance().getTask(remindIndex);
-		this.remindIndex = remindIndex;
 		this.date = date;
 		this.time = time;
-		commandLogger.log(Level.INFO, "Remind Command Created");
+		commandLogger.log(Level.INFO, MESSAGE_CREATION);
 	}
 
 	@Override
 	public void execute() throws Exception {
-		commandLogger.log(Level.INFO, "Remind Command called");
 		this.reminderTask = new TaskReminder(task, date, time);
-		commandLogger.log(Level.INFO, "Remind Command successfully executed");
 	}
 
 	@Override
@@ -409,7 +398,7 @@
 	public CommandSearch(String searchString) {
 		super(CommandType.SEARCH, false);
 		this.searchString = searchString;
-		commandLogger.log(Level.INFO, "Search Command Created");
+		commandLogger.log(Level.INFO, MESSAGE_CREATION);
 	}
 
 	public String getSearchString() {
@@ -432,11 +421,11 @@
 
 	public CommandShowAll() {
 		super(CommandType.SHOWALL, false);
+		commandLogger.log(Level.INFO, MESSAGE_CREATION);
 	}
 
 	@Override
 	public void execute() {
-		commandLogger.log(Level.INFO, "Showall Command called");
 		InMemStorage memory = InMemStorage.getInstance();
 		List<Done> tasks = memory.getTasks();
 		memory.emptyWorkingTasks();
@@ -444,7 +433,6 @@
 		for (int i = 0; i < tasks.size(); i++) {
 			memory.addIntoWorkingTask(tasks.get(i));
 		}
-		commandLogger.log(Level.INFO, "Showall Command successful");
 	}
 
 	@Override
@@ -464,10 +452,33 @@
 
 	public CommandUndo() {
 		super(CommandType.UNDO, false);
-		commandLogger.log(Level.INFO, "Undo Command Created");
+		commandLogger.log(Level.INFO, MESSAGE_CREATION);
 	}
 	
 	// End of segment: C:\Users\Jerry\eclipse_workspace\CS2103Project\src\com\done\command\CommandUndo.java
+
+
+
+
+
+	/**
+	 * origin: C:\Users\Jerry\eclipse_workspace\CS2103Project\src\com\done\parser\CommandParser.java
+	 */
+
+package com.done.parser;
+
+import java.util.logging.Level;
+import java.util.logging.Logger;
+
+import com.done.command.Command;
+import com.done.command.Command.CommandType;
+
+public class CommandParser {
+
+	private static CommandParser instance = null;
+	private static Logger parserLogger = Logger.getLogger("CommandParser");
+
+	// End of segment: C:\Users\Jerry\eclipse_workspace\CS2103Project\src\com\done\parser\CommandParser.java
 
 
 
@@ -481,6 +492,7 @@
 
 	}
 
+	// get the Singleton CommandParser
 	public static CommandParser getInstance() {
 		if (instance == null) {
 			instance = new CommandParser();
@@ -488,15 +500,19 @@
 		return instance;
 	}
 
+	// parse an input to make a Command
 	public Command parseInputToMakeCommand(String userCommand) {
 
 		parserLogger.log(Level.INFO, "Input passed to make Command");
-		String commandWord = ParserUtility.getFirstWord(userCommand);
-		String commandContent = ParserUtility.removeFirstWord(userCommand);
+		String command = userCommand.trim();
+		String commandWord = ParserUtility.getFirstWord(command);
+		String commandContent = ParserUtility.removeFirstWord(command);
 		return makeCommand(commandWord, commandContent);
 
 	}
-	
+
+	// given a commandWord and commandContent, determine commandType and make
+	// Command
 	// End of segment: C:\Users\Jerry\eclipse_workspace\CS2103Project\src\com\done\parser\CommandParser.java
 
 
@@ -509,10 +525,8 @@
 
 	private Command makeCommand(String commandWord, String commandContent) {
 		if (commandWord.equalsIgnoreCase("add")) {
-			parserLogger.log(Level.INFO, "make add Command");
 			return ParserUtility.makeAdd(commandContent);
 		} else if (commandWord.equalsIgnoreCase("delete")) {
-			parserLogger.log(Level.INFO, "make delete Command");
 			return ParserUtility.makeDelete(commandContent);
 		} else if (commandWord.equalsIgnoreCase("edit")) {
 			return ParserUtility.makeEdit(commandContent);
@@ -543,6 +557,7 @@
 		}
 	}
 
+	// given a line of Command, give the commandType
 	public CommandType getCommandType(String userCommand) {
 
 		String command = ParserUtility.getFirstWord(userCommand);
@@ -580,11 +595,12 @@
 		}
 	}
 
+	// given a line of Command, give the commandContent
 	public String getCommandContent(String userCommand) {
 		String currentContent = ParserUtility.removeFirstWord(userCommand);
 		return currentContent;
 	}
-	
+
 }
 
 	// End of segment: C:\Users\Jerry\eclipse_workspace\CS2103Project\src\com\done\parser\CommandParser.java
@@ -597,154 +613,75 @@
 	 * origin: C:\Users\Jerry\eclipse_workspace\CS2103Project\src\com\done\parser\ParserUtility.java
 	 */
 
-	protected static Command makeAdd(String content){
-		try{
-			Done tempTask = defineTask(content);
-			return new CommandAdd(tempTask);
-		}catch (Exception e){
-			return new CommandInvalid();
-		}
-	}
-	
-	protected static Command makeDelete(String content){
-		if (isPositiveInt(content)) {
-			try{
-				return new CommandDelete(Integer.parseInt(content));
-			}catch(Exception e){
-				return new CommandInvalid();
-			}
-		} else {
-			return new CommandInvalid();
-		}
-	}
+package com.done.parser;
 
-	protected static Command makeEdit(String content){
-		String indexString = getFirstWord(content);
-		if (isPositiveInt(indexString)) {
-			try{
-				int index = Integer.parseInt(indexString);
-				Done changedTask = defineTask(removeFirstWord(content));
-				parserLogger.log(Level.INFO, "make edit Command");
-				return new CommandEdit(index, changedTask);
-			}catch (Exception e){
-				parserLogger.log(Level.INFO, "make invalid Command instead");
-				return new CommandInvalid();
-			}
-		} else {
-			parserLogger.log(Level.INFO, "make invalid Command instead");
-			return new CommandInvalid();
-		}
-	}
-	
-	protected static Command makeClear(String content){
-		parserLogger.log(Level.INFO, "make clear Command");
-		if(content.equals("")){
-			return new CommandClear();
-		}else{
-			return new CommandInvalid();
-		}
-	}
-	
-	protected static Command makeMove(String content){
-		parserLogger.log(Level.INFO, "make move Command");
-		ArrayList<String> indexes = sliceContent(content);
-		if ((isPositiveInt(indexes.get(0)))
-				&& (isPositiveInt(indexes.get(1)))) {
-			try{
-				System.out.println(indexes.get(0));
-				System.out.println(indexes.get(1));
-				int origin = Integer.parseInt(indexes.get(0));
-				int destination = Integer.parseInt(indexes.get(1));
-				return new CommandMove(origin, destination);
-			}catch(Exception e){
-				return new CommandInvalid();
-			}
-		} else {
-			parserLogger.log(Level.INFO, "make invalid Command instead");
-			return new CommandInvalid();
-		}
-	}
-	
-	protected static Command makeSearch(String content){
-		parserLogger.log(Level.INFO, "make search Command");
-		return new CommandSearch(content);
-	}
-	
-	protected static Command makeShowAll(){
-		parserLogger.log(Level.INFO, "make showall Command");
-		return new CommandShowAll();
-	}
-	
-	protected static Command makeDone(String content){
-		parserLogger.log(Level.INFO, "make done Command");
-		if (isPositiveInt(content)) {
-			try{
-				return new CommandDone(Integer.parseInt(content));
-			}catch (Exception e){
-				return new CommandInvalid();
-			}
-		} else {
-			return new CommandInvalid();
-		}
-	}
-	
-	protected static Command makeClearDone(){
-		parserLogger.log(Level.INFO, "make cleardone Command");
-		return new CommandClearDone();
-	}
-	
-	protected static Command makeRecur(String content){
-		parserLogger.log(Level.INFO, "make recur Command");
-		ArrayList<String> contents = sliceContent(content);
-		String index = contents.get(0);
-		String period = contents.get(1);
-		if (isPositiveInt(index) && isValidPeriod(period)) {
-			try{
-				return new CommandRecur(Integer.parseInt(index), period);
-			}catch (Exception e){
-				return new CommandInvalid();
-			}
-		} else {
-			return new CommandInvalid();
-		}
-	}
-	
-	protected static Command makeRemind(String content){
-		parserLogger.log(Level.INFO, "make remind Command");
-		try {
-			ArrayList<String> contents = sliceContent(content);
-			String index = contents.get(0);
-			String date = contents.get(1);
-			String time = contents.get(2);
-			return new CommandRemind(Integer.parseInt(index), date, time);
-		} catch (Exception e) {
-			parserLogger.log(Level.INFO, "make invalid Command instead");
-			return new CommandInvalid();
-		}
-	}
-	
-	protected static Command makeLoad(String content){
-		parserLogger.log(Level.INFO, "make load Command");
-		return new CommandLoad(content);
-	}
-	
-	protected static Command makeUndo(){
-		parserLogger.log(Level.INFO, "make undo Command");
-		return new CommandUndo();
-	}
-	
-	protected static Command makeExit(){
-		parserLogger.log(Level.INFO, "make exit Command");
-		return new CommandExit(true);
-	}
-	
-	protected static Command makeInvalid(){
-		parserLogger.log(Level.INFO, "make invalid Command");
-		return new CommandInvalid();
-	}
-	//End of Command Maker Methods
-	
-	//Methods to make Tasks(Floating, Timed and Deadline tasks).
+import java.util.ArrayList;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+
+import org.joda.time.DateTime;
+import org.joda.time.format.DateTimeFormat;
+import org.joda.time.format.DateTimeFormatter;
+
+import com.done.command.Command;
+import com.done.command.CommandAdd;
+import com.done.command.CommandClear;
+import com.done.command.CommandClearDone;
+import com.done.command.CommandDelete;
+import com.done.command.CommandDone;
+import com.done.command.CommandEdit;
+import com.done.command.CommandExit;
+import com.done.command.CommandInvalid;
+import com.done.command.CommandLoad;
+import com.done.command.CommandMove;
+import com.done.command.CommandRecur;
+import com.done.command.CommandRemind;
+import com.done.command.CommandSearch;
+import com.done.command.CommandShowAll;
+import com.done.command.CommandUndo;
+import com.done.model.Done;
+import com.done.model.DoneDeadlineTask;
+import com.done.model.DoneFloatingTask;
+import com.done.model.DoneTimedTask;
+
+public class ParserUtility {
+
+	// constants for processing content
+	private static final int FIRST_ARGUMENT_POSITION = 0;
+	private static final int SECOND_ARGUMENT_POSITION = 1;
+	private static final int THIRD_ARGUMENT_POSITION = 2;
+	private static final int LONG_DATE_LENGTH = 8;
+	private static final int SHORT_DATE_LENGTH = 4;
+	private static final int TIME_LENGTH = 4;
+
+	// String messages for Logging purposes
+	private static final String MESSAGE_MAKE_ADD = "make add Command";
+	private static final String MESSAGE_MAKE_DELETE = "make delete Command";
+	private static final String MESSAGE_MAKE_EDIT = "make edit Command";
+	private static final String MESSAGE_MAKE_CLEAR = "make clear Command";
+	private static final String MESSAGE_MAKE_MOVE = "make move Command";
+	private static final String MESSAGE_MAKE_SEARCH = "make search Command";
+	private static final String MESSAGE_MAKE_SHOWALL = "make showall Command";
+	private static final String MESSAGE_MAKE_DONE = "make done Command";
+	private static final String MESSAGE_MAKE_CLEARDONE = "make cleardone Command";
+	private static final String MESSAGE_MAKE_RECUR = "make recur Command";
+	private static final String MESSAGE_MAKE_REMIND = "make remind Command";
+	private static final String MESSAGE_MAKE_LOAD = "make load Command";
+	private static final String MESSAGE_MAKE_UNDO = "make undo Command";
+	private static final String MESSAGE_MAKE_EXIT = "make exit Command";
+	private static final String MESSAGE_MAKE_INVALID = "make invalid Command";
+	private static final String MESSAGE_MAKE_TIMED = "make Timed Task";
+	private static final String MESSAGE_MAKE_DEADLINE = "make Deadline Task";
+	private static final String MESSAGE_MAKE_FLOATING = "make Floating Task";
+	private static final String MESSAGE_INVALID_CONTENT = "content is invalid";
+	private static final String MESSAGE_VALID_CONTENT = "content is valid";
+
+	// logger for the Utility Class
+	private static Logger parserUtilityLogger = Logger
+			.getLogger("CommandParser");
+
+	// The methods to make and return respective Commands.
+	// Returns a CommandInvalid if the content is not correct
 	// End of segment: C:\Users\Jerry\eclipse_workspace\CS2103Project\src\com\done\parser\ParserUtility.java
 
 
@@ -755,17 +692,257 @@
 	 * origin: C:\Users\Jerry\eclipse_workspace\CS2103Project\src\com\done\parser\ParserUtility.java
 	 */
 
+	
+	protected static Command makeAdd(String content) {
+		parserUtilityLogger.log(Level.INFO, MESSAGE_MAKE_ADD);
+		try {
+			Done tempTask = defineTask(content);
+			return new CommandAdd(tempTask);
+		} catch (Exception e) {
+			return new CommandInvalid();
+		}
+	}
+
+	protected static Command makeDelete(String content) {
+		parserUtilityLogger.log(Level.INFO, MESSAGE_MAKE_DELETE);
+		if (isPositiveInt(content)) {
+			try {
+				return new CommandDelete(Integer.parseInt(content));
+			} catch (Exception e) {
+				return new CommandInvalid();
+			}
+		} else {
+			return new CommandInvalid();
+		}
+	}
+
+	protected static Command makeEdit(String content) {
+		parserUtilityLogger.log(Level.INFO, MESSAGE_MAKE_EDIT);
+		String indexString = getFirstWord(content);
+		if (isPositiveInt(indexString)) {
+			try {
+				int index = Integer.parseInt(indexString);
+				Done changedTask = defineTask(removeFirstWord(content));
+				return new CommandEdit(index, changedTask);
+			} catch (Exception e) {
+				return new CommandInvalid();
+			}
+		} else {
+			return new CommandInvalid();
+		}
+	}
+
+	protected static Command makeClear(String content) {
+		parserUtilityLogger.log(Level.INFO, MESSAGE_MAKE_CLEAR);
+		if (content.equals("")) {
+			return new CommandClear();
+		} else {
+			return new CommandInvalid();
+		}
+	}
+
+	protected static Command makeMove(String content) {
+		parserUtilityLogger.log(Level.INFO, MESSAGE_MAKE_MOVE);
+		ArrayList<String> indexes = sliceContent(content);
+		if ((isPositiveInt(indexes.get(FIRST_ARGUMENT_POSITION)))
+				&& (isPositiveInt(indexes.get(SECOND_ARGUMENT_POSITION)))) {
+			try {
+				int origin = Integer.parseInt(indexes
+						.get(FIRST_ARGUMENT_POSITION));
+				int destination = Integer.parseInt(indexes
+						.get(SECOND_ARGUMENT_POSITION));
+				return new CommandMove(origin, destination);
+			} catch (Exception e) {
+				return new CommandInvalid();
+			}
+		} else {
+			return new CommandInvalid();
+		}
+	}
+
+	protected static Command makeSearch(String content) {
+		parserUtilityLogger.log(Level.INFO, MESSAGE_MAKE_SEARCH);
+		return new CommandSearch(content);
+	}
+
+	protected static Command makeShowAll() {
+		parserUtilityLogger.log(Level.INFO, MESSAGE_MAKE_SHOWALL);
+		return new CommandShowAll();
+	}
+
+	protected static Command makeDone(String content) {
+		parserUtilityLogger.log(Level.INFO, MESSAGE_MAKE_DONE);
+		if (isPositiveInt(content)) {
+			try {
+				return new CommandDone(Integer.parseInt(content));
+			} catch (Exception e) {
+				return new CommandInvalid();
+			}
+		} else {
+			return new CommandInvalid();
+		}
+	}
+
+	protected static Command makeClearDone() {
+		parserUtilityLogger.log(Level.INFO, MESSAGE_MAKE_CLEARDONE);
+		return new CommandClearDone();
+	}
+
+	protected static Command makeRecur(String content) {
+		parserUtilityLogger.log(Level.INFO, MESSAGE_MAKE_RECUR);
+		ArrayList<String> contentParts = sliceContent(content);
+		String index = contentParts.get(FIRST_ARGUMENT_POSITION);
+		String period = contentParts.get(SECOND_ARGUMENT_POSITION);
+		String numberToStop = contentParts.get(THIRD_ARGUMENT_POSITION);
+		if (isPositiveInt(index) && isValidPeriod(period)
+				&& isPositiveInt(numberToStop)) {
+			try {
+				return new CommandRecur(Integer.parseInt(index), period,
+						Integer.parseInt(numberToStop));
+			} catch (Exception e) {
+				return new CommandInvalid();
+			}
+		} else {
+			return new CommandInvalid();
+		}
+	}
+
+	protected static Command makeRemind(String content) {
+		parserUtilityLogger.log(Level.INFO, MESSAGE_MAKE_REMIND);
+		try {
+			ArrayList<String> contentParts = sliceContent(content);
+			String index = contentParts.get(FIRST_ARGUMENT_POSITION);
+			String date = contentParts.get(SECOND_ARGUMENT_POSITION);
+			String time = contentParts.get(THIRD_ARGUMENT_POSITION);
+			if (isPositiveInt(index) && isValidDate(date) && isValidTime(time)) {
+				return new CommandRemind(Integer.parseInt(index), date, time);
+			} else {
+				return new CommandInvalid();
+			}
+		} catch (Exception e) {
+			return new CommandInvalid();
+		}
+	}
+
+	protected static Command makeLoad(String content) {
+		parserUtilityLogger.log(Level.INFO, MESSAGE_MAKE_LOAD);
+		return new CommandLoad(content);
+	}
+
+	protected static Command makeUndo() {
+		parserUtilityLogger.log(Level.INFO, MESSAGE_MAKE_UNDO);
+		return new CommandUndo();
+	}
+
+	protected static Command makeExit() {
+		parserUtilityLogger.log(Level.INFO, MESSAGE_MAKE_EXIT);
+		return new CommandExit(true);
+	}
+
+	protected static Command makeInvalid() {
+		parserUtilityLogger.log(Level.INFO, MESSAGE_MAKE_INVALID);
+		return new CommandInvalid();
+	}
+
+	// End of Command Maker Methods
+
+	// Methods to make Tasks(Floating, Timed and Deadline tasks).
+	// End of segment: C:\Users\Jerry\eclipse_workspace\CS2103Project\src\com\done\parser\ParserUtility.java
+
+
+
+
+
+	/**
+	 * origin: C:\Users\Jerry\eclipse_workspace\CS2103Project\src\com\done\parser\ParserUtility.java
+	 */
+
+	
+	/**
+	 * split the String by spaces and stores the parts into an ArrayList.
+	 * Returns the ArrayList.
+	 * @param content
+	 * @return ArrayList<String>slicedContent.
+	 */
 	protected static ArrayList<String> sliceContent(String content) {
 		ArrayList<String> slicedContent = new ArrayList<String>();
-		String[] contentPieces = content.split("\\s+");
+		String[] contentPieces = content.trim().split("\\s+");
 		for (String pieceOfContent : contentPieces) {
 			slicedContent.add(pieceOfContent);
 		}
 		return slicedContent;
 	}
-	//End of Content processer methods
-	
-	//Validation methods to detect if a String content piece is as required
+
+	// End of Content processer methods
+
+	// Validation methods to detect if a String content piece is as required
+	// End of segment: C:\Users\Jerry\eclipse_workspace\CS2103Project\src\com\done\parser\ParserUtility.java
+
+
+
+
+
+	/**
+	 * origin: C:\Users\Jerry\eclipse_workspace\CS2103Project\src\com\done\parser\ParserUtility.java
+	 */
+
+	/**
+	 * determine whether the time string passed is a 4-digit, valid time
+	 * Example: 0420, 2135
+	 * @param time(in String format)
+	 * @return true/false indicating validity
+	 */
+	protected static boolean isValidTime(String time) {
+		if (time.length() != TIME_LENGTH) {
+			parserUtilityLogger.log(Level.INFO, MESSAGE_INVALID_CONTENT);
+			return false;
+		}
+		int hour = Integer.parseInt(time.substring(0, 2));
+		int minute = Integer.parseInt(time.substring(2, 4));
+		if (hour < 0 || hour > 24) {
+			parserUtilityLogger.log(Level.INFO, MESSAGE_INVALID_CONTENT);
+			return false;
+		} else if (minute < 0 || minute > 60) {
+			parserUtilityLogger.log(Level.INFO, MESSAGE_INVALID_CONTENT);
+			return false;
+		}
+		parserUtilityLogger.log(Level.INFO, MESSAGE_VALID_CONTENT);
+		return true;
+	}
+
+	/**
+	 * determine whether the date string passed is a 4-digit/8-digit, valid date
+	 * Example: 1504, 15042013
+	 * @param date(in String format)
+	 * @return true/false indicating validity
+	 */
+	private static boolean isValidDate(String date) {
+		DateTimeFormatter dtf = DateTimeFormat.forPattern("ddMMyyyy");
+		if (date.length() == LONG_DATE_LENGTH) {
+			try {
+				DateTime parsedDate = dtf.parseDateTime(date);
+				parserUtilityLogger.log(Level.INFO, MESSAGE_VALID_CONTENT);
+				return true;
+			} catch (IllegalArgumentException e) {
+				parserUtilityLogger.log(Level.INFO, MESSAGE_INVALID_CONTENT);
+				return false;
+			}
+		}
+		if (date.length() == SHORT_DATE_LENGTH) {
+			String currentYear = DateTime.now().toString("yyyy");
+
+			try {
+				DateTime parsedDate = dtf.parseDateTime(date + currentYear);
+				parserUtilityLogger.log(Level.INFO, MESSAGE_VALID_CONTENT);
+				return true;
+			} catch (IllegalArgumentException e) {
+				parserUtilityLogger.log(Level.INFO, MESSAGE_INVALID_CONTENT);
+				return false;
+			}
+		}
+		return false;
+	}
+
 	// End of segment: C:\Users\Jerry\eclipse_workspace\CS2103Project\src\com\done\parser\ParserUtility.java
 
 
@@ -781,7 +958,7 @@
 			int i = Integer.parseInt(content);
 			return (i > 0 ? true : false);
 		} catch (NumberFormatException nfe) {
-			parserLogger.log(Level.INFO, "Command Content is invalid");
+			parserUtilityLogger.log(Level.INFO, MESSAGE_INVALID_CONTENT);
 			return false;
 		}
 	}
@@ -796,14 +973,15 @@
 	 * origin: C:\Users\Jerry\eclipse_workspace\CS2103Project\src\com\done\parser\ParserUtility.java
 	 */
 
-	protected static boolean isValidPeriod(String content){
-		if(content.equals("hourly")||content.equals("daily")||content.equals("weekly")||content.equals("monthly")||content.equals("yearly")){
+	protected static boolean isValidPeriod(String content) {
+		if (content.equals("hourly") || content.equals("daily")
+				|| content.equals("weekly") || content.equals("monthly")) {
 			return true;
-		}else{
+		} else {
 			return false;
 		}
 	}
-	//End of Validation methods
+	// End of Validation methods
 }
 
 	// End of segment: C:\Users\Jerry\eclipse_workspace\CS2103Project\src\com\done\parser\ParserUtility.java
@@ -816,9 +994,20 @@
 	 * origin: C:\Users\Jerry\eclipse_workspace\CS2103Project\src\com\done\storage\InMemStorage.java
 	 */
 
+	/**
+	 * Move a task to the specified index.
+	 * 
+	 * @param originIndex
+	 *            The task to be moved.
+	 * @param destinationIndex
+	 *            Task to be moved to.
+	 * @return Whether it is successful.
+	 */
 	public boolean move(int originIndex, int destinationIndex) {
-		assert(originIndex>=0&&originIndex<getTasks().size());
-		assert(destinationIndex>=0&&destinationIndex<getTasks().size());
+		StorageLogger.getStorageLogger().log(Level.INFO, MESSAGE_MOVE_TASK);
+
+		assert (originIndex >= 0 && originIndex < getTasks().size());
+		assert (destinationIndex >= 0 && destinationIndex < getTasks().size());
 		Done movedTask = getTasks().remove(originIndex);
 		getTasks().add(destinationIndex, movedTask);
 		updateTaskID();
@@ -829,10 +1018,17 @@
 		return false;
 	}
 
+	/**
+	 * Removes all tasks marked as completed/done.
+	 * 
+	 * @return Whether it is successful.
+	 */
 	public boolean clearDoneTasks() {
+		StorageLogger.getStorageLogger().log(Level.INFO, MESSAGE_CLEAR_ALL);
+
 		List<Done> tasks = getTasks();
 		int size = tasks.size();
-		for (int i = size-1; i >= 0; i--) {
+		for (int i = size - 1; i >= 0; i--) {
 			if (tasks.get(i).isCompleted()) {
 				tasks.remove(i);
 			}
@@ -845,8 +1041,44 @@
 
 		return false;
 	}
-	
+
 	// End of segment: C:\Users\Jerry\eclipse_workspace\CS2103Project\src\com\done\storage\InMemStorage.java
+
+
+
+
+
+	/**
+	 * origin: C:\Users\Jerry\eclipse_workspace\CS2103Project\test\com\done\command\TestCommand.java
+	 */
+
+package com.done.command;
+
+import static org.junit.Assert.*;
+
+import org.junit.Test;
+
+import com.done.command.Command.CommandType;
+import com.done.model.DoneDeadlineTask;
+import com.done.model.DoneFloatingTask;
+import com.done.model.DoneTimedTask;
+
+public class TestCommand {
+
+	public final long START_TIME_FOR_TEST = Long.parseLong("1428901200000");
+	public final long END_TIME_FOR_TEST = Long.parseLong("2428908400000");
+	public final long DEADLINE_FOR_TEST = Long.parseLong("1429084800000");
+	public final int FIRST_INDEX_TEST = 1;
+	public final int SECOND_INDEX_TEST = 2;
+	public final int LOWER_FAILURE_INDEX = 0;
+	public final int UPPER_FAILURE_INDEX = 99999;
+	public final int TIME_RECUR_TEST = 3;
+	public final String JSON_NAME_TEST = "testfile";
+	public final String DATE_STRING = "15042015";
+	public final String TIME_STRING = "1350";
+	public final String FREQUENCY_TEST = "weekly";
+
+	// End of segment: C:\Users\Jerry\eclipse_workspace\CS2103Project\test\com\done\command\TestCommand.java
 
 
 
@@ -858,20 +1090,86 @@
 
 	@Test
 	public void testCommandAdd() {
-		Command command = new CommandAdd(new DoneFloatingTask("aaa"));
-		assertEquals(command.getCommandType(), CommandType.ADD);
+		Command commandAddFloat = new CommandAdd(new DoneFloatingTask("aaa"));
+		assertEquals(commandAddFloat.getCommandType(), CommandType.ADD);
+		Command commandAddTimed = new CommandAdd(new DoneTimedTask("bbb",
+				START_TIME_FOR_TEST, END_TIME_FOR_TEST));
+		assertEquals(commandAddTimed.getCommandType(), CommandType.ADD);
+		Command commandAddDeadLine = new CommandAdd(new DoneDeadlineTask("ccc",
+				DEADLINE_FOR_TEST));
+		assertEquals(commandAddDeadLine.getCommandType(), CommandType.ADD);
+	}
+
+	@Test
+	public void testCommandEdit() throws Exception {
+		Command commandEditFloat = new CommandEdit(FIRST_INDEX_TEST,
+				new DoneFloatingTask("aaa"));
+		assertEquals(commandEditFloat.getCommandType(), CommandType.EDIT);
+		Command commandEditTimed = new CommandEdit(
+				FIRST_INDEX_TEST,
+				new DoneTimedTask("bbb", START_TIME_FOR_TEST, END_TIME_FOR_TEST));
+		assertEquals(commandEditTimed.getCommandType(), CommandType.EDIT);
+		Command commandEditDeadLine = new CommandEdit(FIRST_INDEX_TEST,
+				new DoneDeadlineTask("ccc", DEADLINE_FOR_TEST));
+		assertEquals(commandEditDeadLine.getCommandType(), CommandType.EDIT);
+	}
+	
+	@Test(expected = Exception.class)
+	public void testCommandEditFail() throws Exception {
+		Command commandEditLower = new CommandEdit(LOWER_FAILURE_INDEX,
+				new DoneFloatingTask("aaa"));
+		Command commandEditUpper = new CommandEdit(UPPER_FAILURE_INDEX,
+				new DoneFloatingTask("aaa"));
 	}
 
 	@Test
 	public void testCommandDelete() throws Exception {
-		Command command = new CommandDelete(1);
-		assertEquals(command.getCommandType(), CommandType.DELETE);
+		Command commandDelete = new CommandDelete(FIRST_INDEX_TEST);
+		assertEquals(commandDelete.getCommandType(), CommandType.DELETE);
+	}
+
+	@Test(expected = Exception.class)
+	public void testCommandDeleteFail() throws Exception {
+		Command commandDeleteLower = new CommandDelete(LOWER_FAILURE_INDEX);
+		Command commandDeleteUpper = new CommandDelete(UPPER_FAILURE_INDEX);
 	}
 
 	@Test
 	public void testCommandClear() {
-		Command command = new CommandClear();
-		assertEquals(command.getCommandType(), CommandType.CLEAR);
+		Command commandClear = new CommandClear();
+		assertEquals(commandClear.getCommandType(), CommandType.CLEAR);
+	}
+
+	@Test
+	public void testCommandClearDone() {
+		Command commandClearDone = new CommandClearDone();
+		assertEquals(commandClearDone.getCommandType(), CommandType.CLEARDONE);
+	}
+
+	public void testCommandDone() throws Exception {
+		Command commandDone = new CommandDone(1);
+		assertEquals(commandDone.getCommandType(), CommandType.DONE);
+	}
+
+	@Test(expected = Exception.class)
+	public void testCommandDoneFail() throws Exception {
+		Command commandDoneLower = new CommandDone(LOWER_FAILURE_INDEX);
+		Command commandDoneUpper = new CommandDone(UPPER_FAILURE_INDEX);
+	}
+
+	@Test
+	public void testCommandMove() throws Exception {
+		Command commandMove = new CommandMove(FIRST_INDEX_TEST,
+				SECOND_INDEX_TEST);
+		assertEquals(commandMove.getCommandType(), CommandType.MOVE);
+	}
+
+	@Test(expected = Exception.class)
+	public void testCommandMoveFail() throws Exception {
+		Command commandMoveLower = new CommandMove(LOWER_FAILURE_INDEX,
+				SECOND_INDEX_TEST);
+		Command commandMoveUpper = new CommandMove(FIRST_INDEX_TEST,
+				UPPER_FAILURE_INDEX);
 	}
 
 	@Test
@@ -881,15 +1179,65 @@
 	}
 
 	@Test
-	public void testCommandRecur() throws Exception {
-		Command command = new CommandRecur(1, "weekly");
-		assertEquals(command.getCommandType(), CommandType.RECUR);
+	public void testCommandShowAll() {
+		Command commandShowAll = new CommandShowAll();
+		assertEquals(commandShowAll.getCommandType(), CommandType.SHOWALL);
 	}
 
 	@Test
-	public void testCommandRemind() {
-		// Command command = new CommandRemind(1,"weekly");
-		// assertEquals(command.getCommandType(), CommandType.REMIND);
+	public void testCommandRecur() throws Exception {
+		Command command = new CommandRecur(FIRST_INDEX_TEST, "FREQUENCY_TEST",
+				TIME_RECUR_TEST);
+		assertEquals(command.getCommandType(), CommandType.RECUR);
+	}
+
+	@Test(expected = Exception.class)
+	public void testCommandRecurFail() throws Exception {
+		Command commandRecurLower = new CommandRecur(LOWER_FAILURE_INDEX,
+				FREQUENCY_TEST, TIME_RECUR_TEST);
+		Command commandRecurUpper = new CommandRecur(UPPER_FAILURE_INDEX,
+				FREQUENCY_TEST, TIME_RECUR_TEST);
+
+	}
+
+	@Test
+	public void testCommandRemind() throws Exception {
+		Command commandRemind = new CommandRemind(FIRST_INDEX_TEST,
+				DATE_STRING, TIME_STRING);
+		assertEquals(commandRemind.getCommandType(), CommandType.REMIND);
+	}
+
+	@Test(expected = Exception.class)
+	public void testCommandRemindFail() throws Exception {
+		Command commandRemindLower = new CommandRemind(LOWER_FAILURE_INDEX,
+				DATE_STRING, TIME_STRING);
+		Command commandRemindUpper = new CommandRemind(UPPER_FAILURE_INDEX,
+				DATE_STRING, TIME_STRING);
+
+	}
+
+	@Test
+	public void testCommandLoad() {
+		Command commandLoad = new CommandLoad(JSON_NAME_TEST);
+		assertEquals(commandLoad.getCommandType(), CommandType.LOAD);
+	}
+
+	@Test
+	public void testCommandUndo() {
+		Command commandUndo = new CommandUndo();
+		assertEquals(commandUndo.getCommandType(), CommandType.UNDO);
+	}
+
+	@Test
+	public void testCommandExit() {
+		Command commandExit = new CommandExit(true);
+		assertEquals(commandExit.getCommandType(), CommandType.EXIT);
+	}
+
+	@Test
+	public void testCommandInvalid() {
+		Command commandInvalid = new CommandInvalid();
+		assertEquals(commandInvalid.getCommandType(), CommandType.INVALID);
 	}
 
 }
@@ -904,23 +1252,129 @@
 	 * origin: C:\Users\Jerry\eclipse_workspace\CS2103Project\test\com\done\parser\TestCommandParser.java
 	 */
 
+package com.done.parser;
+
+import static org.junit.Assert.*;
+
+import org.junit.Test;
+
+import com.done.command.Command;
+import com.done.command.Command.CommandType;
+
+public class TestCommandParser {
+
+	CommandParser testedParser = CommandParser.getInstance();
+
+	// End of segment: C:\Users\Jerry\eclipse_workspace\CS2103Project\test\com\done\parser\TestCommandParser.java
+
+
+
+
+
+	/**
+	 * origin: C:\Users\Jerry\eclipse_workspace\CS2103Project\test\com\done\parser\TestCommandParser.java
+	 */
+
 	@Test
-	//Equivalence partition: String content that is positive integer
-	public void testGetCommandDeleteValid() {
-		Command validCommandDelete = testedParser.parseInputToMakeCommand("delete 1");
-		assertEquals(validCommandDelete.getCommandType(),CommandType.DELETE);
+	public void testGetValidCommand() {
+		Command validCommandAdd = testedParser
+				.parseInputToMakeCommand("add cs2103 ..s 2310 1300 ..e 2310 1500");
+		assertEquals(validCommandAdd.getCommandType(), CommandType.ADD);
+		Command validCommandDelete = testedParser
+				.parseInputToMakeCommand("delete 1");
+		assertEquals(validCommandDelete.getCommandType(), CommandType.DELETE);
+		Command validCommandClear = testedParser
+				.parseInputToMakeCommand("clear");
+		assertEquals(validCommandClear.getCommandType(), CommandType.CLEAR);
+		Command validCommandClearDone = testedParser
+				.parseInputToMakeCommand("cleardone");
+		assertEquals(validCommandClearDone.getCommandType(),
+				CommandType.CLEARDONE);
+		Command validCommandDone = testedParser
+				.parseInputToMakeCommand("done 1");
+		assertEquals(validCommandDone.getCommandType(), CommandType.DONE);
+		Command validCommandEdit = testedParser
+				.parseInputToMakeCommand("Edit 1 cs2104 ..s 1500 ..e 1700");
+		assertEquals(validCommandEdit.getCommandType(), CommandType.EDIT);
+		Command validCommandExit = testedParser.parseInputToMakeCommand("exit");
+		assertEquals(validCommandExit.getCommandType(), CommandType.EXIT);
+		Command validCommandLoad = testedParser
+				.parseInputToMakeCommand("load anotherfile");
+		assertEquals(validCommandLoad.getCommandType(), CommandType.LOAD);
+		Command validCommandMove = testedParser
+				.parseInputToMakeCommand("move 1 2");
+		assertEquals(validCommandMove.getCommandType(), CommandType.MOVE);
+		Command validCommandRecur = testedParser
+				.parseInputToMakeCommand("recur 1 weekly 3");
+		assertEquals(validCommandRecur.getCommandType(), CommandType.RECUR);
+		Command validCommandRemind = testedParser
+				.parseInputToMakeCommand("remind 1 15042015 0800");
+		assertEquals(validCommandRemind.getCommandType(), CommandType.REMIND);
+		Command validCommandSearch = testedParser
+				.parseInputToMakeCommand("search cs");
+		assertEquals(validCommandSearch.getCommandType(), CommandType.SEARCH);
+		Command validCommandShowAll = testedParser
+				.parseInputToMakeCommand("showall");
+		assertEquals(validCommandShowAll.getCommandType(), CommandType.SHOWALL);
+		Command validCommandUndo = testedParser.parseInputToMakeCommand("undo");
+		assertEquals(validCommandUndo.getCommandType(), CommandType.UNDO);
 	}
-	
+
 	@Test
-	//Equivalence partition: String content that is not a number
-	public void testGetCommandDeleteInvalid(){
-		Command invalidCommandDelete = testedParser.parseInputToMakeCommand("delete aaa");
+	public void testGetInvalidCommand() {
+		Command invalidCommandAdd = testedParser
+				.parseInputToMakeCommand("add cs2103 ..s 1300 ..e 2500");
+		assertEquals(invalidCommandAdd.getCommandType(), CommandType.INVALID);
+		Command invalidCommandDelete = testedParser
+				.parseInputToMakeCommand("delete 0");
 		assertEquals(invalidCommandDelete.getCommandType(), CommandType.INVALID);
+		Command invalidCommandClear = testedParser
+				.parseInputToMakeCommand("clear done");
+		assertEquals(invalidCommandClear.getCommandType(), CommandType.INVALID);
+		Command invalidCommandDone = testedParser
+				.parseInputToMakeCommand("done 0");
+		assertEquals(invalidCommandDone.getCommandType(), CommandType.INVALID);
+		Command invalidCommandEdit = testedParser
+				.parseInputToMakeCommand("Edit 0 cs2104 ..s 1500 ..e 1700");
+		assertEquals(invalidCommandEdit.getCommandType(), CommandType.INVALID);
+		Command invalidCommandMove = testedParser
+				.parseInputToMakeCommand("move 0 2");
+		assertEquals(invalidCommandMove.getCommandType(), CommandType.INVALID);
+		Command invalidCommandRecur = testedParser
+				.parseInputToMakeCommand("recur 0 weekly 3");
+		assertEquals(invalidCommandRecur.getCommandType(), CommandType.INVALID);
+		Command invalidCommandRemind = testedParser
+				.parseInputToMakeCommand("remind 0 15042015 0800");
+		assertEquals(invalidCommandRemind.getCommandType(), CommandType.INVALID);
+
 	}
 
 	@Test
 	public void testGetCommandType() {
 		assertEquals(testedParser.getCommandType("add 1"), CommandType.ADD);
+		assertEquals(testedParser.getCommandType("delete 2"),
+				CommandType.DELETE);
+		assertEquals(testedParser.getCommandType("clear"), CommandType.CLEAR);
+		assertEquals(testedParser.getCommandType("cleardone"),
+				CommandType.CLEARDONE);
+		assertEquals(testedParser.getCommandType("done 1"), CommandType.DONE);
+		assertEquals(
+				testedParser.getCommandType("edit 1 cs2105 ..s 1300 ..e 1600"),
+				CommandType.EDIT);
+		assertEquals(testedParser.getCommandType("move 1 5"), CommandType.MOVE);
+		assertEquals(testedParser.getCommandType("exit"), CommandType.EXIT);
+		assertEquals(testedParser.getCommandType("aohuef"), CommandType.INVALID);
+		assertEquals(testedParser.getCommandType("load anotherfile"),
+				CommandType.LOAD);
+		assertEquals(testedParser.getCommandType("recur 1 weekly 5"),
+				CommandType.RECUR);
+		assertEquals(testedParser.getCommandType("remind 1 15042015 0609"),
+				CommandType.REMIND);
+		assertEquals(testedParser.getCommandType("search cs"),
+				CommandType.SEARCH);
+		assertEquals(testedParser.getCommandType("showall"),
+				CommandType.SHOWALL);
+		assertEquals(testedParser.getCommandType("undo"), CommandType.UNDO);
 	}
 
 	@Test

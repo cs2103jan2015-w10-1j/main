@@ -39,13 +39,13 @@
 	 * origin: C:\Users\Jerry\eclipse_workspace\CS2103Project\src\com\done\command\CommandSearch.java
 	 */
 
-	//undo not required in SEARCH
+	// undo not required in SEARCH
 	@Override
 	public void undo() {
 		// UNUSED
 
 	}
-	
+
 	// End of segment: C:\Users\Jerry\eclipse_workspace\CS2103Project\src\com\done\command\CommandSearch.java
 
 
