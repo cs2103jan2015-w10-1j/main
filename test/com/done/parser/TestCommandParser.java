@@ -16,7 +16,7 @@ public class TestCommandParser {
 	@Test
 	public void testGetValidCommand() {
 		Command validCommandAdd = testedParser
-				.parseInputToMakeCommand("add cs2103 ..s 1300 ..e 1500");
+				.parseInputToMakeCommand("add cs2103 ..s 2310 1300 ..e 2310 1500");
 		assertEquals(validCommandAdd.getCommandType(), CommandType.ADD);
 		Command validCommandDelete = testedParser
 				.parseInputToMakeCommand("delete 1");

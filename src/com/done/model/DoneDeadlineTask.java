@@ -29,6 +29,7 @@ public class DoneDeadlineTask extends Done {
 		return sdf.format(endTime);
 	}
 	
+	// This method returns you a ddMMyyyy for search purpose
 	public String getDateString(){
 		SimpleDateFormat sdf = new SimpleDateFormat("ddMMyyyy");
 		return sdf.format(endTime);

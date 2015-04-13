@@ -26,7 +26,7 @@ public class JsonStorageTest {
 		test.setJsonNameToPref("tasks//testJson");
 		// if input to Properties is "testJson.json"
 		// then the output after retrieving should be the same
-		assertThat(new String(test.getJsonNameFromPref()), is("tasks//testJson.json"));
+		assertThat(test.getJsonNameFromPref(), is("tasks//testJson.json"));
 	}
 
 }

@@ -59,24 +59,4 @@ public class Logic {
 		return inMemStorage.loadSearchResult();
 	}
 	
-	
-	/*
-	 * possible implementation of recurring task
-	public void setRecurTask(String input, int delay){
-		ScheduledExecutorService ses = Executors.newScheduledThreadPool(1);
-	    ses.scheduleWithFixedDelay(new Runnable() {
-	        @Override
-	        public void run() {
-	            task.addTask(input);
-	            try {
-	                Thread.sleep(500);
-	            } catch (InterruptedException e) {
-	                e.printStackTrace();
-	            }
-	        }
-	    }, 0, 1000, TimeUnit.delay);
-	}
-	*/
-	
- 
  }

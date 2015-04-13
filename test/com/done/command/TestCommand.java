@@ -13,7 +13,7 @@ import com.done.model.DoneTimedTask;
 public class TestCommand {
 
 	public final long START_TIME_FOR_TEST = Long.parseLong("1428901200000");
-	public final long END_TIME_FOR_TEST = Long.parseLong("1428908400000");
+	public final long END_TIME_FOR_TEST = Long.parseLong("2428908400000");
 	public final long DEADLINE_FOR_TEST = Long.parseLong("1429084800000");
 	public final int FIRST_INDEX_TEST = 1;
 	public final int SECOND_INDEX_TEST = 2;
