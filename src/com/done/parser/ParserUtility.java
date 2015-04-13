@@ -31,6 +31,10 @@ import com.done.model.DoneTimedTask;
 
 public class ParserUtility {
 	
+	private static final int FIRST_ARGUMENT_POSITION = 0;
+	private static final int SECOND_ARGUMENT_POSITION = 1;
+	private static final int THIRD_ARGUMENT_POSITION = 2;
+	
 	private static Logger parserLogger = Logger.getLogger("CommandParser");
 	
 	//The methods to make respective Commands. 
@@ -60,12 +64,12 @@ public class ParserUtility {
 	}
 
 	protected static Command makeEdit(String content){
+		parserLogger.log(Level.INFO, "make edit Command");
 		String indexString = getFirstWord(content);
 		if (isPositiveInt(indexString)) {
 			try{
 				int index = Integer.parseInt(indexString);
 				Done changedTask = defineTask(removeFirstWord(content));
-				parserLogger.log(Level.INFO, "make edit Command");
 				return new CommandEdit(index, changedTask);
 			}catch (Exception e){
 				parserLogger.log(Level.INFO, "make invalid Command instead");
@@ -89,13 +93,11 @@ public class ParserUtility {
 	protected static Command makeMove(String content){
 		parserLogger.log(Level.INFO, "make move Command");
 		ArrayList<String> indexes = sliceContent(content);
-		if ((isPositiveInt(indexes.get(0)))
-				&& (isPositiveInt(indexes.get(1)))) {
+		if ((isPositiveInt(indexes.get(FIRST_ARGUMENT_POSITION)))
+				&& (isPositiveInt(indexes.get(SECOND_ARGUMENT_POSITION)))) {
 			try{
-				System.out.println(indexes.get(0));
-				System.out.println(indexes.get(1));
-				int origin = Integer.parseInt(indexes.get(0));
-				int destination = Integer.parseInt(indexes.get(1));
+				int origin = Integer.parseInt(indexes.get(FIRST_ARGUMENT_POSITION));
+				int destination = Integer.parseInt(indexes.get(SECOND_ARGUMENT_POSITION));
 				return new CommandMove(origin, destination);
 			}catch(Exception e){
 				return new CommandInvalid();
@@ -137,9 +139,9 @@ public class ParserUtility {
 	protected static Command makeRecur(String content){
 		parserLogger.log(Level.INFO, "make recur Command");
 		ArrayList<String> contents = sliceContent(content);
-		String index = contents.get(0);
-		String period = contents.get(1);
-		int numberToStop = Integer.parseInt(contents.get(2));
+		String index = contents.get(FIRST_ARGUMENT_POSITION);
+		String period = contents.get(SECOND_ARGUMENT_POSITION);
+		int numberToStop = Integer.parseInt(contents.get(THIRD_ARGUMENT_POSITION));
 		if (isPositiveInt(index) && isValidPeriod(period)) {
 			try{
 				return new CommandRecur(Integer.parseInt(index), period, numberToStop);
@@ -155,9 +157,9 @@ public class ParserUtility {
 		parserLogger.log(Level.INFO, "make remind Command");
 		try {
 			ArrayList<String> contents = sliceContent(content);
-			String index = contents.get(0);
-			String date = contents.get(1);
-			String time = contents.get(2);
+			String index = contents.get(FIRST_ARGUMENT_POSITION);
+			String date = contents.get(SECOND_ARGUMENT_POSITION);
+			String time = contents.get(THIRD_ARGUMENT_POSITION);
 			return new CommandRemind(Integer.parseInt(index), date, time);
 		} catch (Exception e) {
 			parserLogger.log(Level.INFO, "make invalid Command instead");
