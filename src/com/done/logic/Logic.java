@@ -14,6 +14,7 @@ public class Logic {
 	private InMemStorage inMemStorage;
 	private boolean isSuccessful;
 	
+	//@author A0115635J
 	public Logic(){
 		this.inMemStorage = InMemStorage.getInstance();
 		this.cmdParser = CommandParser.getInstance();

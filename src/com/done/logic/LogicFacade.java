@@ -17,6 +17,7 @@ public class LogicFacade {
 	private Logic logic = new Logic();
 	//private List<Observer> observerList = new ArrayList<Observer>();
 	
+	//@author A0115635J
 	public ExecutionResult getExecutionResult(String userCommand){
 
 		CommandParser parser = CommandParser.getInstance();
