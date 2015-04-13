@@ -11,7 +11,8 @@ import com.done.command.CommandMove;
 import com.done.model.DoneFloatingTask;
 
 public class TestLogic {
-
+	
+	//@author A0115635J
 	Logic testLogic = new Logic();
 
 	@Test
