@@ -34,6 +34,9 @@ public class ParserUtility {
 	private static final int FIRST_ARGUMENT_POSITION = 0;
 	private static final int SECOND_ARGUMENT_POSITION = 1;
 	private static final int THIRD_ARGUMENT_POSITION = 2;
+	private static final int LONG_DATE_LENGTH = 8;
+	private static final int SHORT_DATE_LENGTH = 4;
+	private static final int TIME_LENGTH = 4;
 	
 	private static Logger parserLogger = Logger.getLogger("CommandParser");
 	
@@ -394,7 +397,7 @@ public class ParserUtility {
 	//@author A0115777W
 	protected static boolean isValidTime(String time){
 		parserLogger.log(Level.INFO, "test Valid Time");
-		if(time.length()!=4){
+		if(time.length()!=TIME_LENGTH){
 			return false;
 		}
 		int hour = Integer.parseInt(time.substring(0,2));
@@ -410,7 +413,7 @@ public class ParserUtility {
 	private static boolean isValidDate(String date){
 		parserLogger.log(Level.INFO, "test Valid Date");
 		DateTimeFormatter dtf = DateTimeFormat.forPattern("ddMMyyyy");
-		if(date.length()==8){
+		if(date.length()==LONG_DATE_LENGTH){
 			try{
 				DateTime parsedDate = dtf.parseDateTime(date);
 				return true;
@@ -418,7 +421,7 @@ public class ParserUtility {
 				return false;
 			}
 		}
-		if(date.length()==4){
+		if(date.length()==SHORT_DATE_LENGTH){
 			String currentYear = DateTime.now().toString("yyyy");
 
 			try{
@@ -444,7 +447,7 @@ public class ParserUtility {
 
 	//@author A0115777W
 	protected static boolean isValidPeriod(String content){
-		if(content.equals("hourly")||content.equals("daily")||content.equals("weekly")||content.equals("monthly")||content.equals("yearly")){
+		if(content.equals("hourly")||content.equals("daily")||content.equals("weekly")||content.equals("monthly")){
 			return true;
 		}else{
 			return false;
