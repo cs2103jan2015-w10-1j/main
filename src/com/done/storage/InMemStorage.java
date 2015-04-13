@@ -1,3 +1,4 @@
+//@author A0111830X
 package com.done.storage;
 
 import java.util.ArrayList;
@@ -49,11 +50,13 @@ public class InMemStorage {
 		return instance;
 	}
 
-	//@author A0111830X
 	public Done getTask(int id) {
 		return getTasks().get(id - ARRAY_POSITION_OFFSET);
 	}
 
+	/**
+	 * Method which loads the new JSON into memory from a different file.
+	 */
 	public void loadNew() {
 		StorageLogger.getStorageLogger().log(Level.INFO, MESSAGE_LOAD_NEW);
 		jsonStorage.setNewJson(true);
@@ -65,11 +68,23 @@ public class InMemStorage {
 		return getTasks();
 	}
 
+	/**
+	 * Retrieve the List of tasks which are filtered by keyword during search.
+	 * 
+	 * @return Filtered list of tasks.
+	 */
 	public List<Done> loadSearchResult() {
 		StorageLogger.getStorageLogger().log(Level.INFO, MESSAGE_SEARCH_RESULT);
 		return getWorkingTasks();
 	}
 
+	/**
+	 * Stores the task into memory.
+	 * 
+	 * @param task
+	 *            Current task being added.
+	 * @return Whether it is successful.
+	 */
 	public boolean store(Done task) {
 		StorageLogger.getStorageLogger().log(Level.INFO, MESSAGE_STORE_MEMORY);
 		assert task != null;
@@ -82,6 +97,15 @@ public class InMemStorage {
 		return false;
 	}
 
+	/**
+	 * Deletes a task from the memory.
+	 * 
+	 * @param task
+	 *            Current task to be deleted.
+	 * @param isDeleteAll
+	 *            Used to determine if it is clear all.
+	 * @return Whether it is successful.
+	 */
 	public boolean delete(Done task, boolean isDeleteAll) {
 		StorageLogger.getStorageLogger().log(Level.INFO, MESSAGE_DELETE_TASK);
 		// isDeleteAll used for clear command
@@ -102,6 +126,15 @@ public class InMemStorage {
 		return false;
 	}
 
+	/**
+	 * Replaces the new input task with the index existing in memory.
+	 * 
+	 * @param task
+	 *            New task to be added.
+	 * @param editIndex
+	 *            Index of the task in memory to be replaced
+	 * @return Whether is it successful.
+	 */
 	public boolean edit(Done task, int editIndex) {
 		StorageLogger.getStorageLogger().log(Level.INFO, MESSAGE_EDIT_TASK);
 		assert task != null;
@@ -116,6 +149,15 @@ public class InMemStorage {
 	}
 
 	//@author A0115777W
+	/**
+	 * Move a task to the specified index.
+	 * 
+	 * @param originIndex
+	 *            The task to be moved.
+	 * @param destinationIndex
+	 *            Task to be moved to.
+	 * @return Whether it is successful.
+	 */
 	public boolean move(int originIndex, int destinationIndex) {
 		StorageLogger.getStorageLogger().log(Level.INFO, MESSAGE_MOVE_TASK);
 
@@ -131,6 +173,11 @@ public class InMemStorage {
 		return false;
 	}
 
+	/**
+	 * Removes all tasks marked as completed/done.
+	 * 
+	 * @return Whether it is successful.
+	 */
 	public boolean clearDoneTasks() {
 		StorageLogger.getStorageLogger().log(Level.INFO, MESSAGE_CLEAR_ALL);
 
@@ -151,6 +198,12 @@ public class InMemStorage {
 	}
 
 	//@author A0111830X
+	/**
+	 * Marks the input task as completed.
+	 * 
+	 * @param task
+	 *            Task to be marked as complete.
+	 */
 	public void setCompleted(Done task) {
 		StorageLogger.getStorageLogger().log(Level.INFO, MESSAGE_SET_COMPLETED);
 		assert task != null;
@@ -159,6 +212,12 @@ public class InMemStorage {
 		jsonStorage.store(getTasks());
 	}
 
+	/**
+	 * Marks the input task as incomplete.
+	 * 
+	 * @param task
+	 *            Task to be marked as incomplete.
+	 */
 	public void setIncomplete(Done task) {
 		StorageLogger.getStorageLogger()
 				.log(Level.INFO, MESSAGE_SET_INCOMPLETE);
@@ -170,11 +229,24 @@ public class InMemStorage {
 	}
 
 	// Stack used for Undo
+	/**
+	 * Pushes the input command to the Undo stack.
+	 * 
+	 * @param command
+	 *            The current command from the input.
+	 */
 	public void pushToUndoStack(Command command) {
 		StorageLogger.getStorageLogger().log(Level.INFO, MESSAGE_PUSH_UNDO);
 		this.undoStack.push(command);
 	}
 
+	/**
+	 * Remove from the Undo stack.
+	 * 
+	 * @return The last command used for executing undo.
+	 * @throws Exception
+	 *             If stack is empty.
+	 */
 	public Command popFromUndoStack() throws Exception {
 		StorageLogger.getStorageLogger().log(Level.INFO, MESSAGE_RETRIEVE_UNDO);
 		if (undoStack.isEmpty()) {
