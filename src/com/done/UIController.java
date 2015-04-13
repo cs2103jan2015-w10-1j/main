@@ -147,8 +147,7 @@ public class UIController {
 	private void showAdd(boolean isSuccessful, String commandContent) {
 		if(isSuccessful){
 			Notifications.create().text(String.format(SHOWADD_SUCCESS_MESSAGE, commandContent)).showInformation();
-		}
-		else{
+		} else{
 			Notifications.create().text(SHOWADD_ERROR_MESSAGE).showError();
 		}
 		display();
@@ -319,7 +318,7 @@ public class UIController {
 		                super.updateItem(item, empty);
 		                if(empty){
 		                	this.setText(EMPTY_STRING);
-		                }else{
+		                } else{
 		                	if(item != null && item.length() > 12){
 		                		this.setText(item); 
 		                	} else{
@@ -344,7 +343,7 @@ public class UIController {
 		                super.updateItem(item, empty);
 		                if(empty){
 		                	this.setText(EMPTY_STRING);
-		                }else{
+		                } else{
 		                	if(item != null && item.length() == 12){
 		                		this.setText(item); 
 		                	} else{
@@ -358,18 +357,6 @@ public class UIController {
 		});
 	}
 	
-	private void displaySearches() {
-		createDisplaySearchesTable();
-		strikethroughDoneRows();
-	}
-
-	private void createDisplaySearchesTable() {
-		List<Done> tasks = logicFacade.getSearchResult();
-		ObservableList<Done> tableTasks = FXCollections.observableArrayList(tasks);
-		tableViewTasks.setItems(tableTasks);
-		buildTableColumns();
-	}
-	
 	private void strikethroughDoneRows() {
 		tableViewTasks.setRowFactory(new Callback<TableView<Done>, TableRow<Done>>() {
 	        @Override
@@ -380,14 +367,12 @@ public class UIController {
 	                    super.updateItem(task, empty);
 	                    if(task == null || empty){
 	                    	 getStyleClass().removeAll(Collections.singleton("doneRow"));
-	                    }
-	                    else{
+	                    } else{
 		                    if(task.isCompleted()){
 		                    	if (!getStyleClass().contains("doneRow")) {
 		                            getStyleClass().add("doneRow");
 		                    	}
-		                    }
-		                    else{
+		                    } else{
 		                    	 getStyleClass().removeAll(Collections.singleton("doneRow"));
 		                    }
 	                    }
@@ -400,6 +385,18 @@ public class UIController {
 		if(!tableViewTasks.getColumns().get(0).getStyleClass().contains("firstColumn")){
 			tableViewTasks.getColumns().get(0).getStyleClass().add("firstColumn");
 		}
+	}
+	
+	private void displaySearches() {
+		createDisplaySearchesTable();
+		strikethroughDoneRows();
+	}
+
+	private void createDisplaySearchesTable() {
+		List<Done> tasks = logicFacade.getSearchResult();
+		ObservableList<Done> tableTasks = FXCollections.observableArrayList(tasks);
+		tableViewTasks.setItems(tableTasks);
+		buildTableColumns();
 	}
 	
 	//@author A0088821X-unused

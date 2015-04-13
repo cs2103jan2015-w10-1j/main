@@ -15,7 +15,7 @@ import com.done.observer.Observer;
 public class LogicFacade {
 	
 	private Logic logic = new Logic();
-	private List<Observer> observerList = new ArrayList<Observer>();
+	//private List<Observer> observerList = new ArrayList<Observer>();
 	
 	public ExecutionResult getExecutionResult(String userCommand){
 
