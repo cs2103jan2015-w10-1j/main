@@ -10,11 +10,11 @@ import com.done.storage.InMemStorage;
 public class CommandEdit extends Command {
 
 	private static final String MESSAGE_CREATION = "Edit Command Created"; 
+	private static final String EDIT_COMMAND_CONTENT = "%1$s edited to %2$s";
 
 	private int editIndex;
 	private Done task;
 	private Done subbedTask;
-	private static final String EDIT_COMMAND_CONTENT = "%1$s edited to %2$s";
 
 	//@author A0115777W
 	public CommandEdit(int editIndex, Done task) throws Exception {

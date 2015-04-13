@@ -30,16 +30,16 @@ import com.done.model.DoneFloatingTask;
 import com.done.model.DoneTimedTask;
 
 public class ParserUtility {
-	
-	//constants for processing content
+
+	// constants for processing content
 	private static final int FIRST_ARGUMENT_POSITION = 0;
 	private static final int SECOND_ARGUMENT_POSITION = 1;
 	private static final int THIRD_ARGUMENT_POSITION = 2;
 	private static final int LONG_DATE_LENGTH = 8;
 	private static final int SHORT_DATE_LENGTH = 4;
 	private static final int TIME_LENGTH = 4;
-	
-	//String messages for Logging purposes
+
+	// String messages for Logging purposes
 	private static final String MESSAGE_MAKE_ADD = "make add Command";
 	private static final String MESSAGE_MAKE_DELETE = "make delete Command";
 	private static final String MESSAGE_MAKE_EDIT = "make edit Command";
@@ -61,28 +61,29 @@ public class ParserUtility {
 	private static final String MESSAGE_INVALID_CONTENT = "content is invalid";
 	private static final String MESSAGE_VALID_CONTENT = "content is valid";
 
+	// logger for the Utility Class
+	private static Logger parserUtilityLogger = Logger
+			.getLogger("CommandParser");
 
-	private static Logger parserUtilityLogger = Logger.getLogger("CommandParser");
-	
-	//The methods to make respective Commands. 
-	//May return a CommandInvalid if the content is not correct
+	// The methods to make respective Commands.
+	// May return a CommandInvalid if the content is not correct
 	//@author A0115777W
-	protected static Command makeAdd(String content){
+	protected static Command makeAdd(String content) {
 		parserUtilityLogger.log(Level.INFO, MESSAGE_MAKE_ADD);
-		try{
+		try {
 			Done tempTask = defineTask(content);
 			return new CommandAdd(tempTask);
-		}catch (Exception e){
+		} catch (Exception e) {
 			return new CommandInvalid();
 		}
 	}
-	
-	protected static Command makeDelete(String content){
+
+	protected static Command makeDelete(String content) {
 		parserUtilityLogger.log(Level.INFO, MESSAGE_MAKE_DELETE);
 		if (isPositiveInt(content)) {
-			try{
+			try {
 				return new CommandDelete(Integer.parseInt(content));
-			}catch(Exception e){
+			} catch (Exception e) {
 				return new CommandInvalid();
 			}
 		} else {
@@ -90,132 +91,137 @@ public class ParserUtility {
 		}
 	}
 
-	protected static Command makeEdit(String content){
+	protected static Command makeEdit(String content) {
 		parserUtilityLogger.log(Level.INFO, MESSAGE_MAKE_EDIT);
 		String indexString = getFirstWord(content);
 		if (isPositiveInt(indexString)) {
-			try{
+			try {
 				int index = Integer.parseInt(indexString);
 				Done changedTask = defineTask(removeFirstWord(content));
 				return new CommandEdit(index, changedTask);
-			}catch (Exception e){
+			} catch (Exception e) {
 				return new CommandInvalid();
 			}
 		} else {
 			return new CommandInvalid();
 		}
 	}
-	
-	protected static Command makeClear(String content){
+
+	protected static Command makeClear(String content) {
 		parserUtilityLogger.log(Level.INFO, MESSAGE_MAKE_CLEAR);
-		if(content.equals("")){
+		if (content.equals("")) {
 			return new CommandClear();
-		}else{
+		} else {
 			return new CommandInvalid();
 		}
 	}
-	
-	protected static Command makeMove(String content){
+
+	protected static Command makeMove(String content) {
 		parserUtilityLogger.log(Level.INFO, MESSAGE_MAKE_MOVE);
 		ArrayList<String> indexes = sliceContent(content);
 		if ((isPositiveInt(indexes.get(FIRST_ARGUMENT_POSITION)))
 				&& (isPositiveInt(indexes.get(SECOND_ARGUMENT_POSITION)))) {
-			try{
-				int origin = Integer.parseInt(indexes.get(FIRST_ARGUMENT_POSITION));
-				int destination = Integer.parseInt(indexes.get(SECOND_ARGUMENT_POSITION));
+			try {
+				int origin = Integer.parseInt(indexes
+						.get(FIRST_ARGUMENT_POSITION));
+				int destination = Integer.parseInt(indexes
+						.get(SECOND_ARGUMENT_POSITION));
 				return new CommandMove(origin, destination);
-			}catch(Exception e){
+			} catch (Exception e) {
 				return new CommandInvalid();
 			}
 		} else {
 			return new CommandInvalid();
 		}
 	}
-	
-	protected static Command makeSearch(String content){
+
+	protected static Command makeSearch(String content) {
 		parserUtilityLogger.log(Level.INFO, MESSAGE_MAKE_SEARCH);
 		return new CommandSearch(content);
 	}
-	
-	protected static Command makeShowAll(){
+
+	protected static Command makeShowAll() {
 		parserUtilityLogger.log(Level.INFO, MESSAGE_MAKE_SHOWALL);
 		return new CommandShowAll();
 	}
-	
-	protected static Command makeDone(String content){
+
+	protected static Command makeDone(String content) {
 		parserUtilityLogger.log(Level.INFO, MESSAGE_MAKE_DONE);
 		if (isPositiveInt(content)) {
-			try{
+			try {
 				return new CommandDone(Integer.parseInt(content));
-			}catch (Exception e){
+			} catch (Exception e) {
 				return new CommandInvalid();
 			}
 		} else {
 			return new CommandInvalid();
 		}
 	}
-	
-	protected static Command makeClearDone(){
+
+	protected static Command makeClearDone() {
 		parserUtilityLogger.log(Level.INFO, MESSAGE_MAKE_CLEARDONE);
 		return new CommandClearDone();
 	}
-	
-	protected static Command makeRecur(String content){
+
+	protected static Command makeRecur(String content) {
 		parserUtilityLogger.log(Level.INFO, MESSAGE_MAKE_RECUR);
 		ArrayList<String> contentParts = sliceContent(content);
 		String index = contentParts.get(FIRST_ARGUMENT_POSITION);
 		String period = contentParts.get(SECOND_ARGUMENT_POSITION);
 		String numberToStop = contentParts.get(THIRD_ARGUMENT_POSITION);
-		if (isPositiveInt(index) && isValidPeriod(period) && isPositiveInt(numberToStop)) {
-			try{
-				return new CommandRecur(Integer.parseInt(index), period, Integer.parseInt(numberToStop));
-			}catch (Exception e){
+		if (isPositiveInt(index) && isValidPeriod(period)
+				&& isPositiveInt(numberToStop)) {
+			try {
+				return new CommandRecur(Integer.parseInt(index), period,
+						Integer.parseInt(numberToStop));
+			} catch (Exception e) {
 				return new CommandInvalid();
 			}
 		} else {
 			return new CommandInvalid();
 		}
 	}
-	
-	protected static Command makeRemind(String content){
+
+	protected static Command makeRemind(String content) {
 		parserUtilityLogger.log(Level.INFO, MESSAGE_MAKE_REMIND);
 		try {
 			ArrayList<String> contentParts = sliceContent(content);
 			String index = contentParts.get(FIRST_ARGUMENT_POSITION);
 			String date = contentParts.get(SECOND_ARGUMENT_POSITION);
 			String time = contentParts.get(THIRD_ARGUMENT_POSITION);
-			if(isPositiveInt(index)&&isValidDate(date)&&isValidTime(time)){
+			if (isPositiveInt(index) && isValidDate(date) && isValidTime(time)) {
 				return new CommandRemind(Integer.parseInt(index), date, time);
-			}else{
+			} else {
 				return new CommandInvalid();
 			}
 		} catch (Exception e) {
 			return new CommandInvalid();
 		}
 	}
-	
-	protected static Command makeLoad(String content){
+
+	protected static Command makeLoad(String content) {
 		parserUtilityLogger.log(Level.INFO, MESSAGE_MAKE_LOAD);
 		return new CommandLoad(content);
 	}
-	
-	protected static Command makeUndo(){
+
+	protected static Command makeUndo() {
 		parserUtilityLogger.log(Level.INFO, MESSAGE_MAKE_UNDO);
 		return new CommandUndo();
 	}
-	
-	protected static Command makeExit(){
+
+	protected static Command makeExit() {
 		parserUtilityLogger.log(Level.INFO, MESSAGE_MAKE_EXIT);
 		return new CommandExit(true);
 	}
-	
-	protected static Command makeInvalid(){				
+
+	protected static Command makeInvalid() {
 		parserUtilityLogger.log(Level.INFO, MESSAGE_MAKE_INVALID);
 		return new CommandInvalid();
 	}
-	//End of Command Maker Methods
-	
-	//Methods to make Tasks(Floating, Timed and Deadline tasks).
+
+	// End of Command Maker Methods
+
+	// Methods to make Tasks(Floating, Timed and Deadline tasks).
 	//@author A0111830X
 	protected static Done defineTask(String commandContent) throws Exception {
 		Done task;
@@ -242,7 +248,8 @@ public class ParserUtility {
 				}
 				startDateIndex = i + 1;
 				startTimeIndex = i + 2;
-			// if input consist only of ..e, we take the current time as the start
+				// if input consist only of ..e, we take the current time as the
+				// start
 			} else if (contentParts.get(i).equals("..e")) {
 				isTimed = true;
 				if (isValidTime(contentParts.get(i + 1))
@@ -344,14 +351,14 @@ public class ParserUtility {
 				+ endTime);
 		startTimeValue = startDateTime.getMillis();
 		endTimeValue = endDateTime.getMillis();
-		
+
 		task = new DoneTimedTask(taskTitle, startTimeValue, endTimeValue);
 		return task;
 	}
 
 	//@author A0111830X
-	protected static Done addDeadline(ArrayList<String> contentParts, int timeIndex,
-			int dateIndex) {
+	protected static Done addDeadline(ArrayList<String> contentParts,
+			int timeIndex, int dateIndex) {
 		Done task = null;
 
 		// obtain title of task
@@ -374,9 +381,10 @@ public class ParserUtility {
 		return task;
 
 	}
-	//End of Task Maker Methods
-	
-	//Methods to process content Strings, like removing and getting first words
+
+	// End of Task Maker Methods
+
+	// Methods to process content Strings, like removing and getting first words
 	//@author A0111830X
 	protected static String removeFirstWord(String userCommand) {
 		String returnStr = getFirstWord(userCommand).trim();
@@ -389,7 +397,7 @@ public class ParserUtility {
 	}
 
 	//@author A0115777W
-	
+
 	protected static ArrayList<String> sliceContent(String content) {
 		ArrayList<String> slicedContent = new ArrayList<String>();
 		String[] contentPieces = content.trim().split("\\s+");
@@ -398,11 +406,13 @@ public class ParserUtility {
 		}
 		return slicedContent;
 	}
-	//End of Content processer methods
-	
-	//Validation methods to detect if a String content piece is as required
+
+	// End of Content processer methods
+
+	// Validation methods to detect if a String content piece is as required
 	//@author A0115777W-unused
-	protected static boolean isContentValid(String commandWord, String commandContent) {
+	protected static boolean isContentValid(String commandWord,
+			String commandContent) {
 		if (commandWord.equalsIgnoreCase("add")) {
 			return true;
 		} else if (commandWord.equalsIgnoreCase("delete")
@@ -413,52 +423,52 @@ public class ParserUtility {
 			return false;
 		}
 	}
-	
+
 	//@author A0115777W
-	protected static boolean isValidTime(String time){
-		if(time.length()!=TIME_LENGTH){
+	protected static boolean isValidTime(String time) {
+		if (time.length() != TIME_LENGTH) {
 			parserUtilityLogger.log(Level.INFO, MESSAGE_INVALID_CONTENT);
 			return false;
 		}
-		int hour = Integer.parseInt(time.substring(0,2));
+		int hour = Integer.parseInt(time.substring(0, 2));
 		int minute = Integer.parseInt(time.substring(2, 4));
-        if(hour<0||hour>24){
+		if (hour < 0 || hour > 24) {
 			parserUtilityLogger.log(Level.INFO, MESSAGE_INVALID_CONTENT);
 			return false;
-		}else if(minute<0||minute>60){
+		} else if (minute < 0 || minute > 60) {
 			parserUtilityLogger.log(Level.INFO, MESSAGE_INVALID_CONTENT);
 			return false;
 		}
 		parserUtilityLogger.log(Level.INFO, MESSAGE_VALID_CONTENT);
-        return true;
+		return true;
 	}
-	
-	private static boolean isValidDate(String date){
+
+	private static boolean isValidDate(String date) {
 		DateTimeFormatter dtf = DateTimeFormat.forPattern("ddMMyyyy");
-		if(date.length()==LONG_DATE_LENGTH){
-			try{
+		if (date.length() == LONG_DATE_LENGTH) {
+			try {
 				DateTime parsedDate = dtf.parseDateTime(date);
 				parserUtilityLogger.log(Level.INFO, MESSAGE_VALID_CONTENT);
 				return true;
-			}catch (IllegalArgumentException e){
+			} catch (IllegalArgumentException e) {
 				parserUtilityLogger.log(Level.INFO, MESSAGE_INVALID_CONTENT);
 				return false;
 			}
 		}
-		if(date.length()==SHORT_DATE_LENGTH){
+		if (date.length() == SHORT_DATE_LENGTH) {
 			String currentYear = DateTime.now().toString("yyyy");
 
-			try{
-				DateTime parsedDate = dtf.parseDateTime(date+currentYear);
+			try {
+				DateTime parsedDate = dtf.parseDateTime(date + currentYear);
 				parserUtilityLogger.log(Level.INFO, MESSAGE_VALID_CONTENT);
 				return true;
-			}catch (IllegalArgumentException e){
+			} catch (IllegalArgumentException e) {
 				parserUtilityLogger.log(Level.INFO, MESSAGE_INVALID_CONTENT);
 				return false;
 			}
 		}
-        return false;
-	} 
+		return false;
+	}
 
 	//@author A0115777W
 	protected static boolean isPositiveInt(String content) {
@@ -472,12 +482,13 @@ public class ParserUtility {
 	}
 
 	//@author A0115777W
-	protected static boolean isValidPeriod(String content){
-		if(content.equals("hourly")||content.equals("daily")||content.equals("weekly")||content.equals("monthly")){
+	protected static boolean isValidPeriod(String content) {
+		if (content.equals("hourly") || content.equals("daily")
+				|| content.equals("weekly") || content.equals("monthly")) {
 			return true;
-		}else{
+		} else {
 			return false;
 		}
 	}
-	//End of Validation methods
+	// End of Validation methods
 }

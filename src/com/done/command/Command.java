@@ -3,14 +3,15 @@ package com.done.command;
 import java.util.logging.Logger;
 
 public abstract class Command {
-	private int id;
-	private CommandType type;
-	private boolean undoable;
-	protected static Logger commandLogger = Logger.getLogger("Command");
 
 	//String for reporting error from behaviour that is not supposed to be present.
 	//Could be used for logging.
 	protected static final String MESSAGE_ERROR = "Error happened when attempting to execute %1$s method in %2$s command\n";
+
+	private int id;
+	private CommandType type;
+	private boolean undoable;
+	protected static Logger commandLogger = Logger.getLogger("Command");
 
 	public enum CommandType {
 		ADD, DELETE, LOAD, CLEAR, EDIT, SEARCH, SHOWALL, UNDO, MOVE, DONE, CLEARDONE, REMIND, RECUR, EXIT, INVALID;

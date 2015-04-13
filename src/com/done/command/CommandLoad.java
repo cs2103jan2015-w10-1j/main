@@ -8,9 +8,9 @@ import com.done.storage.JsonStorage;
 public class CommandLoad extends Command {
 	
 	private static final String MESSAGE_CREATION = "Load Command Created"; 
+	private static final String DIR_TASKS = "tasks//";
 
 	private String jsonName;
-	private static final String DIR_TASKS = "tasks//";
 
 	//@author A0115777W
 	public CommandLoad(String jsonName) {

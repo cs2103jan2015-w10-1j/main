@@ -9,10 +9,10 @@ import com.done.storage.InMemStorage;
 public class CommandMove extends Command {
 
 	private static final String MESSAGE_CREATION = "Move Command Created"; 
+	private static final String MOVE_COMMAND_CONTENT = "%1$s to %2$s";
 
 	private int origin;
 	private int destination;
-	private static final String MOVE_COMMAND_CONTENT = "%1$s to %2$s";
 
 	//@author A0115777W
 	public CommandMove(int origin, int destination) throws Exception {

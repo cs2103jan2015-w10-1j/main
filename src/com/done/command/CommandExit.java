@@ -5,12 +5,12 @@ import java.util.logging.Level;
 public class CommandExit extends Command {
 	
 	private static final String MESSAGE_CREATION = "Exit Command Created"; 
-
-	private boolean isNormal;
 	private static final int STATUS_NORMAL = 0;
 	private static final int STATUS_ABNORMAL = 1;
 	private static final String EMPTY_STRING = "";
 	
+	private boolean isNormal;
+
 	//@author A0115777W
 	public CommandExit(boolean isNormal){
 		super(CommandType.EXIT,false);

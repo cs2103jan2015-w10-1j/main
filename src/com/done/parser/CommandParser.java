@@ -6,18 +6,17 @@ import java.util.logging.Logger;
 import com.done.command.Command;
 import com.done.command.Command.CommandType;
 
-
 public class CommandParser {
 
 	private static CommandParser instance = null;
 	private static Logger parserLogger = Logger.getLogger("CommandParser");
-	
+
 	//@author A0115777W
 	private CommandParser() {
 
 	}
 
-	//get the Singleton CommandParser
+	// get the Singleton CommandParser
 	public static CommandParser getInstance() {
 		if (instance == null) {
 			instance = new CommandParser();
@@ -25,7 +24,7 @@ public class CommandParser {
 		return instance;
 	}
 
-	//parse an input to make a Command
+	// parse an input to make a Command
 	public Command parseInputToMakeCommand(String userCommand) {
 
 		parserLogger.log(Level.INFO, "Input passed to make Command");
@@ -35,8 +34,9 @@ public class CommandParser {
 		return makeCommand(commandWord, commandContent);
 
 	}
-	
-	//given a commandWord and commandContent, determine commandType and make Command
+
+	// given a commandWord and commandContent, determine commandType and make
+	// Command
 	//@author A0115777W
 	private Command makeCommand(String commandWord, String commandContent) {
 		if (commandWord.equalsIgnoreCase("add")) {
@@ -72,7 +72,7 @@ public class CommandParser {
 		}
 	}
 
-	//given a line of Command, give the commandType
+	// given a line of Command, give the commandType
 	public CommandType getCommandType(String userCommand) {
 
 		String command = ParserUtility.getFirstWord(userCommand);
@@ -110,10 +110,10 @@ public class CommandParser {
 		}
 	}
 
-	//given a line of Command, give the commandContent
+	// given a line of Command, give the commandContent
 	public String getCommandContent(String userCommand) {
 		String currentContent = ParserUtility.removeFirstWord(userCommand);
 		return currentContent;
 	}
-	
+
 }

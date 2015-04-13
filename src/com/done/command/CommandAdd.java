@@ -10,11 +10,11 @@ import com.done.task.TaskReminder;
 
 public class CommandAdd extends Command {
 
+	private static final String MESSAGE_CREATION = "Add Command Created"; 
+
 	private Done task;
 	private TaskReminder reminderTask;
 	
-	private static final String MESSAGE_CREATION = "Add Command Created"; 
-
 	//@author A0115777W
 	public CommandAdd(Done task) {
 		super(CommandType.ADD, true);

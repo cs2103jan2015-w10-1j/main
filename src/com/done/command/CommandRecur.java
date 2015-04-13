@@ -14,11 +14,34 @@ import com.done.storage.InMemStorage;
 public class CommandRecur extends Command {
 	
 	private static final String MESSAGE_CREATION = "Recur Command Created"; 
+	private static final String RECUR_COMMAND_CONTENT = "Set %1$s to recur %2$s for %3$s times";
 
 	private Done task;
 	private String frequency;
 	private int numberToStop;
-	private static final String RECUR_COMMAND_CONTENT = "Set %1$s to recur %2$s for %3$s times";
+	
+	//@author A0115777W
+
+	public CommandRecur(int recurIndex, String period, int numberToStop) throws Exception{
+		super(CommandType.RECUR, true);
+		assert recurIndex > 0;
+		if (recurIndex > InMemStorage.getInstance().getTasks().size()) {
+			commandLogger.log(Level.INFO, "Too large Index");
+			throw new Exception("Too large Destination Index Value");
+		}
+		this.task = InMemStorage.getInstance().getTask(recurIndex);
+		this.frequency = period;
+		this.numberToStop = numberToStop;
+		commandLogger.log(Level.INFO, MESSAGE_CREATION);
+	}
+
+	public CommandRecur(Done task, String period, int numberToStop){
+		super(CommandType.RECUR,true);
+		this.task = task;
+		this.frequency = period;
+		this.numberToStop = numberToStop;
+		commandLogger.log(Level.INFO, MESSAGE_CREATION);
+	}
 	
 	//@author A0115635J
 	//for recur
@@ -93,31 +116,6 @@ public class CommandRecur extends Command {
 		scheduler.schedule(new Runnable() {
 			public void run() { recurHandle.cancel(true); }
 			}, 9, SECONDS);
-	}
-	
-	
-
-	//@author A0115777W
-
-	public CommandRecur(int recurIndex, String period, int numberToStop) throws Exception{
-		super(CommandType.RECUR, true);
-		assert recurIndex > 0;
-		if (recurIndex > InMemStorage.getInstance().getTasks().size()) {
-			commandLogger.log(Level.INFO, "Too large Index");
-			throw new Exception("Too large Destination Index Value");
-		}
-		this.task = InMemStorage.getInstance().getTask(recurIndex);
-		this.frequency = period;
-		this.numberToStop = numberToStop;
-		commandLogger.log(Level.INFO, MESSAGE_CREATION);
-	}
-
-	public CommandRecur(Done task, String period, int numberToStop){
-		super(CommandType.RECUR,true);
-		this.task = task;
-		this.frequency = period;
-		this.numberToStop = numberToStop;
-		commandLogger.log(Level.INFO, MESSAGE_CREATION);
 	}
 	
 	//@author A0115635J
