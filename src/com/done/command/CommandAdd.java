@@ -39,8 +39,8 @@ public class CommandAdd extends Command {
 	@Override
 	public void execute() throws Exception {
 		if (this.task != null) {
-			InMemStorage inMemStorage = InMemStorage.getInstance();
-			inMemStorage.store(task);
+			InMemStorage memory = InMemStorage.getInstance();
+			memory.store(task);
 		} else {
 			throw new Exception("TaskNullException");
 		}

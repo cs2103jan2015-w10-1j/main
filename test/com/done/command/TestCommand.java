@@ -15,7 +15,7 @@ public class TestCommand {
 	public final long END_TIME_FOR_TEST = Long.parseLong("1428908400000");
 	public final long DEADLINE_FOR_TEST = Long.parseLong("1429084800000");
 	public final int FIRST_INDEX_TEST = 1;
-	public final int SECOND_INDEX_TEST = 3;
+	public final int SECOND_INDEX_TEST = 2;
 	public final int LOWER_FAILURE_INDEX = 0;
 	public final int UPPER_FAILURE_INDEX = 99999;
 	public final int TIME_RECUR_TEST = 3;

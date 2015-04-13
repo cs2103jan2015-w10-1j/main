@@ -20,10 +20,10 @@ public class CommandExit extends Command {
 
 	@Override
 	public void execute() throws Exception {
-		if(isNormal){
-			System.exit(STATUS_NORMAL);
+		if(!isNormal){
+			System.exit(STATUS_ABNORMAL);
 		}
-		System.exit(STATUS_ABNORMAL);
+		System.exit(STATUS_NORMAL);
 	}
 
 	@Override

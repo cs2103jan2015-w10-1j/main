@@ -30,8 +30,8 @@ public class CommandDone extends Command {
 	
 	@Override
 	public void execute() throws Exception {
-		InMemStorage inMemStorage = InMemStorage.getInstance();
-		inMemStorage.setCompleted(task);
+		InMemStorage memory = InMemStorage.getInstance();
+		memory.setCompleted(task);
 	}
 
 	@Override
