@@ -269,7 +269,6 @@ public class ParserUtility {
 		}
 		// else return null or throw exception
 		return null;
-
 	}
 
 	//@author A0111830X
@@ -284,10 +283,7 @@ public class ParserUtility {
 		
 		Done task = null;
 		DateTimeFormatter dtf = DateTimeFormat.forPattern("ddMMyyyy HHmm");
-		
-		//LocalDate localStartDate = LocalDate.now();
-		//LocalDate localEndDate = LocalDate.now();
-		
+				
 		// obtain title of task from input
 		StringBuilder taskTitleBuilder = new StringBuilder();
 		for (int i = 0; i < startDateIndex - 1; i++) {
@@ -299,39 +295,17 @@ public class ParserUtility {
 		}
 		String taskTitle = taskTitleBuilder.toString();
 		
-		
-		// check for parameters ..s and ..e
-		//if (content.get(startDateIndex - 1).equalsIgnoreCase("..s")) {
-			startDate = content.get(startDateIndex);
-			startTime = content.get(startTimeIndex);
-			endDate = content.get(endDateIndex);
-			endTime = content.get(endTimeIndex);
-			System.out.println(startDate + " " + startTime+ " "+endDate+ " "+endTime+ " ");
-			// obtain time from input
-			DateTime startDateTime = dtf.parseDateTime(startDate+currentYear + " " + startTime);
-			DateTime endDateTime = dtf.parseDateTime(endDate+currentYear + " " +endTime);
-			startTimeValue = startDateTime.getMillis();
-			endTimeValue = endDateTime.getMillis();
-			System.out.println(startDateTime.toString()+endDateTime.toString());
-
-			/*startTimeValue = localStartDate.toDate().getTime()
-					+ localStartTime.getMillisOfDay();
-			endTimeValue = localEndDate.toDate().getTime()
-					+ localEndTime.getMillisOfDay();*/
-
-		/*} else if (content.get(endDateIndex - 1).equalsIgnoreCase("..e")) {
-			endDate = content.get(endDateIndex);
-			endTime = content.get(endTimeIndex);
-			System.out.println(endDate);
-			System.out.println(endTime);
-
-			// obtain date and time from now() and input
-			String startDateTimeString = DateTime.now().toString("ddMM HHmm");
-			DateTime startDateTime = dtf.parseDateTime(startDateTimeString);
-			DateTime endDateTime = dtf.parseDateTime(endDate + " " +endTime);
-			startTimeValue = startDateTime.getMillis();
-			endTimeValue = endDateTime.getMillis();
-		}*/
+		startDate = content.get(startDateIndex);
+		startTime = content.get(startTimeIndex);
+		endDate = content.get(endDateIndex);
+		endTime = content.get(endTimeIndex);
+		System.out.println(startDate + " " + startTime+ " "+endDate+ " "+endTime+ " ");
+		// obtain time from input
+		DateTime startDateTime = dtf.parseDateTime(startDate+currentYear + " " + startTime);
+		DateTime endDateTime = dtf.parseDateTime(endDate+currentYear + " " +endTime);
+		startTimeValue = startDateTime.getMillis();
+		endTimeValue = endDateTime.getMillis();
+		System.out.println(startDateTime.toString()+endDateTime.toString());
 
 		task = new DoneTimedTask(taskTitle, startTimeValue, endTimeValue);
 		return task;

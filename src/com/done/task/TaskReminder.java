@@ -31,7 +31,7 @@ public class TaskReminder {
 	}
 
 	public TaskReminder(Done done, String remindDate, String remindTime) {
-		DateTimeFormatter dtf = DateTimeFormat.forPattern("ddMMyyyy HH:mm");
+		DateTimeFormatter dtf = DateTimeFormat.forPattern("ddMMyyyy HHmm");
 		DateTime dateTime = dtf.parseDateTime(remindDate + " " + remindTime);
 		long currentTime = LocalDateTime.now().getMillisOfDay();
 		long endTimeValue = dateTime.getMillisOfDay();
