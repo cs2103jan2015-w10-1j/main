@@ -1,3 +1,4 @@
+//@author A0111830X
 package com.done.task;
 
 import java.util.Timer;
@@ -18,16 +19,14 @@ import com.done.model.DoneTimedTask;
 public class TaskReminder {
 	Timer timer;
 
-	//@author A0111830X
+
 	public TaskReminder(DoneTimedTask done) {
 
-		long startTimeValue = done.getStartTimeLong();
-		long endTimeValue = done.getEndTimeLong();
+		long timeToRemind = done.getEndTimeLong() - DateTime.now().getMillis();
 
 		timer = new Timer();
 		timer.schedule(new DoneReminderTimedTask(done),
-				(endTimeValue - startTimeValue));
-
+				(timeToRemind));
 	}
 
 	public TaskReminder(Done done, String remindDate, String remindTime) {
