@@ -19,7 +19,6 @@ import com.google.gson.JsonIOException;
 import com.google.gson.reflect.TypeToken;
 
 public class JSONStorage {
-
 	private static JSONStorage instance = null;
 
 	private static final String DIR_PREF = "prefs//";
@@ -27,6 +26,14 @@ public class JSONStorage {
 	private static final String FILE_JSON_EXT = ".json";
 	private static final String FILE_TASKS_JSON = DIR_TASKS + "tasks";
 	private static final String FILE_PREFS_XML = DIR_PREF + "done_prefs.xml";
+
+	private static final String MESSAGE_STORE_JSON = "Store to JSON";
+	private static final String MESSAGE_SET_JSON_NAME = "Setting JSON name: %1$s";
+	private static final String MESSAGE_RETRIEVE_JSON = "Retrieving JSON name: %1$s";
+	private static final String ERROR_WRITE_FILE = "Unable to write file!";
+	private static final String ERROR_FILE_NOT_FOUND = "File not found!";
+	private static final String ERROR_READ_PREF_FILE = "Unable to read preference file! Creating default.";
+	private static final String ERROR_READ_JSON_FILE = "Unable to read JSON file, creating new empty List";
 
 	private Gson gson;
 	private Properties pref;
@@ -68,7 +75,7 @@ public class JSONStorage {
 			inFileRead = new FileReader(jsonName);
 		} catch (IOException e) {
 			StorageLogger.getStorageLogger().log(Level.WARNING,
-					"File not found!", e);
+					ERROR_FILE_NOT_FOUND, e);
 			// if IOException occurs while reading file, return empty List of
 			// Done
 			return new ArrayList<Done>();
@@ -90,7 +97,7 @@ public class JSONStorage {
 										// null
 			} catch (JsonIOException e) {
 				StorageLogger.getStorageLogger().log(Level.WARNING,
-						"Unable to read JSON file, creating new empty List", e);
+						ERROR_READ_JSON_FILE, e);
 				// if JSONIOException occurs, return an empty List of Done
 				return new ArrayList<Done>();
 			}
@@ -100,7 +107,7 @@ public class JSONStorage {
 	}
 
 	public boolean store(List<Done> task) {
-		StorageLogger.getStorageLogger().log(Level.INFO, "Store to JSON");
+		StorageLogger.getStorageLogger().log(Level.INFO, MESSAGE_STORE_JSON);
 
 		try {
 			FileWriter outFile = new FileWriter(jsonName);
@@ -110,7 +117,7 @@ public class JSONStorage {
 			return true;
 		} catch (IOException e) {
 			StorageLogger.getStorageLogger().log(Level.WARNING,
-					"Unable to write file!", e);
+					ERROR_WRITE_FILE, e);
 			// if IOException occurs, return false for Logic to set isSuccessful
 			// to false;
 			return false;
@@ -119,7 +126,7 @@ public class JSONStorage {
 
 	public boolean setJsonNameToPref(String jsonName) {
 		StorageLogger.getStorageLogger().log(Level.INFO,
-				"Setting JSON name: " + jsonName);
+				String.format(MESSAGE_SET_JSON_NAME, jsonName));
 		pref.setProperty("jsonName", jsonName + FILE_JSON_EXT);
 		try {
 			File prefFile = openFile(FILE_PREFS_XML);
@@ -127,7 +134,7 @@ public class JSONStorage {
 			return true;
 		} catch (Exception e) {
 			StorageLogger.getStorageLogger().log(Level.WARNING,
-					"Unable to write file!", e);
+					ERROR_WRITE_FILE, e);
 			// if IOException occurs, return false for Logic to set isSuccessful
 			// to false;
 			return false;
@@ -136,20 +143,18 @@ public class JSONStorage {
 
 	public String getJsonNameFromPref() {
 
-		String jsonName = "";
-
 		try {
 			File prefFile = openFile(FILE_PREFS_XML);
 			pref.loadFromXML(new FileInputStream(prefFile));
 		} catch (IOException e) {
 			StorageLogger.getStorageLogger().log(Level.WARNING,
-					"Unable to read preference file! Creating default.");
+					ERROR_READ_PREF_FILE);
 			// If IOException occur, set default preference file name
 			setJsonNameToPref(FILE_TASKS_JSON);
 		}
 		jsonName = pref.getProperty("jsonName", FILE_TASKS_JSON);
 		StorageLogger.getStorageLogger().log(Level.INFO,
-				"Retrieving JSON name: " + jsonName);
+				String.format(MESSAGE_RETRIEVE_JSON, jsonName));
 		return jsonName;
 
 	}
@@ -182,7 +187,7 @@ public class JSONStorage {
 
 	// -- End of utility methods
 
-	// @author generated
+	//@author generated
 	public boolean isNewJson() {
 		return isNewJson;
 	}

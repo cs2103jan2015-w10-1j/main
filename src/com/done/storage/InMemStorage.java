@@ -10,8 +10,20 @@ import com.done.command.Command;
 import com.done.model.Done;
 
 public class InMemStorage {
-
 	private static InMemStorage instance = null;
+
+	private static final String MESSAGE_SET_INCOMPLETE = "Set Task Incomplete";
+	private static final String MESSAGE_PUSH_UNDO = "Push command to Undo stack";
+	private static final String MESSAGE_RETRIEVE_UNDO = "Retreive command from Undo stack";
+	private static final String MESSAGE_SET_COMPLETED = "Set Task Completed";
+	private static final String MESSAGE_CLEAR_ALL = "Clear all Done tasks";
+	private static final String MESSAGE_MOVE_TASK = "Move task";
+	private static final String MESSAGE_EDIT_TASK = "Edit task";
+	private static final String MESSAGE_DELETE_TASK = "Delete task";
+	private static final String MESSAGE_STORE_MEMORY = "Store to memory";
+	private static final String MESSAGE_SEARCH_RESULT = "Get search result";
+	private static final String MESSAGE_LOAD_NEW = "Load from new JSON";
+	private static final String ERROR_EMPTY_STACK = "Command Stack is empty!";
 
 	private static final int ARRAY_POSITION_OFFSET = 1;
 
@@ -43,7 +55,7 @@ public class InMemStorage {
 	}
 
 	public void loadNew() {
-		StorageLogger.getStorageLogger().log(Level.INFO, "Load from new JSON");
+		StorageLogger.getStorageLogger().log(Level.INFO, MESSAGE_LOAD_NEW);
 		jsonStorage.setNewJson(true);
 		this.setTasks(jsonStorage.load());
 		jsonStorage.setNewJson(false);
@@ -54,12 +66,12 @@ public class InMemStorage {
 	}
 
 	public List<Done> loadSearchResult() {
-		StorageLogger.getStorageLogger().log(Level.INFO, "Get search result");
+		StorageLogger.getStorageLogger().log(Level.INFO, MESSAGE_SEARCH_RESULT);
 		return getWorkingTasks();
 	}
 
 	public boolean store(Done task) {
-		StorageLogger.getStorageLogger().log(Level.INFO, "Store to memory");
+		StorageLogger.getStorageLogger().log(Level.INFO, MESSAGE_STORE_MEMORY);
 		assert task != null;
 		getTasks().add(0, task);
 		updateTaskID();
@@ -71,7 +83,7 @@ public class InMemStorage {
 	}
 
 	public boolean delete(Done task, boolean isDeleteAll) {
-		StorageLogger.getStorageLogger().log(Level.INFO, "Delete task");
+		StorageLogger.getStorageLogger().log(Level.INFO, MESSAGE_DELETE_TASK);
 		// isDeleteAll used for clear command
 		// if true is a clear
 		// else is a normal delete
@@ -91,7 +103,7 @@ public class InMemStorage {
 	}
 
 	public boolean edit(Done task, int editIndex) {
-		StorageLogger.getStorageLogger().log(Level.INFO, "Edit task");
+		StorageLogger.getStorageLogger().log(Level.INFO, MESSAGE_EDIT_TASK);
 		assert task != null;
 
 		getTasks().set(editIndex, task);
@@ -103,9 +115,9 @@ public class InMemStorage {
 		return false;
 	}
 
-	// @author A0115777W
+	//@author A0115777W
 	public boolean move(int originIndex, int destinationIndex) {
-		StorageLogger.getStorageLogger().log(Level.INFO, "Move task");
+		StorageLogger.getStorageLogger().log(Level.INFO, MESSAGE_MOVE_TASK);
 
 		assert (originIndex >= 0 && originIndex < getTasks().size());
 		assert (destinationIndex >= 0 && destinationIndex < getTasks().size());
@@ -120,8 +132,7 @@ public class InMemStorage {
 	}
 
 	public boolean clearDoneTasks() {
-		StorageLogger.getStorageLogger()
-				.log(Level.INFO, "Clear all Done tasks");
+		StorageLogger.getStorageLogger().log(Level.INFO, MESSAGE_CLEAR_ALL);
 
 		List<Done> tasks = getTasks();
 		int size = tasks.size();
@@ -141,7 +152,7 @@ public class InMemStorage {
 
 	//@author A0111830X
 	public void setCompleted(Done task) {
-		StorageLogger.getStorageLogger().log(Level.INFO, "Set Task Completed");
+		StorageLogger.getStorageLogger().log(Level.INFO, MESSAGE_SET_COMPLETED);
 		assert task != null;
 
 		getTasks().get(task.getId() - ARRAY_POSITION_OFFSET).setCompleted(true);
@@ -149,7 +160,8 @@ public class InMemStorage {
 	}
 
 	public void setIncomplete(Done task) {
-		StorageLogger.getStorageLogger().log(Level.INFO, "Set Task Incomplete");
+		StorageLogger.getStorageLogger()
+				.log(Level.INFO, MESSAGE_SET_INCOMPLETE);
 		assert task != null;
 
 		getTasks().get(task.getId() - ARRAY_POSITION_OFFSET)
@@ -159,16 +171,14 @@ public class InMemStorage {
 
 	// Stack used for Undo
 	public void pushToUndoStack(Command command) {
-		StorageLogger.getStorageLogger().log(Level.INFO,
-				"Push command to Undo stack");
+		StorageLogger.getStorageLogger().log(Level.INFO, MESSAGE_PUSH_UNDO);
 		this.undoStack.push(command);
 	}
 
 	public Command popFromUndoStack() throws Exception {
-		StorageLogger.getStorageLogger().log(Level.INFO,
-				"Retreive command from Undo stack");
+		StorageLogger.getStorageLogger().log(Level.INFO, MESSAGE_RETRIEVE_UNDO);
 		if (undoStack.isEmpty()) {
-			throw new Exception("Command Stack is empty!");
+			throw new Exception(ERROR_EMPTY_STACK);
 		}
 		return this.undoStack.pop();
 	}
@@ -193,7 +203,7 @@ public class InMemStorage {
 		}
 	}
 
-	// @author generated
+	//@author generated
 	public List<Done> getTasks() {
 		return tasks;
 	}
