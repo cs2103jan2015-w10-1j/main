@@ -7,11 +7,13 @@ import com.done.storage.InMemStorage;
 public class CommandClear extends Command {
 	
 	private static final String EMPTY_STRING = "";
+	private static final String MESSAGE_CREATION = "Clear Command Created"; 
+
 	
 	//@author A0115777W
 	public CommandClear(){
 		super(CommandType.CLEAR, false);
-		commandLogger.log(Level.INFO, "Clear Command Created");
+		commandLogger.log(Level.INFO, MESSAGE_CREATION);
 	}
 
 	//@author A0111830X

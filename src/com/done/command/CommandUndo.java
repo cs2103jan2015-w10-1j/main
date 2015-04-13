@@ -6,12 +6,13 @@ import com.done.storage.InMemStorage;
 
 public class CommandUndo extends Command{
 	
+	private static final String MESSAGE_CREATION = "Undo Command Created"; 
 	private static final String EMPTY_STRING = "";
 	
 	//@author A0115777W
 	public CommandUndo() {
 		super(CommandType.UNDO, false);
-		commandLogger.log(Level.INFO, "Undo Command Created");
+		commandLogger.log(Level.INFO, MESSAGE_CREATION);
 	}
 	
 	//@author A0111830X

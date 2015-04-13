@@ -7,6 +7,8 @@ import com.done.storage.JSONStorage;
 
 public class CommandLoad extends Command {
 	
+	private static final String MESSAGE_CREATION = "Load Command Created"; 
+
 	private String jsonName;
 	private static final String DIR_TASKS = "tasks//";
 
@@ -14,7 +16,7 @@ public class CommandLoad extends Command {
 	public CommandLoad(String jsonName) {
 		super(CommandType.LOAD, false);
 		this.jsonName = jsonName;
-		commandLogger.log(Level.INFO, "Load Command Created");
+		commandLogger.log(Level.INFO, MESSAGE_CREATION);
 	}
 
 	//@author A0111830X
