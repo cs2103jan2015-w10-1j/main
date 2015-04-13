@@ -2,6 +2,8 @@ package com.done;
 
 import java.util.Collections;
 import java.util.List;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
@@ -25,47 +27,69 @@ import com.done.result.ExecutionResult;
 public class UIController {
 	@FXML 
 	private TextField commandField;
-	
 	@FXML
 	private TableView<Done> tableViewTasks;
-	
 	private Stage primaryStage;
-
-    public void setStage(Stage stage) {
-         this.primaryStage = stage;
-    }
-	
 	private LogicFacade logicFacade;
 	
+	private static Logger uiLogger = Logger.getLogger("UI");
+	
 	private static final String EMPTY_STRING = "";
+	
 	private static final String SHOWADD_SUCCESS_MESSAGE = "%1$s added to the list";
 	private static final String SHOWADD_ERROR_MESSAGE = "Error: Adding task not successful";
+	private static final String SHOWADD_LOG_MESSAGE = "Show UI for add command";
+	
 	private static final String SHOWDELETE_ERROR_MESSAGE = "Error: Invalid delete";
 	private static final String SHOWDELETE_SUCCESS_MESSAGE = "%1$s deleted";
+	private static final String SHOWDELETE_LOG_MESSAGE = "Show UI for delete command";
+	
 	private static final String SHOWEDIT_SUCCESS_MESSAGE = "Task %1$s";
 	private static final String SHOWEDIT_ERROR_MESSAGE = "Error: Editing task not successful";
+	private static final String SHOWEDIT_LOG_MESSAGE = "Show UI for edit command";
+	
 	private static final String SHOWCLEAR_SUCCESS_MESSAGE = "All tasks cleared";
 	private static final String SHOWCLEAR_ERROR_MESSAGE = "Error: Clearing tasks not successful";
+	private static final String SHOWCLEAR_LOG_MESSAGE = "Show UI for clear command";
+	
 	private static final String SHOWMOVE_SUCCESS_MESSAGE = "Moved from %1$s";
 	private static final String SHOWMOVE_ERROR_MESSAGE = "Error: Moving task not successful";
+	private static final String SHOWMOVE_LOG_MESSAGE = "Show UI for move command";
+	
 	private static final String SHOWSEARCH_SUCCESS_MESSAGE = "Showing search for: %1$s";
 	private static final String SHOWSEARCH_ERROR_MESSAGE = "Error: Search not successful";
+	private static final String SHOWSEARCH_LOG_MESSAGE = "Show UI for search command";
+	
 	private static final String SHOWLOAD_SUCCESS_MESSAGE = "%1$s.json loaded";
 	private static final String SHOWLOAD_ERROR_MESSAGE = "Error: File load not successful";
 	private static final String SHOWLOAD_STAGE_TITLE = "Done! (%1$s)";
+	private static final String SHOWLOAD_LOG_MESSAGE = "Show UI for load command";
+	
 	private static final String SHOWSHOWALL_SUCCESS_MESSAGE = "Showing all tasks";
+	private static final String SHOWSHOWALL_LOG_MESSAGE = "Show UI for showall command";
+	
 	private static final String SHOWRECUR_SUCCESS_MESSAGE = "%1$s";
 	private static final String SHOWRECUR_ERROR_MESSAGE = "Error: Recurrence cannot be set for this task";
+	private static final String SHOWRECUR_LOG_MESSAGE = "Show UI for recur command";
+	
 	private static final String SHOWREMIND_SUCCESS_MESSAGE = "Set reminder for %1$s";
 	private static final String SHOWREMIND_ERROR_MESSAGE = "Error: Reminder cannot be set for this task";
+	private static final String SHOWREMIND_LOG_MESSAGE = "Show UI for remind command";
+	
 	private static final String SHOWUNDO_ERROR_MESSAGE = "Error: No recent command available";
 	private static final String SHOWUNDO_SUCCESS_MESSAGE = "Undo %1$s";
+	private static final String SHOWUNDO_LOG_MESSAGE = "Show UI for undo command";
+	
 	private static final String SHOWDONE_ERROR_MESSAGE = "Error: Invalid attempt to mark a task as done";
 	private static final String SHOWDONE_SUCCESS_MESSAGE = "%1$s marked as done";
+	private static final String SHOWDONE_LOG_MESSAGE = "Show UI for done command";
+	
 	private static final String SHOWCLEARDONE_ERROR_MESSAGE = "Error: Invalid attempt to clear tasks marked as done";
 	private static final String SHOWCLEARDONE_SUCCESS_MESSAGE = "All done tasks cleared";
+	private static final String SHOWCLEARDONE_LOG_MESSAGE = "Show UI for cleardone command";
+	
 	private static final String SHOWINVALIDCOMMAND_ERROR_MESSAGE = "Error: Invalid command";
-	private static final String UPDATEREMINDER_MESSAGE = "Reminder for %1$s";
+	private static final String SHOWINVALIDCOMMAND_LOG_MESSAGE = "Show UI for invalid command";
 	
 	//@author A0088821X
 	public UIController(){
@@ -79,6 +103,10 @@ public class UIController {
 			processInput();
 		});
 	}
+	
+	public void setStage(Stage stage) {
+         this.primaryStage = stage;
+    }
 	
 	private void processInput(){
 		String userCommand = commandField.getText();
@@ -151,6 +179,7 @@ public class UIController {
 			Notifications.create().text(SHOWADD_ERROR_MESSAGE).showError();
 		}
 		display();
+		uiLogger.log(Level.INFO, SHOWADD_LOG_MESSAGE);
 	}
 	
 	private void showDelete(boolean isSuccessful, String commandContent) {
@@ -160,6 +189,7 @@ public class UIController {
 			Notifications.create().text(SHOWDELETE_ERROR_MESSAGE).showError();
 		}
 		display();
+		uiLogger.log(Level.INFO, SHOWDELETE_LOG_MESSAGE);
 	}
 	
 	private void showEdit(boolean isSuccessful, String commandContent) {
@@ -169,6 +199,7 @@ public class UIController {
 			Notifications.create().text(SHOWEDIT_ERROR_MESSAGE).showError();
 		}
 		display();
+		uiLogger.log(Level.INFO, SHOWEDIT_LOG_MESSAGE);
 	}
 	
 	private void showLoad(boolean isSuccessful, String commandContent){
@@ -179,6 +210,7 @@ public class UIController {
 			Notifications.create().text(SHOWLOAD_ERROR_MESSAGE).showError();
 		}
 		display();
+		uiLogger.log(Level.INFO, SHOWLOAD_LOG_MESSAGE);
 	}
 	
 	private void showClear(boolean isSuccessful) {
@@ -188,6 +220,7 @@ public class UIController {
 			Notifications.create().text(SHOWCLEAR_ERROR_MESSAGE).showError();
 		}
 		display();
+		uiLogger.log(Level.INFO, SHOWCLEAR_LOG_MESSAGE);
 	}
 	
 	private void showMove(boolean isSuccessful, String commandContent){
@@ -197,6 +230,7 @@ public class UIController {
 			Notifications.create().text(SHOWMOVE_ERROR_MESSAGE).showError();
 		}
 		display();
+		uiLogger.log(Level.INFO, SHOWMOVE_LOG_MESSAGE);
 	}
 	
 	private void showSearch(boolean isSuccessful, String commandContent){
@@ -206,11 +240,13 @@ public class UIController {
 			Notifications.create().text(SHOWSEARCH_ERROR_MESSAGE).showError();
 		}
 		displaySearches();
+		uiLogger.log(Level.INFO, SHOWSEARCH_LOG_MESSAGE);
 	}
 	
 	private void showShowAll(){
 		Notifications.create().text(SHOWSHOWALL_SUCCESS_MESSAGE).showInformation();
 		display();
+		uiLogger.log(Level.INFO, SHOWSHOWALL_LOG_MESSAGE);
 	}
 	
 	private void showRecur(boolean isSuccessful, String commandContent){
@@ -220,6 +256,7 @@ public class UIController {
 			Notifications.create().text(SHOWRECUR_ERROR_MESSAGE).showError();
 		}
 		display();
+		uiLogger.log(Level.INFO, SHOWRECUR_LOG_MESSAGE);
 	}
 	
 	private void showRemind(boolean isSuccessful, String commandContent){
@@ -229,6 +266,7 @@ public class UIController {
 			Notifications.create().text(SHOWREMIND_ERROR_MESSAGE).showError();
 		}
 		display();
+		uiLogger.log(Level.INFO, SHOWREMIND_LOG_MESSAGE);
 	}
 
 	private void showUndo(boolean isSuccessful, String commandContent)  {
@@ -238,7 +276,7 @@ public class UIController {
 			Notifications.create().text(SHOWUNDO_ERROR_MESSAGE).showError();
 		}
 		display();
-		
+		uiLogger.log(Level.INFO, SHOWUNDO_LOG_MESSAGE);
 	}
 	
 	private void showDone(boolean isSuccessful, String commandContent) {
@@ -248,6 +286,7 @@ public class UIController {
 			Notifications.create().text(SHOWDONE_ERROR_MESSAGE).showError();
 		}
 		display();
+		uiLogger.log(Level.INFO, SHOWDONE_LOG_MESSAGE);
 	}
 	
 	private void showClearDone(boolean isSuccessful) {
@@ -257,10 +296,12 @@ public class UIController {
 			Notifications.create().text(SHOWCLEARDONE_ERROR_MESSAGE).showError();
 		}
 		display();
+		uiLogger.log(Level.INFO, SHOWCLEARDONE_LOG_MESSAGE);
 	}
 
 	private void showInvalidCommand() {
 		Notifications.create().text(SHOWINVALIDCOMMAND_ERROR_MESSAGE).showError();
+		uiLogger.log(Level.INFO, SHOWINVALIDCOMMAND_LOG_MESSAGE);
 	}
 	
 
