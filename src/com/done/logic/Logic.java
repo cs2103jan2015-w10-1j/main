@@ -21,8 +21,6 @@ public class Logic {
  	
 	public void executeCommand(Command command){
 		try{
-			
-			// done..
 			command.execute();
 			isSuccessful = true;
 			if(command.isUndoable()){

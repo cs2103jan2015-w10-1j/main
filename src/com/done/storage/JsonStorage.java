@@ -211,8 +211,6 @@ public class JsonStorage {
 
 	}
 
-	// -- End of utility methods
-
 	//@author generated
 	public boolean isNewJson() {
 		return isNewJson;

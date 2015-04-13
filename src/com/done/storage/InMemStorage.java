@@ -98,7 +98,7 @@ public class InMemStorage {
 	}
 
 	/**
-	 * Deletes a task from the memory.
+	 * Deletes a task or clear all from memory.
 	 * 
 	 * @param task
 	 *            Current task to be deleted.
