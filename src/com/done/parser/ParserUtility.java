@@ -1,3 +1,4 @@
+//@author A0115777W
 package com.done.parser;
 
 import java.util.ArrayList;
@@ -65,9 +66,10 @@ public class ParserUtility {
 	private static Logger parserUtilityLogger = Logger
 			.getLogger("CommandParser");
 
-	// The methods to make respective Commands.
-	// May return a CommandInvalid if the content is not correct
+	// The methods to make and return respective Commands.
+	// Returns a CommandInvalid if the content is not correct
 	//@author A0115777W
+	
 	protected static Command makeAdd(String content) {
 		parserUtilityLogger.log(Level.INFO, MESSAGE_MAKE_ADD);
 		try {
@@ -397,7 +399,13 @@ public class ParserUtility {
 	}
 
 	//@author A0115777W
-
+	
+	/**
+	 * split the String by spaces and stores the parts into an ArrayList.
+	 * Returns the ArrayList.
+	 * @param content
+	 * @return ArrayList<String>slicedContent.
+	 */
 	protected static ArrayList<String> sliceContent(String content) {
 		ArrayList<String> slicedContent = new ArrayList<String>();
 		String[] contentPieces = content.trim().split("\\s+");
@@ -425,6 +433,12 @@ public class ParserUtility {
 	}
 
 	//@author A0115777W
+	/**
+	 * determine whether the time string passed is a 4-digit, valid time
+	 * Example: 0420, 2135
+	 * @param time(in String format)
+	 * @return true/false indicating validity
+	 */
 	protected static boolean isValidTime(String time) {
 		if (time.length() != TIME_LENGTH) {
 			parserUtilityLogger.log(Level.INFO, MESSAGE_INVALID_CONTENT);
@@ -443,6 +457,12 @@ public class ParserUtility {
 		return true;
 	}
 
+	/**
+	 * determine whether the date string passed is a 4-digit/8-digit, valid date
+	 * Example: 1504, 15042013
+	 * @param date(in String format)
+	 * @return true/false indicating validity
+	 */
 	private static boolean isValidDate(String date) {
 		DateTimeFormatter dtf = DateTimeFormat.forPattern("ddMMyyyy");
 		if (date.length() == LONG_DATE_LENGTH) {
