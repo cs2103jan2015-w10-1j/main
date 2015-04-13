@@ -31,7 +31,7 @@ public class DoneTimedTask extends Done {
 		SimpleDateFormat sdf = new SimpleDateFormat("d MMM HH:mm");
 		return sdf.format(startTime);
 	}
-	// This method returns you a ddMMyy
+	// This method returns you a ddMMyy for search purpose
 	public String getDateString(){
 		SimpleDateFormat sdf = new SimpleDateFormat("ddMMyyyy");
 		return sdf.format(startTime);
